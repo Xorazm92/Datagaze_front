@@ -239,8 +239,8 @@ export default function Desktop(props: MacActions) {
     <div
       className="size-full overflow-hidden bg-center bg-cover"
       style={{
-        backgroundImage: `url(${dark ? wallpapers.night : wallpapers.day})`,
-        filter: `brightness( ${(brightness as number) * 0.7 + 50}% )`
+        background: "linear-gradient(to bottom, rgb(6, 70, 246), #ffffff)"
+        // filter: `brightness( ${(brightness as number) * 0.7 + 50}% )`
       }}
     >
       {/* Top Menu Bar */}

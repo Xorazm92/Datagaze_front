@@ -5,12 +5,12 @@ import type { MacActions } from "~/types";
 export default function Login(props: MacActions) {
   const [password, setPassword] = useState("");
   const [sign, setSign] = useState("Click to enter");
-  const dark = useStore((state) => state.dark);
+  // const dark = useStore((state) => state.dark);
 
-  const keyPress = (e: React.KeyboardEvent) => {
-    const keyCode = e.key;
-    if (keyCode === "Enter") loginHandle();
-  };
+  // const keyPress = (e: React.KeyboardEvent) => {
+  //   const keyCode = e.key;
+  //   if (keyCode === "Enter") loginHandle();
+  // };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setPassword(e.target.value);
@@ -30,9 +30,7 @@ export default function Login(props: MacActions) {
     <div
       className="size-full login text-center"
       style={{
-        background: `url(${
-          dark ? wallpapers.night : wallpapers.day
-        }) center/cover no-repeat`
+        background: "linear-gradient(to bottom, rgb(6, 70, 246), #ffffff)"
       }}
       onClick={() => loginHandle()}
     >
@@ -48,7 +46,7 @@ export default function Login(props: MacActions) {
             type="password"
             placeholder="Enter Password"
             onClick={(e) => e.stopPropagation()}
-            onKeyDown={keyPress}
+            // onKeyDown={keyPress}
             value={password}
             onChange={handleInputChange}
           />
