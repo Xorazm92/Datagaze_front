@@ -31,6 +31,7 @@ export default function Desktop(props: MacActions) {
     minApps: {},
     maxZ: 2,
     showLaunchpad: false,
+    servispad: false,
     currentTitle: "Finder",
     hideDockAndTopbar: false,
     spotlight: false
@@ -39,10 +40,10 @@ export default function Desktop(props: MacActions) {
   const [spotlightBtnRef, setSpotlightBtnRef] =
     useState<React.RefObject<HTMLDivElement> | null>(null);
 
-  const { dark, brightness } = useStore((state) => ({
-    dark: state.dark,
-    brightness: state.brightness
-  }));
+  // const { dark, brightness } = useStore((state) => ({
+  //   dark: state.dark,
+  //   brightness: state.brightness
+  // }));
 
   const getAppsData = (): void => {
     let showApps = {},
@@ -240,7 +241,6 @@ export default function Desktop(props: MacActions) {
       className="size-full overflow-hidden bg-center bg-cover"
       style={{
         background: "linear-gradient(to bottom, rgb(6, 70, 246), #ffffff)"
-        // filter: `brightness( ${(brightness as number) * 0.7 + 50}% )`
       }}
     >
       {/* Top Menu Bar */}
@@ -272,7 +272,6 @@ export default function Desktop(props: MacActions) {
 
       {/* Launchpad */}
       <Launchpad show={state.showLaunchpad} toggleLaunchpad={toggleLaunchpad} />
-
       {/* Dock */}
       <Dock
         open={openApp}

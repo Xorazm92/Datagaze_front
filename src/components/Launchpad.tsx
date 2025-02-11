@@ -31,7 +31,7 @@ export default function Launchpad({ show, toggleLaunchpad }: LaunchpadProps) {
       className={`${close} z-30 transform scale-110 size-full fixed overflow-hidden bg-center bg-cover`}
       id="launchpad"
       style={{
-        backgroundImage: `url(${dark ? wallpapers.night : wallpapers.day})`
+        background: "linear-gradient(to bottom, rgb(6, 70, 246), #ffffff)"
       }}
       onClick={() => toggleLaunchpad(false)}
     >

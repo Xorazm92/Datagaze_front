@@ -3,16 +3,10 @@ import type { AppsData } from "~/types";
 
 const apps: AppsData[] = [
   {
-    id: "datagaze",
+    id: "launchpad",
     title: "Servis",
     desktop: false,
     img: "img/icons/servis/icon-4.png"
-  },
-  {
-    id: "launchpad",
-    title: "Launchpad",
-    desktop: false,
-    img: "img/icons/launchpad.png"
   },
   {
     id: "bear",
