@@ -26,6 +26,7 @@ declare global {
   const WifiMenu: typeof import('./components/menus/WifiMenu')['default']
   const Window: typeof import('./components/Window')['default']
   const createRef: typeof import('react')['createRef']
+  const form: typeof import('./components/form/index')['default']
   const forwardRef: typeof import('react')['forwardRef']
   const lazy: typeof import('react')['lazy']
   const memo: typeof import('react')['memo']
