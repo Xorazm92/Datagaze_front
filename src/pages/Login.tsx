@@ -1,7 +1,8 @@
+import { useNavigate } from "react-router-dom";
 import FormRegister from "~/components/form";
-import type { MacActions } from "~/types";
 
-export default function Login(props: MacActions) {
+export default function Login(props: any) {
+  const navigate = useNavigate();
   // const [password, setPassword] = useState("");
   // const [sign, setSign] = useState("Click to enter");
   // const dark = useStore((state) => state.dark);
@@ -16,7 +17,8 @@ export default function Login(props: MacActions) {
   // };
 
   const loginHandle = () => {
-    props.setLogin(true);
+    // props.setLogin(true);
+    navigate("/desktop");
   };
 
   return (

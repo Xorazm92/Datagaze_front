@@ -1,13 +1,13 @@
-interface BootProps {
-  restart: boolean;
-  sleep: boolean;
-  setBooting: (value: boolean | ((prevVar: boolean) => boolean)) => void;
-}
+// interface BootProps {
+//   restart: boolean;
+//   sleep: boolean;
+//   setBooting: (value: boolean | ((prevVar: boolean) => boolean)) => void;
+// }
 
 const loadingInterval = 1;
 const bootingInterval = 500;
 
-export default function Boot({ restart, sleep, setBooting }: BootProps) {
+export default function Boot({ restart, sleep, setBooting }: any) {
   const [loading, setLoading] = useState<boolean>(false);
   const [percent, setPercent] = useState<number>(0);
 

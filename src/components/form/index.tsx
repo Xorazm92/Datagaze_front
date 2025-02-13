@@ -39,14 +39,14 @@ export default function FormRegister({ onSuccess }: { onSuccess: () => void }) {
         <div className="bg-white rounded-xl p-5">
           <div className="mt-7 flex flex-col w-full items-center">
             <div>
-              <h1 className="text-[18px] xl:text-3xl flex items-center gap-3 flex-col font-bold">
-                <span className="flex items-center text-[20px] font-bold gap-3">
+              <h1 className="text-[28px]  flex items-center gap-3 flex-col font-bold">
+                <span className="flex items-center text-[25px] font-bold gap-3 mb-5">
                   <img
                     className="w-[50px] h-[50px]"
                     src="../../../public/logo/logoRegister.png"
                     alt="logo"
                   />
-                  Datagaze
+                  Datagaze All in one
                 </span>
                 Sign up
               </h1>

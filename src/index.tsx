@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { createRoot } from "react-dom/client";
+import { createBrowserRouter, RouterProvider, Route, Outlet } from "react-router-dom";
 
 import Desktop from "~/pages/Desktop";
 import Login from "~/pages/Login";
@@ -9,8 +10,9 @@ import "@unocss/reset/tailwind.css";
 import "uno.css";
 import "katex/dist/katex.min.css";
 import "~/styles/index.css";
+import { Empty } from "antd";
 
-export default function App() {
+function Layout() {
   const [login, setLogin] = useState<boolean>(false);
   const [booting, setBooting] = useState<boolean>(false);
   const [restart, setRestart] = useState<boolean>(false);
@@ -42,32 +44,32 @@ export default function App() {
 
   if (booting) {
     return <Boot restart={restart} sleep={sleep} setBooting={setBooting} />;
-  } else if (login) {
-    return (
-      <Desktop
-        setLogin={setLogin}
-        shutMac={shutMac}
-        sleepMac={sleepMac}
-        restartMac={restartMac}
-      />
-    );
-  } else {
-    return (
-      <Login
-        setLogin={setLogin}
-        shutMac={shutMac}
-        sleepMac={sleepMac}
-        restartMac={restartMac}
-      />
-    );
   }
+
+  return <Outlet context={{ login, setLogin, shutMac, restartMac, sleepMac }} />;
 }
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Layout />,
+    children: [
+      { path: "/", element: <Login /> },
+      { path: "/desktop", element: <Desktop /> },
+      { path: "/boot", element: <Boot /> },
+      {
+        path: "*",
+        element: (
+          <div className="flex items-center justify-center h-[100vh]">
+            <Empty description="Malumot topilmadi xatolik !!!!" />
+          </div>
+        )
+      }
+    ]
+  }
+]);
 
 const rootElement = document.getElementById("root") as HTMLElement;
 const root = createRoot(rootElement);
 
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+root.render(<RouterProvider router={router} />);
