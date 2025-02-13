@@ -1,7 +1,9 @@
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-
+import { LoadingOutlined } from "@ant-design/icons";
+import { Flex, Spin } from "antd";
+import { notificationApi } from "~/atoms/notification";
 const registerSchema = z.object({
   username: z.string().min(3, "Username must be at least 3 characters long").max(12),
   email: z.string().email("Enter email"),
@@ -11,6 +13,8 @@ const registerSchema = z.object({
 type RegisterForm = z.infer<typeof registerSchema>;
 
 export default function FormRegister({ onSuccess }: { onSuccess: () => void }) {
+  const notify = notificationApi();
+  const [Loading, Setloading] = useState(false);
   const {
     register,
     handleSubmit,
@@ -20,8 +24,13 @@ export default function FormRegister({ onSuccess }: { onSuccess: () => void }) {
   });
 
   const onSubmit = (data: RegisterForm) => {
-    console.log(data);
-    onSuccess();
+    Setloading(true);
+    setTimeout(() => {
+      Setloading(false);
+      console.log(data);
+      onSuccess();
+      notify("Register");
+    }, 3000);
   };
 
   return (
@@ -80,7 +89,20 @@ export default function FormRegister({ onSuccess }: { onSuccess: () => void }) {
                     type="submit"
                     className="mt-5 tracking-wide font-semibold bg-indigo-500 text-gray-100 w-full py-4 rounded-lg hover:bg-indigo-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
                   >
-                    <span className="ml-3">Sign Up</span>
+                    <span className="ml-3">
+                      {!Loading ? (
+                        "Sign Up"
+                      ) : (
+                        <Spin
+                          indicator={
+                            <LoadingOutlined
+                              style={{ fontSize: 28, color: "black" }}
+                              spin
+                            />
+                          }
+                        />
+                      )}
+                    </span>
                   </button>
                 </form>
 
