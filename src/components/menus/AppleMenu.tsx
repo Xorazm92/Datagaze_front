@@ -9,14 +9,7 @@ interface AppleMenuProps {
   btnRef: React.RefObject<HTMLDivElement>;
 }
 
-export default function AppleMenu({
-  logout,
-  shut,
-  restart,
-  sleep,
-  toggleAppleMenu,
-  btnRef
-}: AppleMenuProps) {
+export default function AppleMenu({ toggleAppleMenu, btnRef }: AppleMenuProps) {
   const ref = useRef<HTMLDivElement>(null);
 
   useClickOutside(ref, toggleAppleMenu, [btnRef]);
@@ -35,15 +28,6 @@ export default function AppleMenu({
       </MenuItemGroup>
       <MenuItemGroup>
         <MenuItem>Force Quit...</MenuItem>
-      </MenuItemGroup>
-      <MenuItemGroup>
-        <MenuItem onClick={sleep}>Sleep</MenuItem>
-        <MenuItem onClick={restart}>Restart...</MenuItem>
-        <MenuItem onClick={shut}>Shut Down...</MenuItem>
-      </MenuItemGroup>
-      <MenuItemGroup border={false}>
-        <MenuItem onClick={logout}>Lock Screen</MenuItem>
-        <MenuItem onClick={logout}>Log Out Xiaohan Zou...</MenuItem>
       </MenuItemGroup>
     </div>
   );

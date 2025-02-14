@@ -1,7 +1,6 @@
 import React from "react";
 import { apps, wallpapers } from "~/configs";
 import { minMarginY } from "~/utils";
-import type { MacActions } from "~/types";
 
 interface DesktopState {
   showApps: {
@@ -23,7 +22,7 @@ interface DesktopState {
   spotlight: boolean;
 }
 
-export default function Desktop(props: MacActions) {
+export default function Desktop(props: any) {
   const [state, setState] = useState({
     showApps: {},
     appsZ: {},
@@ -39,11 +38,6 @@ export default function Desktop(props: MacActions) {
 
   const [spotlightBtnRef, setSpotlightBtnRef] =
     useState<React.RefObject<HTMLDivElement> | null>(null);
-
-  // const { dark, brightness } = useStore((state) => ({
-  //   dark: state.dark,
-  //   brightness: state.brightness
-  // }));
 
   const getAppsData = (): void => {
     let showApps = {},
@@ -246,20 +240,14 @@ export default function Desktop(props: MacActions) {
       {/* Top Menu Bar */}
       <TopBar
         title={state.currentTitle}
-        setLogin={props.setLogin}
-        shutMac={props.shutMac}
-        sleepMac={props.sleepMac}
-        restartMac={props.restartMac}
         toggleSpotlight={toggleSpotlight}
         hide={state.hideDockAndTopbar}
         setSpotlightBtnRef={setSpotlightBtnRef}
       />
-
       {/* Desktop Apps */}
       <div className="window-bound z-10 absolute" style={{ top: minMarginY }}>
         {renderAppWindows()}
       </div>
-
       {/* Spotlight */}
       {state.spotlight && (
         <Spotlight
@@ -269,7 +257,6 @@ export default function Desktop(props: MacActions) {
           btnRef={spotlightBtnRef as React.RefObject<HTMLDivElement>}
         />
       )}
-
       {/* Launchpad */}
       <Launchpad show={state.showLaunchpad} toggleLaunchpad={toggleLaunchpad} />
       {/* Dock */}
@@ -280,6 +267,217 @@ export default function Desktop(props: MacActions) {
         toggleLaunchpad={toggleLaunchpad}
         hide={state.hideDockAndTopbar}
       />
+      <div className="flex flex-col  mt-[150px] items-center justify-center">
+        <h1 className="text-5xl text-[#92bff6] font-bold">Good afternoon, Jam.</h1>
+        <div className="flex mt-4 items-center gap-6 justify-center m-auto h-[50vh]">
+          <div
+            style={{
+              background: "linear-gradient(to bottom, #6885c4,rgba(255, 255, 255, 0.52))"
+            }}
+            className="w-[400px] flex-col gap-3 h-[320px]  rounded-2xl flex items-center justify-center"
+          >
+            <div className="flex items-center justify-between w-[80%]">
+              <div>
+                <p className="text-[12px] font-semibold rounded-full w-[80px] p-2 bg-[#7992ca] flex items-center justify-center text-white">
+                  ACTIVATED
+                </p>
+                <p className="text-[32px] font-medium text-white">DataGaze DLP</p>
+                <p className="font-medium text-[14px] text-white">
+                  available 500 licenses
+                </p>
+              </div>
+              <img
+                className="w-[40px] h-[40px]"
+                src="../../../public/logo/1.png"
+                alt="logo"
+              />
+            </div>
+            <div>
+              <div className="flex flex-col items-center w-full mt-10">
+                <div className="flex justify-between w-[350px] text-white text-sm mb-2">
+                  <span>0</span>
+                  <span>250</span>
+                  <span>500</span>
+                </div>
+                <div className="relative w-[350px] h-[40px] flex items-center">
+                  <div className="absolute w-full h-[8px]  rounded-full"></div>
+
+                  <div className="flex justify-between w-full px-1">
+                    <div className="w-[12px] h-[32px] bg-white rounded"></div>
+                    <div className="w-[12px] h-[32px] bg-white rounded"></div>
+                    <div className="w-[12px] h-[32px] bg-white rounded"></div>
+                    <div className="w-[12px] h-[32px] bg-white rounded"></div>
+                    <div className="w-[12px] h-[32px] bg-white rounded"></div>
+                    <div className="w-[12px] h-[32px] bg-white rounded"></div>
+                    <div className="w-[12px] h-[32px] bg-white rounded"></div>
+                    <div className="w-[12px] h-[32px] bg-white rounded"></div>
+                    <div className="w-[12px] h-[32px] bg-white rounded"></div>
+                    <div className="w-[12px] h-[32px] bg-white rounded"></div>
+                    <div className="w-[12px] h-[32px] bg-white rounded"></div>
+                    <div className="w-[12px] h-[32px] bg-white rounded"></div>
+                    <div className="w-[12px] h-[32px] bg-white rounded"></div>
+                    <div className="w-[12px] h-[32px] bg-white rounded"></div>
+                    <div className="w-[12px] h-[32px] bg-white rounded"></div>
+                  </div>
+
+                  <div className="absolute left-1/2 -translate-x-1/2 w-[20px] h-[40px] bg-white rounded"></div>
+                </div>
+              </div>
+              <p className="font-medium text-[12px] text-white mt-6 flex items-center gap-2">
+                {" "}
+                <span className="bg-white w-[8px] h-[8px] rounded-[50%]"></span>
+                RUNNING ON 238 COMPUTERS
+              </p>
+            </div>
+          </div>
+          <div
+            style={{
+              background: "linear-gradient(to bottom, #6885c4,rgba(255, 255, 255, 0.52))"
+            }}
+            className="w-[400px] flex-col gap-3 h-[320px]  rounded-2xl flex items-center justify-center"
+          >
+            <div className="flex items-center justify-between w-[80%]">
+              <div>
+                <p className="text-[12px] font-semibold rounded-full w-[80px] p-2 bg-[#7992ca] flex items-center justify-center text-white">
+                  ACTIVATED
+                </p>
+                <p className="text-[32px] font-medium text-white">DataGaze SIEM</p>
+                <p className="font-medium text-[14px] text-white">
+                  available 500 licenses
+                </p>
+              </div>
+              <img
+                className="w-[40px] h-[40px]"
+                src="../../../public/logo/siem.png"
+                alt="logo"
+              />
+            </div>
+            <div>
+              <div className="flex flex-col items-center w-full mt-10">
+                <div className="flex justify-between w-[350px] text-white text-sm mb-2">
+                  <span>0</span>
+                  <span>250</span>
+                  <span>500</span>
+                </div>
+                <div className="relative w-[350px] h-[40px] flex items-center">
+                  <div className="absolute w-full h-[8px]  rounded-full"></div>
+
+                  <div className="flex justify-between w-full px-1">
+                    <div className="w-[12px] h-[32px] bg-white rounded"></div>
+                    <div className="w-[12px] h-[32px] bg-white rounded"></div>
+                    <div className="w-[12px] h-[32px] bg-white rounded"></div>
+                    <div className="w-[12px] h-[32px] bg-white rounded"></div>
+                    <div className="w-[12px] h-[32px] bg-white rounded"></div>
+                    <div className="w-[12px] h-[32px] bg-white rounded"></div>
+                    <div className="w-[12px] h-[32px] bg-white rounded"></div>
+                    <div className="w-[12px] h-[32px] bg-white rounded"></div>
+                    <div className="w-[12px] h-[32px] bg-white rounded"></div>
+                    <div className="w-[12px] h-[32px] bg-white rounded"></div>
+                    <div className="w-[12px] h-[32px] bg-white rounded"></div>
+                    <div className="w-[12px] h-[32px] bg-white rounded"></div>
+                    <div className="w-[12px] h-[32px] bg-white rounded"></div>
+                    <div className="w-[12px] h-[32px] bg-white rounded"></div>
+                    <div className="w-[12px] h-[32px] bg-white rounded"></div>
+                  </div>
+
+                  <div className="absolute left-1/2 -translate-x-1/2 w-[20px] h-[40px] bg-white rounded"></div>
+                </div>
+              </div>
+              <p className="font-medium text-[12px] text-white mt-6 flex items-center gap-2">
+                {" "}
+                <span className="bg-white w-[8px] h-[8px] rounded-[50%]"></span>
+                RUNNING ON 238 COMPUTERS
+              </p>
+            </div>
+          </div>
+          <div
+            style={{
+              background: "linear-gradient(to bottom, #6885c4,rgba(255, 255, 255, 0.52))"
+            }}
+            className="w-[400px] flex-col gap-3 h-[320px]  rounded-2xl flex items-center justify-center"
+          >
+            <div className="flex items-center justify-between w-[80%]">
+              <div>
+                <p className="text-[12px] font-semibold rounded-full w-[80px] p-2 bg-[#7992ca] flex items-center justify-center text-white">
+                  ACTIVATED
+                </p>
+                <p className="text-[32px] font-medium text-white">DataGaze WAF</p>
+                <p className="font-medium text-[14px] text-white">
+                  available 500 licenses
+                </p>
+              </div>
+              <img
+                className="w-[40px] h-[40px]"
+                src="../../../public/logo/waf.png"
+                alt="logo"
+              />
+            </div>
+            <div>
+              <div className="flex flex-col items-center w-full mt-10">
+                <div className="flex justify-between w-[350px] text-white text-sm mb-2">
+                  <span>0</span>
+                  <span>250</span>
+                  <span>500</span>
+                </div>
+                <div className="relative w-[350px] h-[40px] flex items-center">
+                  <div className="absolute w-full h-[8px]  rounded-full"></div>
+
+                  <div className="flex justify-between w-full px-1">
+                    <div className="w-[12px] h-[32px] bg-white rounded"></div>
+                    <div className="w-[12px] h-[32px] bg-white rounded"></div>
+                    <div className="w-[12px] h-[32px] bg-white rounded"></div>
+                    <div className="w-[12px] h-[32px] bg-white rounded"></div>
+                    <div className="w-[12px] h-[32px] bg-white rounded"></div>
+                    <div className="w-[12px] h-[32px] bg-white rounded"></div>
+                    <div className="w-[12px] h-[32px] bg-white rounded"></div>
+                    <div className="w-[12px] h-[32px] bg-white rounded"></div>
+                    <div className="w-[12px] h-[32px] bg-white rounded"></div>
+                    <div className="w-[12px] h-[32px] bg-white rounded"></div>
+                    <div className="w-[12px] h-[32px] bg-white rounded"></div>
+                    <div className="w-[12px] h-[32px] bg-white rounded"></div>
+                    <div className="w-[12px] h-[32px] bg-white rounded"></div>
+                    <div className="w-[12px] h-[32px] bg-white rounded"></div>
+                    <div className="w-[12px] h-[32px] bg-white rounded"></div>
+                  </div>
+
+                  <div className="absolute left-1/2 -translate-x-1/2 w-[20px] h-[40px] bg-white rounded"></div>
+                </div>
+              </div>
+              <p className="font-medium text-[12px] text-white mt-6 flex items-center gap-2">
+                {" "}
+                <span className="bg-white w-[8px] h-[8px] rounded-[50%]"></span>
+                RUNNING ON 238 COMPUTERS
+              </p>
+              {/* <Slider
+            min={0}
+            max={500}
+            defaultValue={250}
+            trackStyle={{ backgroundColor: "white", height: 8 }}
+            handleStyle={{
+              borderColor: "white",
+              backgroundColor: "red",
+              width: 116,
+              height: 40,
+            }}
+            
+          /> */}
+              {/* <BarChart width={500} height={300} data={data}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Bar dataKey="value" fill="#8884d8" />
+          </BarChart> */}
+              {/* <Lottie
+            animationData={barsAnimation}
+            loop
+            style={{ filter: "invert(1)" }}
+          /> */}
+              {/* <ScaleLoader className="w-[100%]" /> */}
+              {/* <Bars fill="white"/>  */}
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

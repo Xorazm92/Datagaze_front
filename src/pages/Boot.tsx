@@ -1,9 +1,3 @@
-// interface BootProps {
-//   restart: boolean;
-//   sleep: boolean;
-//   setBooting: (value: boolean | ((prevVar: boolean) => boolean)) => void;
-// }
-
 const loadingInterval = 1;
 const bootingInterval = 500;
 

@@ -8,17 +8,7 @@ const apps: AppsData[] = [
     desktop: false,
     img: "img/icons/servis/icon-4.png"
   },
-  {
-    id: "bear",
-    title: "Bear",
-    desktop: true,
-    width: 860,
-    height: 500,
-    show: true,
-    y: -40,
-    img: "img/icons/bear.png",
-    content: <Bear />
-  },
+
   {
     id: "typora",
     title: "Typora",
@@ -72,12 +62,20 @@ const apps: AppsData[] = [
     img: "img/icons/terminal.png",
     content: <Terminal />
   },
+
   {
-    id: "github",
-    title: "Github",
-    desktop: false,
-    img: "img/icons/github.png",
-    link: "https://github.com/Renovamen/playground-macos"
+    id: "licenses",
+    title: "Licenses",
+    desktop: true,
+    img: "../../public/img/icons/Liceses.png",
+    content: <ModalLicense />
+  },
+  {
+    id: "computers",
+    title: "Computers",
+    desktop: true,
+    img: "../../public/img/icons/camputers.png",
+    content: <Computers />
   }
 ];
 
