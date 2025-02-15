@@ -1,8 +1,10 @@
-import { RiDownloadLine } from "react-icons/ri";
 import ModalLicenseTable from "~/configs/license";
 import { ModalLicenseType } from "~/types/configs/Liceses";
+import { MdCloudUpload } from "react-icons/md";
+import { IoMdClose } from "react-icons/io";
 
 const ModalLicense = () => {
+  const [isOpen, SetIsopen] = useState<boolean>(false);
   return (
     <div className="overflow-x-auto p-4 bg-gray-100 h-[100vh]">
       <table className="w-full text-left border-collapse bg-white shadow-md rounded-lg">
@@ -30,10 +32,53 @@ const ModalLicense = () => {
               <td className="p-3">{item.computer_count}</td>
               <td className="p-3">{item.uploaded}</td>
               <td className="p-3">{item.valid}</td>
-              <td className="p-3 flex items-center cursor-pointer gap-1 mb-3 text-[#1A79D8]">
+              <td
+                className="p-3 flex items-center cursor-pointer gap-1 mb-3 text-[#1A79D8]"
+                onClick={() => SetIsopen(true)}
+              >
+                <MdCloudUpload size={20} />
                 {item.valid_upload}
-                <RiDownloadLine size={18} />
               </td>
+              {!isOpen ? null : (
+                <div>
+                  <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-30">
+                    <div className="bg-white rounded-lg shadow-lg p-5 w-[400px]">
+                      <div className="flex justify-between items-center mb-4">
+                        <h2 className="text-lg font-semibold">Licenses</h2>
+                        <IoMdClose
+                          className="cursor-pointer text-[20px]"
+                          onClick={() => SetIsopen(false)}
+                        />
+                      </div>
+                      <div className="border-dashed  rounded-lg p-10 text-center bg-gray-50">
+                        <MdCloudUpload size={30} className="m-auto text-[grey]" />
+
+                        <p className="text-gray-500">
+                          Drop your files here, or
+                          <span className="text-blue-500 cursor-pointer">
+                            click to browse
+                          </span>
+                        </p>
+                        <p className="text-sm text-gray-400">
+                          Up to 10 files, 100MB total limit
+                        </p>
+                      </div>
+
+                      <div className="flex justify-end gap-3 mt-4">
+                        <button
+                          className="px-4 py-2 bg-gray-200 rounded-lg"
+                          onClick={() => SetIsopen(false)}
+                        >
+                          Cancel
+                        </button>
+                        <button className="px-4 py-2 bg-blue-600 text-white rounded-lg">
+                          Upload
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
             </tr>
           ))}
         </tbody>

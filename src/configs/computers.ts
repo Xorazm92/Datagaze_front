@@ -17,9 +17,9 @@ export const computers: ComputerType[] = [
     Nic_name: "Realtek Wireless x43",
     Mac_adress: "AC:00:2E:11:88:0C",
     Aviable: "Online",
-    Ram: 50,
-    Disk_A: 50,
-    Disk_C: 90
+    Ram: 90,
+    Disk_D: 70,
+    Disk_C: 50
   },
   {
     id: 2,
@@ -37,8 +37,8 @@ export const computers: ComputerType[] = [
     Nic_name: "Realtek Wireless x43",
     Mac_adress: "AC:00:2E:11:88:0C",
     Aviable: "Offline",
-    Ram: 50,
-    Disk_A: 50,
-    Disk_C: 90
+    Ram: 90,
+    Disk_D: 70,
+    Disk_C: 50
   }
 ];

@@ -4,7 +4,7 @@ import type { AppsData } from "~/types";
 const apps: AppsData[] = [
   {
     id: "launchpad",
-    title: "Servis",
+    title: "Applications",
     desktop: false,
     img: "img/icons/servis/icon-4.png"
   },

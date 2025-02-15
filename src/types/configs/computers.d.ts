@@ -15,6 +15,6 @@ export interface ComputerType {
   Mac_adress?: string;
   Aviable?: string;
   Ram?: number;
-  Disk_A?: number;
+  Disk_D?: number;
   Disk_C?: number;
 }
