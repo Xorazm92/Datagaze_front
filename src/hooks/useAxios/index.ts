@@ -9,23 +9,25 @@ interface PropsType {
 }
 
 export const useAxios = () => {
-  const response = (props: PropsType) => {
+  const response = async (props: PropsType) => {
     const { url, headers, params, method = "GET", body } = props;
-    return axios({
-      url: `${import.meta.env.VITE_BASE_URL}/${url}`,
-      data: body,
-      method,
-      params: {
-        ...params
-      },
-      headers: {
-        "Content-Type": "application/json",
-        "Accsess-Control-Allow-Origin": true,
-        ...headers
-      }
-    })
-      .then((data) => data.data)
-      .catch((error) => console.log(error));
+    try {
+      const { data } = await axios({
+        url: `${import.meta.env.VITE_BASE_URL}/${url}`,
+        data: body,
+        method,
+        params: { ...params },
+        headers: {
+          "Content-Type": "application/json",
+          "Accsess-Control-Allow-Origin": true,
+          ...headers
+        }
+      });
+      return data;
+    } catch (error) {
+      console.log("Xato:", error);
+      return Promise.reject(error); // Xatoni return qilish kerak!
+    }
   };
   return response;
 };

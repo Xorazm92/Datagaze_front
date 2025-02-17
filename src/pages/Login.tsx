@@ -1,93 +1,130 @@
-import { useNavigate } from "react-router-dom";
-import FormRegister from "~/components/form";
+import { useRegister } from "~/hooks/useQuery/useQueryaction";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { LoadingOutlined } from "@ant-design/icons";
+import { Spin } from "antd";
+import { notificationApi } from "~/atoms/notification";
+import { log } from "console";
+export default function Login() {
+  const { mutate } = useRegister();
 
-export default function Login(props: any) {
-  const navigate = useNavigate();
-  // const [password, setPassword] = useState("");
-  // const [sign, setSign] = useState("Click to enter");
-  // const dark = useStore((state) => state.dark);
+  const registerSchema = z.object({
+    username: z.string().min(3, "Username must be at least 3 characters long").max(12),
+    email: z.string().email("Enter email"),
+    password: z.string().min(4, "Password must contain at least 4 characters").max(12)
+  });
 
-  // const keyPress = (e: React.KeyboardEvent) => {
-  //   const keyCode = e.key;
-  //   if (keyCode === "Enter") loginHandle();
-  // };
+  type RegisterForm = z.infer<typeof registerSchema>;
 
-  // const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-  //   setPassword(e.target.value);
-  // };
+  const notify = notificationApi();
+  const [Loading, Setloading] = useState(false);
 
-  const loginHandle = () => {
-    // props.setLogin(true);
-    navigate("/desktop");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm<RegisterForm>({
+    resolver: zodResolver(registerSchema)
+  });
+
+  const onSubmit = (data: RegisterForm) => {
+    mutate({ data });
   };
 
   return (
     <div style={{ background: "linear-gradient(to bottom, rgb(6, 70, 246), #ffffff)" }}>
-      <FormRegister onSuccess={loginHandle} />
+      <div className="min-h-screen  text-gray-900 flex items-center justify-center">
+        <div>
+          <div className="bg-white rounded-xl p-5">
+            <div className="mt-7 flex flex-col w-full items-center">
+              <div>
+                <h1 className="text-[28px]  flex items-center gap-3 flex-col font-bold">
+                  <span className="flex items-center text-[25px] font-bold gap-3 mb-5">
+                    <img
+                      className="w-[50px] h-[50px]"
+                      src="../../../public/logo/logoRegister.png"
+                      alt="logo"
+                    />
+                    Datagaze All in one
+                  </span>
+                  Sign up
+                </h1>
+              </div>
+
+              <div className="w-full flex-1  mt-8">
+                <div className="mx-auto w-[300px]">
+                  <form onSubmit={handleSubmit(onSubmit)}>
+                    <input
+                      className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
+                      type="text"
+                      placeholder="Username"
+                      {...register("username")}
+                    />
+                    {errors.username && (
+                      <p className="text-red-500 text-sm">{errors.username.message}</p>
+                    )}
+
+                    <input
+                      className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
+                      type="email"
+                      placeholder="Email"
+                      {...register("email")}
+                    />
+                    {errors.email && (
+                      <p className="text-red-500 text-sm">{errors.email.message}</p>
+                    )}
+
+                    <input
+                      className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
+                      type="password"
+                      placeholder="Password"
+                      {...register("password")}
+                    />
+                    {errors.password && (
+                      <p className="text-red-500 text-sm">{errors.password.message}</p>
+                    )}
+
+                    <button
+                      type="submit"
+                      className="mt-5 tracking-wide font-semibold bg-indigo-500 text-gray-100 w-full py-4 rounded-lg hover:bg-indigo-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
+                    >
+                      <span className="ml-3">
+                        {!Loading ? (
+                          "Sign Up"
+                        ) : (
+                          <Spin
+                            indicator={
+                              <LoadingOutlined
+                                style={{ fontSize: 28, color: "black" }}
+                                spin
+                              />
+                            }
+                          />
+                        )}
+                      </span>
+                    </button>
+                  </form>
+
+                  <p className="mt-6 text-xs text-gray-600 text-center">
+                    I agree to abide by templatana's
+                    <a href="#" className="border-b border-gray-500 border-dotted">
+                      Terms of Service
+                    </a>
+                    and its
+                    <a href="#" className="border-b border-gray-500 border-dotted">
+                      Privacy Policy
+                    </a>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    // <div
-    //   className="size-full login text-center"
-    //   style={{
-    //     background: "linear-gradient(to bottom, rgb(6, 70, 246), #ffffff)"
-    //   }}
-    //   onClick={() => loginHandle()}
-    // >
-    //   <div className="inline-block w-auto relative top-1/2 -mt-40">
-    //     {/* Avatar */}
-    //     <img className="rounded-full size-24 my-0 mx-auto" src={user.avatar} alt="img" />
-    //     <div className="font-semibold mt-2 text-xl text-white">{user.name}</div>
-
-    //     {/* Password Input */}
-    //     <div className="mx-auto grid grid-cols-5 w-44 h-8 mt-4 rounded-md backdrop-blur-2xl bg-gray-300/50">
-    //       <input
-    //         className="text-sm text-white col-start-1 col-span-4 no-outline bg-transparent px-2"
-    //         type="password"
-    //         placeholder="Enter Password"
-    //         onClick={(e) => e.stopPropagation()}
-    //         // onKeyDown={keyPress}
-    //         value={password}
-    //         onChange={handleInputChange}
-    //       />
-    //       <div className="col-start-5 col-span-1 flex-center">
-    //         <span className="i-bi:question-square-fill text-white ml-1" />
-    //       </div>
-    //     </div>
-
-    //     <div mt-2 cursor-pointer text="sm gray-200">
-    //       {sign}
-    //     </div>
-    //   </div>
-
-    //   {/* buttons */}
-    //   <div className="text-sm fixed bottom-16 inset-x-0 mx-auto flex flex-row space-x-4 w-max">
-    //     <div
-    //       className="hstack flex-col text-white w-24 cursor-pointer"
-    //       onClick={(e) => props.sleepMac(e)}
-    //     >
-    //       <div className="flex-center size-10 bg-gray-700 rounded-full">
-    //         <span className="i-gg:sleep text-[40px]" />
-    //       </div>
-    //       <span>Sleep</span>
-    //     </div>
-    //     <div
-    //       className="hstack flex-col text-white w-24 cursor-pointer"
-    //       onClick={(e) => props.restartMac(e)}
-    //     >
-    //       <div className="flex-center size-10 bg-gray-700 rounded-full">
-    //         <span className="i-ri:restart-line text-4xl" />
-    //       </div>
-    //       <span>Restart</span>
-    //     </div>
-    //     <div
-    //       className="hstack flex-col text-white w-24 cursor-pointer"
-    //       onClick={(e) => props.shutMac(e)}
-    //     >
-    //       <div className="flex-center size-10 bg-gray-700 rounded-full">
-    //         <span className="i-ri:shut-down-line text-4xl" />
-    //       </div>
-    //       <span>Shut Down</span>
-    //     </div>
-    //   </div>
-    // </div>
   );
 }
+
+// https://datagaze-platform-9cab2c02bc91.herokuapp.com/api/1/auth/register
+// https://datagaze-platform-9cab2c02bc91.herokuapp.com/api/1/auth/register

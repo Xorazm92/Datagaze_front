@@ -11,10 +11,11 @@ import "uno.css";
 import "katex/dist/katex.min.css";
 import "~/styles/index.css";
 import { Empty } from "antd";
+import { QueryClient, QueryClientProvider, useQueryClient } from "@tanstack/react-query";
 
 function Layout() {
   const [login, setLogin] = useState<boolean>(false);
-  const [booting, setBooting] = useState<boolean>(false);
+  // const [booting, setBooting] = useState<boolean>(false);
   const [restart, setRestart] = useState<boolean>(false);
   const [sleep, setSleep] = useState<boolean>(false);
 
@@ -23,7 +24,7 @@ function Layout() {
     setRestart(false);
     setSleep(false);
     setLogin(false);
-    setBooting(true);
+    // setBooting(true);
   };
 
   const restartMac = (e: React.MouseEvent): void => {
@@ -31,7 +32,7 @@ function Layout() {
     setRestart(true);
     setSleep(false);
     setLogin(false);
-    setBooting(true);
+    // setBooting(true);
   };
 
   const sleepMac = (e: React.MouseEvent): void => {
@@ -39,12 +40,12 @@ function Layout() {
     setRestart(false);
     setSleep(true);
     setLogin(false);
-    setBooting(true);
+    // setBooting(true);
   };
 
-  if (booting) {
-    return <Boot restart={restart} sleep={sleep} setBooting={setBooting} />;
-  }
+  // if (booting) {
+  //   return <Boot restart={restart} sleep={sleep} setBooting={setBooting} />;
+  // }
 
   return <Outlet context={{ login, setLogin, shutMac, restartMac, sleepMac }} />;
 }
@@ -71,5 +72,9 @@ const router = createBrowserRouter([
 
 const rootElement = document.getElementById("root") as HTMLElement;
 const root = createRoot(rootElement);
-
-root.render(<RouterProvider router={router} />);
+const queryClinet = new QueryClient();
+root.render(
+  <QueryClientProvider client={queryClinet}>
+    <RouterProvider router={router} />
+  </QueryClientProvider>
+);

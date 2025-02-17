@@ -8,5 +8,6 @@ export {
   WallpaperData,
   WebsitesData,
   SiteSectionData,
-  SiteData
+  SiteData,
+  RegisterType
 } from "./configs";
