@@ -448,32 +448,6 @@ export default function Desktop(props: any) {
                 <span className="bg-white w-[8px] h-[8px] rounded-[50%]"></span>
                 RUNNING ON 238 COMPUTERS
               </p>
-              {/* <Slider
-            min={0}
-            max={500}
-            defaultValue={250}
-            trackStyle={{ backgroundColor: "white", height: 8 }}
-            handleStyle={{
-              borderColor: "white",
-              backgroundColor: "red",
-              width: 116,
-              height: 40,
-            }}
-            
-          /> */}
-              {/* <BarChart width={500} height={300} data={data}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Bar dataKey="value" fill="#8884d8" />
-          </BarChart> */}
-              {/* <Lottie
-            animationData={barsAnimation}
-            loop
-            style={{ filter: "invert(1)" }}
-          /> */}
-              {/* <ScaleLoader className="w-[100%]" /> */}
-              {/* <Bars fill="white"/>  */}
             </div>
           </div>
         </div>

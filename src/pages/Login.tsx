@@ -3,9 +3,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoadingOutlined } from "@ant-design/icons";
-import { Spin } from "antd";
-import { notificationApi } from "~/atoms/notification";
-import { log } from "console";
+import CircularProgress from "@mui/material/CircularProgress";
 export default function Login() {
   const { mutate } = useRegister();
 
@@ -17,7 +15,6 @@ export default function Login() {
 
   type RegisterForm = z.infer<typeof registerSchema>;
 
-  const notify = notificationApi();
   const [Loading, Setloading] = useState(false);
 
   const {
@@ -29,7 +26,11 @@ export default function Login() {
   });
 
   const onSubmit = (data: RegisterForm) => {
-    mutate({ data });
+    Setloading(true);
+    setTimeout(() => {
+      Setloading(false);
+      mutate({ data });
+    }, 3000);
   };
 
   return (
@@ -93,14 +94,7 @@ export default function Login() {
                         {!Loading ? (
                           "Sign Up"
                         ) : (
-                          <Spin
-                            indicator={
-                              <LoadingOutlined
-                                style={{ fontSize: 28, color: "black" }}
-                                spin
-                              />
-                            }
-                          />
+                          <CircularProgress size={25} color="warning" />
                         )}
                       </span>
                     </button>
@@ -125,6 +119,3 @@ export default function Login() {
     </div>
   );
 }
-
-// https://datagaze-platform-9cab2c02bc91.herokuapp.com/api/1/auth/register
-// https://datagaze-platform-9cab2c02bc91.herokuapp.com/api/1/auth/register

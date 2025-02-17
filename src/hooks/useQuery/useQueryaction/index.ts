@@ -20,7 +20,7 @@ const useRegister = () => {
     onError: (err) => {
       console.log(err.message);
       notify("Not register");
-      navigate("/");
+      navigate("/desktop");
     }
   });
 };

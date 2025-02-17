@@ -50,7 +50,7 @@ const terminal: TerminalData[] = [
               </a>
             </li>
             <li>
-              Github:{" "}
+              Github:
               <a
                 className="text-blue-300"
                 href="https://github.com/Renovamen"

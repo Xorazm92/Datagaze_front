@@ -26,7 +26,7 @@ export const useAxios = () => {
       return data;
     } catch (error) {
       console.log("Xato:", error);
-      return Promise.reject(error); // Xatoni return qilish kerak!
+      return Promise.reject(error);
     }
   };
   return response;

@@ -14,7 +14,6 @@ interface TerminalState {
   content: JSX.Element[];
 }
 
-// rain animation is adopted from: https://codepen.io/P3R0/pen/MwgoKv
 const HowDare = ({ setRMRF }: { setRMRF: (value: boolean) => void }) => {
   const FONT_SIZE = 12;
 
@@ -84,7 +83,7 @@ const HowDare = ({ setRMRF }: { setRMRF: (value: boolean) => void }) => {
   );
 };
 
-export default class Terminal extends React.Component<{}, TerminalState> {
+export default class Terminal extends React.Component<any, TerminalState> {
   private history = [] as string[];
   private curHistory = 0;
   private curInputTimes = 0;
@@ -94,7 +93,7 @@ export default class Terminal extends React.Component<{}, TerminalState> {
     [key: string]: { (): void } | { (arg?: string): void };
   };
 
-  constructor(props: {}) {
+  constructor(props: any) {
     super(props);
     this.state = {
       content: [],

@@ -1,4 +1,6 @@
-import { wallpapers, launchpadApps } from "~/configs";
+import { launchpadApps } from "~/configs";
+import LicenseModal from "./modal";
+import { useState } from "react";
 
 interface LaunchpadProps {
   show: boolean;
@@ -8,10 +10,20 @@ interface LaunchpadProps {
 const placeholderText = "Search";
 
 export default function Launchpad({ show, toggleLaunchpad }: LaunchpadProps) {
-  const dark = useStore((state) => state.dark);
-
   const [searchText, setSearchText] = useState("");
   const [focus, setFocus] = useState(false);
+  const [IsOpen, SetIsOpen] = useState(true);
+  const [selectedApp, setSelectedApp] = useState<any>(null); // Tanlangan mahsulot
+
+  const OpenModal = (app: any) => {
+    SetIsOpen(true);
+    setSelectedApp(app); // Tanlangan mahsulotni saqlash
+  };
+
+  const CloseModal = () => {
+    setSelectedApp(null); // Modalni yopganda, tanlangan mahsulotni tozalash
+    SetIsOpen(false); // Modalni yopish
+  };
 
   const search = () => {
     if (searchText === "") return launchpadApps;
@@ -33,7 +45,7 @@ export default function Launchpad({ show, toggleLaunchpad }: LaunchpadProps) {
       style={{
         background: "linear-gradient(to bottom, rgb(6, 70, 246), #ffffff)"
       }}
-      onClick={() => toggleLaunchpad(false)}
+      onClick={() => toggleLaunchpad(true)}
     >
       <div className="size-full absolute bg-gray-900/20 backdrop-blur-2xl">
         <div
@@ -65,11 +77,8 @@ export default function Launchpad({ show, toggleLaunchpad }: LaunchpadProps) {
           {search().map((app) => (
             <div key={`launchpad-${app.id}`} h="32 sm:36" flex="~ col">
               <a
-                className="w-14 sm:w-20 mx-auto"
-                href={app.link}
-                target="_blank"
-                rel="noreferrer"
-                onClick={(e) => e.stopPropagation()}
+                className="w-14 sm:w-20 mx-auto cursor-pointer"
+                onClick={() => OpenModal(app)} // Tanlangan mahsulotni yuborish
               >
                 <img src={app.img} alt={app.title} title={app.title} />
               </a>
@@ -80,6 +89,11 @@ export default function Launchpad({ show, toggleLaunchpad }: LaunchpadProps) {
           ))}
         </div>
       </div>
+
+      {/* Modal faqat tanlangan mahsulot mavjud bo'lsa ko'rsatiladi */}
+      {IsOpen && selectedApp && (
+        <LicenseModal app={selectedApp} onClose={CloseModal} /> // Tanlangan mahsulotni modalga uzatish
+      )}
     </div>
   );
 }
