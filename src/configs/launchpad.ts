@@ -8,7 +8,9 @@ const launchpadApps: LaunchpadData[] = [
     License_count: 3000,
     Agent_version: "2.2.1",
     adress: "192.32.43.1",
-    File_size: "1.2"
+    File_size: "1.2",
+    Last_upload_date: "12.01.2023",
+    First_upload_date: "12.01.2023"
   },
   {
     id: "WAF 1.1",
@@ -17,7 +19,9 @@ const launchpadApps: LaunchpadData[] = [
     License_count: 3000,
     Agent_version: "2.2.1",
     adress: "192.32.43.1",
-    File_size: "1.4"
+    File_size: "1.4",
+    Last_upload_date: "12.01.2023",
+    First_upload_date: "12.01.2023"
   },
   {
     id: "ISA 2.43",
@@ -26,7 +30,9 @@ const launchpadApps: LaunchpadData[] = [
     License_count: 3000,
     Agent_version: "2.2.1",
     adress: "192.32.43.1",
-    File_size: "1.5"
+    File_size: "1.5",
+    Last_upload_date: "12.01.2023",
+    First_upload_date: "12.01.2023"
   },
   {
     id: "SIEM 1.2",
@@ -34,9 +40,10 @@ const launchpadApps: LaunchpadData[] = [
     img: "img/icons/servis/siem.png",
     License_count: 3000,
     Agent_version: "2.2.1",
-
     adress: "192.32.43.1",
-    File_size: "1.5"
+    File_size: "1.5",
+    Last_upload_date: "12.01.2023",
+    First_upload_date: "12.01.2023"
   },
   {
     id: "ISA 2.4",
@@ -45,7 +52,9 @@ const launchpadApps: LaunchpadData[] = [
     License_count: 3000,
     Agent_version: "2.2.1",
     adress: "192.32.43.1",
-    File_size: "1.7"
+    File_size: "1.7",
+    Last_upload_date: "12.01.2023",
+    First_upload_date: "12.01.2023"
   },
   {
     id: "ISA 2.41",
@@ -54,7 +63,9 @@ const launchpadApps: LaunchpadData[] = [
     License_count: 3000,
     Agent_version: "2.2.1",
     adress: "192.32.43.1",
-    File_size: "1.8"
+    File_size: "1.8",
+    Last_upload_date: "12.01.2023",
+    First_upload_date: "12.01.2023"
   },
   {
     id: "ISA 2.42",
@@ -63,7 +74,9 @@ const launchpadApps: LaunchpadData[] = [
     License_count: 3000,
     Agent_version: "2.2.1",
     adress: "192.32.43.1",
-    File_size: "1.9"
+    File_size: "1.9",
+    Last_upload_date: "12.01.2023",
+    First_upload_date: "12.01.2023"
   },
 
   {
@@ -73,7 +86,9 @@ const launchpadApps: LaunchpadData[] = [
     License_count: 3000,
     Agent_version: "2.2.1",
     adress: "192.32.43.1",
-    File_size: "2.4"
+    File_size: "2.4",
+    Last_upload_date: "12.01.2023",
+    First_upload_date: "12.01.2023"
   }
 ];
 

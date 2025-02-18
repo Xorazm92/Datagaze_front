@@ -1,5 +1,5 @@
 import React from "react";
-import { apps, wallpapers } from "~/configs";
+import { apps } from "~/configs";
 import { minMarginY } from "~/utils";
 
 interface DesktopState {
@@ -324,7 +324,6 @@ export default function Desktop(props: any) {
                 </div>
               </div>
               <p className="font-medium text-[12px] text-white mt-6 flex items-center gap-2">
-                {" "}
                 <span className="bg-white w-[8px] h-[8px] rounded-[50%]"></span>
                 RUNNING ON 238 COMPUTERS
               </p>
@@ -384,7 +383,6 @@ export default function Desktop(props: any) {
                 </div>
               </div>
               <p className="font-medium text-[12px] text-white mt-6 flex items-center gap-2">
-                {" "}
                 <span className="bg-white w-[8px] h-[8px] rounded-[50%]"></span>
                 RUNNING ON 238 COMPUTERS
               </p>

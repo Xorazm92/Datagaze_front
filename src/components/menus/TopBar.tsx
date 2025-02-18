@@ -92,11 +92,7 @@ const TopBar = (props: any) => {
       >
         <div className="hstack space-x-1">
           <TopBarItem className="px-2" onClick={toggleAppleMenu} ref={appleBtnRef}>
-            <img
-              src="../../../public/logo/logo_data.svg"
-              alt="Datagaze"
-              className="w-6 h-6"
-            />
+            <img src="/logo/logo_data.svg" alt="Datagaze" className="w-6 h-6" />
           </TopBarItem>
           <TopBarItem
             className="font-semibold px-2"

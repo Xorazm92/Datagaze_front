@@ -10,14 +10,22 @@ const apps: AppsData[] = [
   },
 
   {
-    id: "typora",
-    title: "Typora",
-    desktop: true,
+    id: "support",
+    title: "Support",
+    desktop: false,
     width: 600,
     height: 580,
     y: -20,
-    img: "img/icons/typora.png",
-    content: <Typora />
+    img: "img/icons/support.png"
+  },
+  {
+    id: "Users",
+    title: "Users list",
+    desktop: false,
+    width: 600,
+    height: 580,
+    y: -20,
+    img: "img/icons/users.png"
   },
   {
     id: "safari",
@@ -67,14 +75,14 @@ const apps: AppsData[] = [
     id: "licenses",
     title: "Licenses",
     desktop: true,
-    img: "../../public/img/icons/Liceses.png",
+    img: "img/icons/Liceses.png",
     content: <ModalLicense />
   },
   {
     id: "computers",
     title: "Computers",
     desktop: true,
-    img: "../../public/img/icons/camputers.png",
+    img: "img/icons/camputers.png",
     content: <Computers />
   }
 ];

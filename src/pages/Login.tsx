@@ -2,7 +2,6 @@ import { useRegister } from "~/hooks/useQuery/useQueryaction";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { LoadingOutlined } from "@ant-design/icons";
 import CircularProgress from "@mui/material/CircularProgress";
 export default function Login() {
   const { mutate } = useRegister();
@@ -10,7 +9,7 @@ export default function Login() {
   const registerSchema = z.object({
     username: z.string().min(3, "Username must be at least 3 characters long").max(12),
     email: z.string().email("Enter email"),
-    password: z.string().min(4, "Password must contain at least 4 characters").max(12)
+    password: z.string().min(4, "Password must contain at least 4 characters").max(22)
   });
 
   type RegisterForm = z.infer<typeof registerSchema>;
@@ -25,12 +24,14 @@ export default function Login() {
     resolver: zodResolver(registerSchema)
   });
 
-  const onSubmit = (data: RegisterForm) => {
-    Setloading(true);
-    setTimeout(() => {
-      Setloading(false);
-      mutate({ data });
-    }, 3000);
+  const onSubmit = async (e: RegisterForm) => {
+    // Setloading(true);
+    // setTimeout(() => {
+    //   Setloading(false);
+    //   mutate({ data });
+    // }, 3000);
+
+    await mutate({ data: e });
   };
 
   return (

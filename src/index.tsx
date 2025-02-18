@@ -16,29 +16,21 @@ import { QueryClient, QueryClientProvider, useQueryClient } from "@tanstack/reac
 function Layout() {
   const [login, setLogin] = useState<boolean>(false);
   // const [booting, setBooting] = useState<boolean>(false);
-  const [restart, setRestart] = useState<boolean>(false);
-  const [sleep, setSleep] = useState<boolean>(false);
 
   const shutMac = (e: React.MouseEvent): void => {
     e.stopPropagation();
-    setRestart(false);
-    setSleep(false);
     setLogin(false);
     // setBooting(true);
   };
 
   const restartMac = (e: React.MouseEvent): void => {
     e.stopPropagation();
-    setRestart(true);
-    setSleep(false);
     setLogin(false);
     // setBooting(true);
   };
 
   const sleepMac = (e: React.MouseEvent): void => {
     e.stopPropagation();
-    setRestart(false);
-    setSleep(true);
     setLogin(false);
     // setBooting(true);
   };

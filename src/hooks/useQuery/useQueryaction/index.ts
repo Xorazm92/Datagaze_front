@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { notificationApi } from "~/atoms/notification";
+import { notificationApi } from "~/generic/notification";
 import { useAxios } from "~/hooks/useAxios";
 import { useNavigate } from "react-router-dom";
 import { RegisterType } from "~/types";
@@ -20,7 +20,7 @@ const useRegister = () => {
     onError: (err) => {
       console.log(err.message);
       notify("Not register");
-      navigate("/desktop");
+      navigate("/");
     }
   });
 };

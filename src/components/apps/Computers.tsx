@@ -1,18 +1,17 @@
 import { useState } from "react";
 import { computers } from "~/configs";
 import { ComputerType } from "~/types/configs/computers";
-import { Progress } from "antd";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import { IoMdCloseCircle } from "react-icons/io";
-
+import { LinearProgress, Typography } from "@mui/material";
 const Computers = () => {
   const [openModal, setOpenModal] = useState(false);
   const [selected, setSelected] = useState<ComputerType | null>(null);
   const [tabValue, setTabValue] = useState("os");
 
-  const handleChange = (_event: React.SyntheticEvent, newValue: string) => {
+  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setTabValue(newValue);
   };
 
@@ -69,7 +68,7 @@ const Computers = () => {
 
       {selected && openModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-5 rounded-lg shadow-lg w-[80vw] max-w-lg max-h-[90vh] overflow-y-auto">
+          <div className="bg-white px-4 py-4 rounded-lg shadow-lg w-[80vw] max-w-lg max-h-[90vh] overflow-y-auto">
             <Box sx={{ width: "100%" }}>
               <div className="flex justify-end">
                 <IoMdCloseCircle
@@ -95,35 +94,35 @@ const Computers = () => {
                 <div className="grid grid-cols-2 gap-3">
                   <span className="flex flex-col gap-1">
                     <p className="text-gray-500 text-sm">Operation System</p>
-                    <p className="text-lg font-bold">{selected.OS}</p>
+                    <p className="text-lg font-500">{selected.OS}</p>
                   </span>
                   <span className="flex flex-col gap-1">
                     <p className="text-gray-500 text-sm">Platform</p>
-                    <p className="text-lg font-bold">{selected.platform}</p>
+                    <p className="text-lg font-500">{selected.platform}</p>
                   </span>
                   <span className="flex flex-col gap-1">
                     <p className="text-gray-500 text-sm">Build number</p>
-                    <p className="text-lg font-bold">{selected.build_number}</p>
+                    <p className="text-lg font-500">{selected.build_number}</p>
                   </span>
                   <span className="flex flex-col gap-1">
                     <p className="text-gray-500 text-sm">Version</p>
-                    <p className="text-lg font-bold">{selected.version}</p>
+                    <p className="text-lg font-500">{selected.version}</p>
                   </span>
                 </div>
               )}
               {tabValue === "processor" && (
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-2 gap-4">
                   <span className="flex flex-col gap-1">
                     <p className="text-gray-500 text-sm">CPU</p>
-                    <p className="text-lg font-bold">{selected.CPU}</p>
+                    <p className="text-lg font-500">{selected.CPU}</p>
                   </span>
                   <span className="flex flex-col gap-1">
                     <p className="text-gray-500 text-sm">Model</p>
-                    <p className="text-lg font-bold">{selected.model}</p>
+                    <p className="text-lg font-500">{selected.model}</p>
                   </span>
                   <span className="flex flex-col gap-1">
                     <p className="text-gray-500 text-sm">Cores</p>
-                    <p className="text-lg font-bold">{selected.cores}</p>
+                    <p className="text-lg font-500">{selected.cores}</p>
                   </span>
                 </div>
               )}
@@ -131,15 +130,15 @@ const Computers = () => {
                 <div className="grid grid-cols-2 gap-3">
                   <span className="flex flex-col gap-1">
                     <p className="text-gray-500 text-sm">NIC name</p>
-                    <p className="text-lg font-bold">{selected.Nic_name}</p>
+                    <p className="text-lg font-500">{selected.Nic_name}</p>
                   </span>
                   <span className="flex flex-col gap-1">
                     <p className="text-gray-500 text-sm">IP Address</p>
-                    <p className="text-lg font-bold">{selected.adress}</p>
+                    <p className="text-lg font-500">{selected.adress}</p>
                   </span>
                   <span className="flex flex-col gap-1">
                     <p className="text-gray-500 text-sm">IP Address</p>
-                    <p className="text-lg font-bold">{selected.adress}</p>
+                    <p className="text-lg font-500">{selected.adress}</p>
                   </span>
                   <span className="flex flex-col gap-1">
                     <p className="text-gray-500 text-sm">Aviable</p>
@@ -153,19 +152,57 @@ const Computers = () => {
               )}
             </div>
 
-            <div className="mt-4">
-              <label className="block font-semibold">
-                RAM <span className="text-gray-500">(8GB)</span>
-              </label>
-              <Progress percent={selected.Ram} />
-              <label className="block font-semibold">
-                Disk D <span className="text-gray-500">(1TB)</span>
-              </label>
-              <Progress percent={selected.Disk_D} />
-              <label className="block font-semibold">
-                Disk C <span className="text-gray-500">(1TB)</span>
-              </label>
-              <Progress percent={selected.Disk_C} />
+            <div className="mt-4 mb-5">
+              <Box display="flex" alignItems="center" marginTop={1}>
+                <Box width="100%" mr={1}>
+                  <label className="block font-500 text-[17px]">
+                    RAM
+                    <span className="text-gray-500 text-[14px] font-normal">(8GB)</span>
+                  </label>
+                  <LinearProgress
+                    variant="determinate"
+                    value={selected.Ram}
+                    className="h-[10px] p-1 mt-3 rounded-[5px]"
+                  />
+                </Box>
+                <Typography variant="body2" color="textSecondary">
+                  {`${Math.round(selected.Ram)}%`}
+                </Typography>
+              </Box>
+
+              <Box display="flex" alignItems="center" marginTop={1}>
+                <Box width="100%" mr={1}>
+                  <label className="block font-500 text-[17px]">
+                    Disk D{" "}
+                    <span className="text-gray-500 text-[14px] font-normal">(1TB)</span>
+                  </label>
+                  <LinearProgress
+                    variant="determinate"
+                    value={selected.Disk_D}
+                    className="h-[10px] p-1 mt-3 rounded-[5px]"
+                  />
+                </Box>
+                <Typography variant="body2" color="textSecondary">
+                  {`${Math.round(selected.Disk_D)}%`}
+                </Typography>
+              </Box>
+
+              <Box display="flex" alignItems="center" marginTop={1}>
+                <Box width="100%" mr={1}>
+                  <label className="block font-500 text-[17px]">
+                    Disk C{" "}
+                    <span className="text-gray-500 text-[14px] font-normal">(1TB)</span>
+                  </label>
+                  <LinearProgress
+                    variant="determinate"
+                    value={selected.Disk_C}
+                    className="h-[10px] p-1 mt-3 rounded-[5px]"
+                  />
+                </Box>
+                <Typography variant="body2" color="textSecondary">
+                  {`${Math.round(selected.Disk_C)}%`}
+                </Typography>
+              </Box>
             </div>
           </div>
         </div>

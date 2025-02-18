@@ -1,5 +1,5 @@
 import { launchpadApps } from "~/configs";
-import LicenseModal from "./modal";
+import LicenseModal from "./modal_app";
 import { useState } from "react";
 
 interface LaunchpadProps {

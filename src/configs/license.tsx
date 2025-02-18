@@ -3,7 +3,7 @@ import { ModalLicenseType } from "~/types/configs/Liceses";
 const ModalLicenseTable: ModalLicenseType[] = [
   {
     id: 1,
-    icons: "../../../public/logo/logoRegister.png",
+    icons: "/logo/logoRegister.png",
     name: "DataGaze DLP",
     adress: "192.168.1.1",
     computer_count: 10,
@@ -13,7 +13,7 @@ const ModalLicenseTable: ModalLicenseType[] = [
   },
   {
     id: 2,
-    icons: "../../../public/logo/logoRegister.png",
+    icons: "/logo/logoRegister.png",
     name: "DataGaze Siem",
     adress: "192.168.1.1",
     computer_count: 15,
@@ -23,7 +23,7 @@ const ModalLicenseTable: ModalLicenseType[] = [
   },
   {
     id: 3,
-    icons: "../../../public/logo/logoRegister.png",
+    icons: "/logo/logoRegister.png",
     name: "DataGaze Waf",
     adress: "192.168.1.1",
     computer_count: 20,

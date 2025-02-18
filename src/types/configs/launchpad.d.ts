@@ -7,4 +7,6 @@ export interface LaunchpadData {
   Agent_version?: string;
   adress: string;
   File_size: string;
+  First_upload_date: string;
+  Last_upload_date: string;
 }
