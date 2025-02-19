@@ -4,7 +4,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import CircularProgress from "@mui/material/CircularProgress";
 export default function Login() {
-  const { mutate } = useRegister();
+  // const { mutate } = useRegister();
 
   const registerSchema = z.object({
     username: z.string().min(3, "Username must be at least 3 characters long").max(12),
@@ -25,13 +25,13 @@ export default function Login() {
   });
 
   const onSubmit = async (e: RegisterForm) => {
-    // Setloading(true);
-    // setTimeout(() => {
-    //   Setloading(false);
-    //   mutate({ data });
-    // }, 3000);
+    Setloading(true);
+    setTimeout(() => {
+      Setloading(false);
+      // mutate({ data });
+    }, 3000);
 
-    await mutate({ data: e });
+    // await mutate({ data: e });
   };
 
   return (

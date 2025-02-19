@@ -1,5 +1,6 @@
 export interface LaunchpadData {
   id: string;
+  icon?: string;
   title: string;
   img: string;
   link?: string;

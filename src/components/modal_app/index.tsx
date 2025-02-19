@@ -2,9 +2,14 @@ import { Modal, Box, Typography, Button, Tabs, Tab } from "@mui/material";
 import { LaunchpadData } from "~/types";
 import { CiClock2 } from "react-icons/ci";
 import { BiMemoryCard } from "react-icons/bi";
+import { IoMdCloseCircle } from "react-icons/io";
 
 const LicenseModal = ({ app, onClose }: { app: LaunchpadData; onClose: () => void }) => {
-  const [tabCount, Settabcount] = useState(0);
+  const [tabValue, setTabValue] = useState("Server Details");
+  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+    setTabValue(newValue);
+  };
+
   return (
     <Modal open={true} onClose={onClose} aria-labelledby="modal-title">
       <Box
@@ -15,21 +20,21 @@ const LicenseModal = ({ app, onClose }: { app: LaunchpadData; onClose: () => voi
           transform: "translate(-50%, -50%)",
           bgcolor: "white",
           borderRadius: "10px",
-          p: 3,
+          p: 5,
           backgroundColor: ["#e0e3fa"],
-          height: 430,
-          width: 580,
+          height: 478,
+          width: 520,
           boxShadow: 24
         }}
       >
-        <Tabs
-          value={tabCount}
-          onChange={(e, newIndex) => Settabcount(newIndex)}
-          sx={{ mt: 2 }}
-        >
-          <Tab label="Server Details" />
-          <Tab label="Agent Details" />
-        </Tabs>
+        <div className="flex items-center gap-2 mb-6  justify-start">
+          <IoMdCloseCircle
+            size={18}
+            className="cursor-pointer text-gray-500 hover:text-gray-700"
+            onClick={onClose}
+          />
+          <p className="text-[13px] font-600 text-[grey]">{app.title}</p>
+        </div>
         <Typography
           variant="h4"
           className="flex items-center gap-3"
@@ -38,8 +43,51 @@ const LicenseModal = ({ app, onClose }: { app: LaunchpadData; onClose: () => voi
           <img className="w-[56px] h-[56px]" src={app.img} alt="" />
           <p className="text-[40px] font-[500]">{app.title}</p>
         </Typography>
+        <Tabs
+          value={tabValue}
+          onChange={handleChange}
+          className="flex items-center justify-center m-auto"
+          sx={{
+            backgroundColor: "#e4ebfd", // To'liq orqa fon transparent
+            borderRadius: "999px",
+            padding: "2px",
+            width: "100%", // 100% width qilib qo'yildi
+            marginBottom: "30px",
+            marginTop: "10px"
+          }}
+          TabIndicatorProps={{ style: { display: "none" } }} // Aktiv tab ostidagi chiziqni yo'qotish
+        >
+          <Tab
+            label="Server Details"
+            value="Server Details"
+            sx={{
+              flex: 1, // Har ikkala tab bir xil kenglikda bo‘lishi uchun
+              borderRadius: "999px",
+              textTransform: "none",
+              height: "40px",
+              fontWeight: 200,
+              color: tabValue === "Server Details" ? "black" : "gray", // Aktiv tab qora, qolganlari kulrang
+              backgroundColor: tabValue === "Server Details" ? "white" : "transparent", // Aktiv tab oq, qolganlari transparent
+              transition: "background-color 0.3s ease" // Yumuq o‘tish animatsiyasi
+            }}
+          />
+          <Tab
+            label="Agent Details"
+            value="Agent Details"
+            sx={{
+              flex: 1, // Har ikkala tab bir xil kenglikda bo‘lishi uchun
+              borderRadius: "999px",
+              textTransform: "none",
+              height: "40px",
+              fontWeight: 200,
+              color: tabValue === "Agent Details" ? "black" : "gray",
+              backgroundColor: tabValue === "Agent Details" ? "white" : "transparent",
+              transition: "background-color 0.3s ease"
+            }}
+          />
+        </Tabs>
 
-        {tabCount === 0 ? (
+        {tabValue === "Server Details" ? (
           <div className="mt-[30px] mb-[20px]">
             <div className="w-[100%] p-6 gap-[30px] pt-4 justify-center h-[180px] grid grid-cols-2 rounded-[8px] bg-[#fdfcfe]">
               <div className="flex flex-col items-start gap-3">
@@ -94,7 +142,7 @@ const LicenseModal = ({ app, onClose }: { app: LaunchpadData; onClose: () => voi
               </div>
               <div className="flex flex-col items-start gap-3">
                 <div className="flex items-center gap-3">
-                  <img src="/img/icons/computer.png" alt="adress" />
+                  <img src="/img/icons/Vector.png" alt="cersion" />
                   <p>Agent version</p>
                 </div>
                 <p className="text-[20px] font-bold">{app.Agent_version}</p>
@@ -111,15 +159,13 @@ const LicenseModal = ({ app, onClose }: { app: LaunchpadData; onClose: () => voi
           </div>
         )}
 
-        <div className="flex !text-[18px] !font-[700] items-center justify-between">
-          <Button color="error" onClick={onClose}>
-            Uninstall
-          </Button>
+        <div className="flex text-[18px] font-700 items-center justify-between">
+          <Button color="error">Uninstall</Button>
           <div className="flex items-center gap-1 ">
             <Button color="primary" sx={{ mr: 1 }}>
               Go to server
             </Button>
-            <Button variant="text" onClick={onClose}>
+            <Button variant="outlined" onClick={onClose}>
               Edit details
             </Button>
           </div>

@@ -26,7 +26,7 @@ const Computers = () => {
   };
 
   return (
-    <div className="p-4 bg-gray-100 min-h-screen overflow-x-auto p-4 bg-gray-100 h-[100vh]">
+    <div className="p-4 bg-gray-100 min-h-screen ">
       <div className="overflow-x-auto bg-white shadow-lg rounded-lg">
         <table className="w-full text-left border-collapse bg-white shadow-md rounded-lg">
           <thead>
@@ -55,7 +55,7 @@ const Computers = () => {
                   {item.active}
                 </td>
                 <td
-                  className="p-3 text-blue-500 text-[15px] cursor-pointer"
+                  className="p-3 text-blue-500 cursor-pointer"
                   onClick={() => showModal(item)}
                 >
                   About PC
@@ -65,31 +65,87 @@ const Computers = () => {
           </tbody>
         </table>
       </div>
-
       {selected && openModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white px-4 py-4 rounded-lg shadow-lg w-[80vw] max-w-lg max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 flex items-center  w-[100vh] m-auto justify-center  bg-opacity-50">
+          <div className="bg-[#d3def7]  rounded-lg shadow-lg p-4  flex flex-col overflow-auto">
             <Box sx={{ width: "100%" }}>
-              <div className="flex justify-end">
+              <div className="flex items-center gap-2 py-3 mt-4 justify-start">
                 <IoMdCloseCircle
-                  size={24}
+                  size={18}
                   className="cursor-pointer text-gray-500 hover:text-gray-700"
                   onClick={closeModal}
                 />
+                <p className="text-[13px] font-600 text-[grey]">About PC</p>
               </div>
               <Tabs
                 value={tabValue}
                 onChange={handleChange}
                 textColor="inherit"
                 variant="fullWidth"
+                TabIndicatorProps={{
+                  style: {
+                    display: "none" // Indikatorni olib tashlash
+                  }
+                }}
+                sx={{
+                  backgroundColor: "#e4ebfd", // Yengil kulrang fon
+                  borderRadius: "999px", // Yumaloq shakl
+                  padding: "2px",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  height: "18px",
+                  width: "100%",
+                  marginBottom: "30px"
+                }}
               >
-                <Tab value="os" label="OS" />
-                <Tab value="processor" label="Processor" />
-                <Tab value="network" label="Network" />
+                <Tab
+                  value="os"
+                  label="OS"
+                  sx={{
+                    minWidth: "100px",
+                    borderRadius: "999px",
+                    textTransform: "none",
+                    height: "40px",
+                    fontWeight: 500,
+                    backgroundColor: tabValue === "os" ? "#fff" : "transparent",
+                    boxShadow:
+                      tabValue === "os" ? "0px 4px 6px rgba(0, 0, 0, 0.1)" : "none"
+                  }}
+                />
+                <Tab
+                  value="processor"
+                  label="Processor"
+                  sx={{
+                    minWidth: "100px",
+                    borderRadius: "999px",
+                    textTransform: "none",
+                    height: "40px",
+
+                    fontWeight: 500,
+                    backgroundColor: tabValue === "processor" ? "#fff" : "transparent",
+                    boxShadow:
+                      tabValue === "processor" ? "0px 4px 6px rgba(0, 0, 0, 0.1)" : "none"
+                  }}
+                />
+                <Tab
+                  value="network"
+                  label="Network"
+                  sx={{
+                    minWidth: "100px",
+                    borderRadius: "15px",
+                    textTransform: "none",
+                    height: "40px",
+
+                    fontWeight: 500,
+                    backgroundColor: tabValue === "network" ? "#fff" : "transparent",
+                    boxShadow:
+                      tabValue === "network" ? "0px 4px 6px rgba(0, 0, 0, 0.1)" : "none"
+                  }}
+                />
               </Tabs>
             </Box>
 
-            <div className="mt-4">
+            <div className=" pb-3 rounded-4 bg-[#FFFFFF] p-2">
               {tabValue === "os" && (
                 <div className="grid grid-cols-2 gap-3">
                   <span className="flex flex-col gap-1">
@@ -151,8 +207,7 @@ const Computers = () => {
                 </div>
               )}
             </div>
-
-            <div className="mt-4 mb-5">
+            <div className="mb-[30px] mt-5 p-2 rounded-4 bg-[#FFFFFF]">
               <Box display="flex" alignItems="center" marginTop={1}>
                 <Box width="100%" mr={1}>
                   <label className="block font-500 text-[17px]">

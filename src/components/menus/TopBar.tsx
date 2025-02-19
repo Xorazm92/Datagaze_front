@@ -140,6 +140,7 @@ const TopBar = (props: any) => {
             </div>
           )}
 
+          <Battery />
           <TopBarItem>
             <span className="i-bx:bxs-smile text-[17px]" />
             <span>Jam</span>

@@ -286,11 +286,7 @@ export default function Desktop(props: any) {
                   available 500 licenses
                 </p>
               </div>
-              <img
-                className="w-[40px] h-[40px]"
-                src="../../../public/logo/1.png"
-                alt="logo"
-              />
+              <img className="w-[40px] h-[40px]" src="/logo/1.png" alt="logo" />
             </div>
             <div>
               <div className="flex flex-col items-center w-full mt-10">
@@ -345,11 +341,7 @@ export default function Desktop(props: any) {
                   available 500 licenses
                 </p>
               </div>
-              <img
-                className="w-[40px] h-[40px]"
-                src="../../../public/logo/siem.png"
-                alt="logo"
-              />
+              <img className="w-[40px] h-[40px]" src="/logo/siem.png" alt="logo" />
             </div>
             <div>
               <div className="flex flex-col items-center w-full mt-10">
@@ -404,11 +396,7 @@ export default function Desktop(props: any) {
                   available 500 licenses
                 </p>
               </div>
-              <img
-                className="w-[40px] h-[40px]"
-                src="../../../public/logo/waf.png"
-                alt="logo"
-              />
+              <img className="w-[40px] h-[40px]" src="/logo/waf.png" alt="logo" />
             </div>
             <div>
               <div className="flex flex-col items-center w-full mt-10">
