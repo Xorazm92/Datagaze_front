@@ -9,5 +9,6 @@ export {
   WebsitesData,
   SiteSectionData,
   SiteData,
-  RegisterType
+  RegisterType,
+  Apptable
 } from "./configs";

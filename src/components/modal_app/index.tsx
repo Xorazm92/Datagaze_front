@@ -48,34 +48,34 @@ const LicenseModal = ({ app, onClose }: { app: LaunchpadData; onClose: () => voi
           onChange={handleChange}
           className="flex items-center justify-center m-auto"
           sx={{
-            backgroundColor: "#e4ebfd", // To'liq orqa fon transparent
+            backgroundColor: "#e4ebfd",
             borderRadius: "999px",
             padding: "2px",
-            width: "100%", // 100% width qilib qo'yildi
+            width: "100%",
             marginBottom: "30px",
             marginTop: "10px"
           }}
-          TabIndicatorProps={{ style: { display: "none" } }} // Aktiv tab ostidagi chiziqni yo'qotish
+          TabIndicatorProps={{ style: { display: "none" } }}
         >
           <Tab
             label="Server Details"
             value="Server Details"
             sx={{
-              flex: 1, // Har ikkala tab bir xil kenglikda bo‘lishi uchun
+              flex: 1,
               borderRadius: "999px",
               textTransform: "none",
               height: "40px",
               fontWeight: 200,
-              color: tabValue === "Server Details" ? "black" : "gray", // Aktiv tab qora, qolganlari kulrang
-              backgroundColor: tabValue === "Server Details" ? "white" : "transparent", // Aktiv tab oq, qolganlari transparent
-              transition: "background-color 0.3s ease" // Yumuq o‘tish animatsiyasi
+              color: tabValue === "Server Details" ? "black" : "gray",
+              backgroundColor: tabValue === "Server Details" ? "white" : "transparent",
+              transition: "background-color 0.3s ease"
             }}
           />
           <Tab
             label="Agent Details"
             value="Agent Details"
             sx={{
-              flex: 1, // Har ikkala tab bir xil kenglikda bo‘lishi uchun
+              flex: 1,
               borderRadius: "999px",
               textTransform: "none",
               height: "40px",

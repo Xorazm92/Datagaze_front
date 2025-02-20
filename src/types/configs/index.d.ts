@@ -7,3 +7,4 @@ export { TerminalData } from "./terminal";
 export { UserData } from "./user";
 export { WallpaperData } from "./wallpaper";
 export { WebsitesData, SiteSectionData, SiteData } from "./websites";
+export { Apptable } from "./app_comp";

@@ -7,6 +7,7 @@ import wallpapers from "./wallpapers";
 import websites from "./websites";
 import ModalLicenseTable from "./license";
 import { computers } from "./computers";
+import { app_comp } from "./comp_app";
 export {
   apps,
   ModalLicenseTable,
@@ -16,5 +17,6 @@ export {
   user,
   wallpapers,
   websites,
-  computers
+  computers,
+  app_comp
 };

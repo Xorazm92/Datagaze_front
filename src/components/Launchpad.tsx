@@ -1,6 +1,7 @@
 import { launchpadApps } from "~/configs";
 import LicenseModal from "./modal_app";
 import { useState } from "react";
+import LicenseModalinstall from "./modal_app/install";
 
 interface LaunchpadProps {
   show: boolean;
@@ -13,16 +14,22 @@ export default function Launchpad({ show, toggleLaunchpad }: LaunchpadProps) {
   const [searchText, setSearchText] = useState("");
   const [focus, setFocus] = useState(false);
   const [IsOpen, SetIsOpen] = useState(true);
-  const [selectedApp, setSelectedApp] = useState<any>(null); // Tanlangan mahsulot
+  const [selectedApp, setSelectedApp] = useState<any>(null);
+  const [selectedApp1, setSelectedApp1] = useState<any>(null);
 
   const OpenModal = (app: any) => {
     SetIsOpen(true);
     setSelectedApp(app); // Tanlangan mahsulotni saqlash
   };
+  const OpenModalinstall = (app: any) => {
+    SetIsOpen(true);
+    setSelectedApp1(app); // Tanlangan mahsulotni saqlash
+  };
 
   const CloseModal = () => {
-    setSelectedApp(null); // Modalni yopganda, tanlangan mahsulotni tozalash
-    SetIsOpen(false); // Modalni yopish
+    setSelectedApp(null);
+    setSelectedApp1(null);
+    SetIsOpen(false);
   };
 
   const search = () => {
@@ -77,12 +84,17 @@ export default function Launchpad({ show, toggleLaunchpad }: LaunchpadProps) {
           {search().map((app) => (
             <div key={`launchpad-${app.id}`} h="32 sm:36" flex="~ col">
               <a
-                className="w-14 sm:w-20 mx-auto cursor-pointer"
-                onClick={() => OpenModal(app)} // Tanlangan mahsulotni yuborish
+                className="w-14 text-white  sm:w-20 mx-auto cursor-pointer"
+                onClick={!app.icon ? () => OpenModal(app) : () => OpenModalinstall(app)}
               >
                 <img src={app.img} alt={app.title} title={app.title} />
               </a>
-              <span m="t-2 x-auto" text="white xs sm:sm">
+              <span
+                m="t-2 x-auto "
+                className="flex items-center gap-2 cursor-pointer"
+                text="white xs sm:sm"
+              >
+                {app.icon && <app.icon size={18} />}
                 {app.title}
               </span>
             </div>
@@ -90,10 +102,8 @@ export default function Launchpad({ show, toggleLaunchpad }: LaunchpadProps) {
         </div>
       </div>
 
-      {/* Modal faqat tanlangan mahsulot mavjud bo'lsa ko'rsatiladi */}
-      {IsOpen && selectedApp && (
-        <LicenseModal app={selectedApp} onClose={CloseModal} /> // Tanlangan mahsulotni modalga uzatish
-      )}
+      {selectedApp && <LicenseModal app={selectedApp} onClose={CloseModal} />}
+      {selectedApp1 && <LicenseModalinstall app={selectedApp1} onClose={CloseModal} />}
     </div>
   );
 }

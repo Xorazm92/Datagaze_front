@@ -1,15 +1,35 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { computers } from "~/configs";
 import { ComputerType } from "~/types/configs/computers";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
+import { FiColumns } from "react-icons/fi";
+
+import TextField from "@mui/material/TextField";
+import { FormControl, Select, MenuItem } from "@mui/material";
 import { IoMdCloseCircle } from "react-icons/io";
+import { FilterList, ViewColumn } from "@mui/icons-material";
 import { LinearProgress, Typography } from "@mui/material";
+import Computers_app from "./Computer_app";
+
 const Computers = () => {
   const [openModal, setOpenModal] = useState(false);
+  const [openTable, setOpenTable] = useState(false);
   const [selected, setSelected] = useState<ComputerType | null>(null);
   const [tabValue, setTabValue] = useState("os");
+  const [value, Setvalue] = useState("");
+  const [filteredComputers, setFilteredComputers] = useState(computers);
+  const searchFuctions = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const query = e.target.value.toLowerCase();
+    Setvalue(query);
+    const filtered = computers.filter((comp) => comp.name?.toLowerCase().includes(query));
+    setFilteredComputers(filtered);
+  };
+
+  const apptable = () => {
+    setOpenTable(true);
+  };
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setTabValue(newValue);
@@ -27,43 +47,130 @@ const Computers = () => {
 
   return (
     <div className="p-4 bg-gray-100 min-h-screen ">
+      {openTable && <Computers_app />}
       <div className="overflow-x-auto bg-white shadow-lg rounded-lg">
-        <table className="w-full text-left border-collapse bg-white shadow-md rounded-lg">
-          <thead>
-            <tr className="border-b border-gray-300 text-gray-600 text-sm bg-[#ccdbf7]">
-              <th className="p-3">#</th>
-              <th className="p-3">Computer name</th>
-              <th className="p-3">Operation System (OS)</th>
-              <th className="p-3">IP address</th>
-              <th className="p-3">Activity</th>
-              <th className="p-3"></th>
-            </tr>
-          </thead>
-          <tbody>
-            {computers.map((item) => (
-              <tr
-                key={item.id}
-                className="border-b border-gray-200 p-4 text-sm hover:bg-gray-50"
+        <div className="bg-[#e1e9fb] w-full flex items-center justify-between h-[64px] px-4">
+          <TextField
+            value={value}
+            onChange={searchFuctions}
+            sx={{
+              "& .MuiInputLabel-root": {
+                fontSize: "18px"
+              }
+            }}
+            placeholder="Search"
+            slotProps={{
+              input: {
+                type: "search",
+                className: "w-[200px] h-[30px] bg-white flex items-center justify-center"
+              }
+            }}
+          />
+          <div className="flex gap-2">
+            {/* Filters Select */}
+            <FormControl sx={{ minWidth: 140 }}>
+              <Select
+                size="small"
+                displayEmpty
+                defaultValue=""
+                sx={{
+                  height: 30,
+                  borderRadius: "8px",
+                  backgroundColor: "#fff",
+                  fontSize: "14px",
+                  boxShadow: "0px 1px 3px rgba(0,0,0,0.2)",
+                  "& .MuiSelect-select": {
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "5px",
+                    padding: "8px 12px"
+                  }
+                }}
               >
-                <td className="p-3">{item.id}</td>
-                <td className="p-3">{item.name}</td>
-                <td className="p-3">{item.OS}</td>
-                <td className="p-3">{item.adress}</td>
-                <td
-                  className={`p-3 ${item.active === "Active" ? "text-green-600" : "text-gray-500"}`}
-                >
-                  {item.active}
-                </td>
-                <td
-                  className="p-3 text-blue-500 cursor-pointer"
-                  onClick={() => showModal(item)}
-                >
-                  About PC
-                </td>
+                <MenuItem value="" disabled>
+                  <FilterList fontSize="small" /> Filters
+                </MenuItem>
+                <MenuItem value="option1">Option 1</MenuItem>
+                <MenuItem value="option2">Option 2</MenuItem>
+              </Select>
+            </FormControl>
+
+            {/* Customize Columns Select */}
+            <FormControl sx={{ minWidth: 180 }}>
+              <Select
+                size="small"
+                displayEmpty
+                defaultValue=""
+                sx={{
+                  height: 30,
+                  borderRadius: "8px",
+                  backgroundColor: "#fff",
+                  fontSize: "14px",
+                  boxShadow: "0px 1px 3px rgba(0,0,0,0.2)",
+                  "& .MuiSelect-select": {
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "5px",
+                    padding: "8px 12px"
+                  }
+                }}
+              >
+                <MenuItem value="" disabled>
+                  <FiColumns />
+                  Customize columns
+                </MenuItem>
+                <MenuItem value="column1">Column 1</MenuItem>
+                <MenuItem value="column2">Column 2</MenuItem>
+              </Select>
+            </FormControl>
+          </div>
+        </div>
+        <div className="max-h-[600px] overflow-y-auto">
+          <table className="w-full text-left border-collapse bg-white  shadow-md rounded-lg">
+            <thead>
+              <tr className="border-b border-gray-300  text-gray-600 text-sm bg-[#ccdbf7]">
+                <th className="p-3">
+                  <input type="checkbox" />
+                </th>
+                <th className="p-3">#</th>
+                <th className="p-3">Computer name</th>
+                <th className="p-3">Operation System (OS)</th>
+                <th className="p-3">IP address</th>
+                <th className="p-3">Activity</th>
+                <th className="p-3"></th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {filteredComputers.map((item) => (
+                <tr
+                  key={item.id}
+                  className="border-b border-gray-200 p-4 text-sm hover:bg-gray-50"
+                >
+                  <td className="p-3">
+                    <input type="checkbox" />
+                  </td>
+                  <td className="p-3">{item.id}</td>
+                  <td className="p-3 cursor-pointer" onClick={() => apptable()}>
+                    {item.name}
+                  </td>
+                  <td className="p-3">{item.OS}</td>
+                  <td className="p-3">{item.adress}</td>
+                  <td
+                    className={`p-3 ${item.active === "Active" ? "text-green-600" : "text-gray-500"}`}
+                  >
+                    {item.active}
+                  </td>
+                  <td
+                    className="p-3 text-blue-500 cursor-pointer"
+                    onClick={() => showModal(item)}
+                  >
+                    About PC
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
       {selected && openModal && (
         <div className="fixed inset-0 flex items-center  w-[100vh] m-auto justify-center  bg-opacity-50">
