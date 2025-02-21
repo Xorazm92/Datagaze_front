@@ -15,12 +15,13 @@ const LicenseModal = ({ app, onClose }: { app: LaunchpadData; onClose: () => voi
       <Box
         sx={{
           position: "absolute",
+          fontFamily: "sans-serif",
           top: "50%",
           left: "50%",
           transform: "translate(-50%, -50%)",
           bgcolor: "white",
           borderRadius: "10px",
-          p: 5,
+          p: 2,
           backgroundColor: ["#e0e3fa"],
           height: 478,
           width: 520,
@@ -95,21 +96,21 @@ const LicenseModal = ({ app, onClose }: { app: LaunchpadData; onClose: () => voi
                   <img src="/img/icons/file_market.png" alt="count" />
                   <p>License count</p>
                 </div>
-                <p className="text-[20px] font-bold">{app.License_count}</p>
+                <p className="text-[16px] font-500">{app.License_count}</p>
               </div>
               <div className="flex flex-col items-start gap-3">
                 <div className="flex items-center gap-3">
                   <img src="/img/icons/Vector.png" alt="cersion" />
                   <p>Agent version</p>
                 </div>
-                <p className="text-[20px] font-bold">{app.Agent_version}</p>
+                <p className="text-[16px] font-500">{app.Agent_version}</p>
               </div>
               <div className="flex flex-col items-start gap-3">
                 <div className="flex items-center gap-3">
                   <img src="/img/icons/computer.png" alt="adress" />
                   <p>IP address</p>
                 </div>
-                <p className="text-[20px] font-bold">{app.adress}</p>
+                <p className="text-[16px] font-500">{app.adress}</p>
               </div>
               <div className="flex flex-col items-start gap-3">
                 <div className="flex items-center gap-3">
@@ -117,7 +118,7 @@ const LicenseModal = ({ app, onClose }: { app: LaunchpadData; onClose: () => voi
 
                   <p>File size</p>
                 </div>
-                <p className="text-[20px] font-bold">{app.File_size}GB</p>
+                <p className="text-[16px] font-500">{app.File_size}GB</p>
               </div>
             </div>
           </div>
@@ -130,7 +131,7 @@ const LicenseModal = ({ app, onClose }: { app: LaunchpadData; onClose: () => voi
 
                   <p>First upload date</p>
                 </div>
-                <p className="text-[20px] font-bold">{app.First_upload_date}</p>
+                <p className="text-[16px] font-500">{app.First_upload_date}</p>
               </div>
               <div className="flex flex-col items-start gap-3">
                 <div className="flex items-center gap-3">
@@ -138,14 +139,14 @@ const LicenseModal = ({ app, onClose }: { app: LaunchpadData; onClose: () => voi
 
                   <p>Last upload date</p>
                 </div>
-                <p className="text-[20px] font-bold">{app.Last_upload_date}</p>
+                <p className="text-[16px] font-500">{app.Last_upload_date}</p>
               </div>
               <div className="flex flex-col items-start gap-3">
                 <div className="flex items-center gap-3">
                   <img src="/img/icons/Vector.png" alt="cersion" />
                   <p>Agent version</p>
                 </div>
-                <p className="text-[20px] font-bold">{app.Agent_version}</p>
+                <p className="text-[16px] font-500">{app.Agent_version}</p>
               </div>
               <div className="flex flex-col items-start gap-3">
                 <div className="flex items-center gap-3">
@@ -153,7 +154,7 @@ const LicenseModal = ({ app, onClose }: { app: LaunchpadData; onClose: () => voi
 
                   <p>File size</p>
                 </div>
-                <p className="text-[20px] font-bold">{app.File_size}GB</p>
+                <p className="text-[16px] font-500">{app.File_size}GB</p>
               </div>
             </div>
           </div>

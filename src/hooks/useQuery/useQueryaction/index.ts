@@ -13,6 +13,9 @@ const useRegister = () => {
       await axios({ url: "api/1/auth/register", body: data, method: "POST" }),
 
     onSuccess: (data) => {
+      if (data.success) {
+        localStorage.setItem("token", data.data.token);
+      }
       console.log(data);
       navigate("/desktop");
       notify("Register");

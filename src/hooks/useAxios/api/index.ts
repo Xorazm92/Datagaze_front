@@ -8,10 +8,9 @@ const api = axios.create({
   }
 });
 
-// 🔥 Request Interceptor - Har bir so‘rovga token avtomatik qo‘shiladi
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("token"); // Tokenni localStorage yoki Redux-dan olish
+    const token = localStorage.getItem("token");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -20,16 +19,13 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// 🔥 Response Interceptor - Xatolarni avtomatik boshqarish
 api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response && error.response.status === 401) {
-      console.log(
-        "⛔ Token yaroqsiz yoki muddati tugagan. Foydalanuvchini logout qilamiz."
-      );
+      console.log("Token yaroqsiz yoki muddati tugagan. Foydalanuvchini logout qilamiz.");
       localStorage.removeItem("token");
-      window.location.href = "/desktop"; // Login sahifaga yo‘naltirish
+      window.location.href = "/";
     }
     return Promise.reject(error);
   }
