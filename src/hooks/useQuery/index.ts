@@ -8,20 +8,17 @@ interface useQueryApiType {
   params?: object;
 }
 
-// const ApiData = async () => {
-//   const data = await api.get("/products");
-// };
-
 const useQueryApi = ({ pathname, url, params }: useQueryApiType) => {
   const axios = useAxios();
   return useQuery({
     queryKey: [pathname],
-    queryFn: () => {
-      axios({ url, params })
-        .then((data) => data.data)
-        .catch((error) => console.log(error));
+    queryFn: async () => {
+      const response = await axios({ url, params });
+      return response.data;
     }
   });
 };
 
 export { useQueryApi };
+
+//keshidagi malumotlari olish uchun ishlataman
