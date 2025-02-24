@@ -10,20 +10,18 @@ const useRegister = () => {
   const notify = notificationApi();
   return useMutation({
     mutationFn: async ({ data }: { data: RegisterType }) =>
-      await axios({ url: "api/1/auth/register", body: data, method: "POST" }),
+      await axios({ url: "/api/1/auth/login", body: data, method: "POST" }),
 
     onSuccess: (data) => {
-      if (data.success) {
-        localStorage.setItem("token", data.data.token);
+      if (data.status === "success") {
+        localStorage.setItem("token", data.token);
       }
-      console.log(data);
       navigate("/desktop");
-      notify("Register");
+      notify("superadmin");
     },
     onError: (err) => {
       console.log(err.message);
       notify("Not register");
-      navigate("/");
     }
   });
 };

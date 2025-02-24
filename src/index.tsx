@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider, Route, Outlet } from "react-router-dom";
-
+import { Toaster } from "sonner";
 import Desktop from "~/pages/Desktop";
 import Login from "~/pages/Login";
 import Boot from "~/pages/Boot";
@@ -10,36 +10,12 @@ import "@unocss/reset/tailwind.css";
 import "uno.css";
 import "katex/dist/katex.min.css";
 import "~/styles/index.css";
-import { Empty } from "antd";
 import { QueryClient, QueryClientProvider, useQueryClient } from "@tanstack/react-query";
 
 function Layout() {
   const [login, setLogin] = useState<boolean>(false);
-  // const [booting, setBooting] = useState<boolean>(false);
 
-  const shutMac = (e: React.MouseEvent): void => {
-    e.stopPropagation();
-    setLogin(false);
-    // setBooting(true);
-  };
-
-  const restartMac = (e: React.MouseEvent): void => {
-    e.stopPropagation();
-    setLogin(false);
-    // setBooting(true);
-  };
-
-  const sleepMac = (e: React.MouseEvent): void => {
-    e.stopPropagation();
-    setLogin(false);
-    // setBooting(true);
-  };
-
-  // if (booting) {
-  //   return <Boot restart={restart} sleep={sleep} setBooting={setBooting} />;
-  // }
-
-  return <Outlet context={{ login, setLogin, shutMac, restartMac, sleepMac }} />;
+  return <Outlet context={{ login, setLogin }} />;
 }
 
 const router = createBrowserRouter([
@@ -54,7 +30,7 @@ const router = createBrowserRouter([
         path: "*",
         element: (
           <div className="flex items-center justify-center h-[100vh]">
-            <Empty description="Malumot topilmadi xatolik !!!!" />
+            <h1>Xatolik malumot topilmadi !</h1>
           </div>
         )
       }
@@ -67,6 +43,7 @@ const root = createRoot(rootElement);
 const queryClinet = new QueryClient();
 root.render(
   <QueryClientProvider client={queryClinet}>
+    <Toaster position="top-right" richColors />
     <RouterProvider router={router} />
   </QueryClientProvider>
 );

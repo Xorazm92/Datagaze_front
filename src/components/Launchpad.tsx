@@ -2,6 +2,7 @@ import { launchpadApps } from "~/configs";
 import LicenseModal from "./modal_app";
 import { useState } from "react";
 import LicenseModalinstall from "./modal_app/install";
+import { useQueryApi } from "~/hooks/useQuery";
 
 interface LaunchpadProps {
   show: boolean;
@@ -13,23 +14,25 @@ const placeholderText = "Search";
 export default function Launchpad({ show, toggleLaunchpad }: LaunchpadProps) {
   const [searchText, setSearchText] = useState("");
   const [focus, setFocus] = useState(false);
-  const [IsOpen, SetIsOpen] = useState(true);
   const [selectedApp, setSelectedApp] = useState<any>(null);
   const [selectedApp1, setSelectedApp1] = useState<any>(null);
 
+  const { data } = useQueryApi({
+    pathname: "app",
+    url: "/api/1/desktop/list-of-web-applications"
+  });
+  console.log(data);
+
   const OpenModal = (app: any) => {
-    SetIsOpen(true);
-    setSelectedApp(app); // Tanlangan mahsulotni saqlash
+    setSelectedApp(app);
   };
   const OpenModalinstall = (app: any) => {
-    SetIsOpen(true);
-    setSelectedApp1(app); // Tanlangan mahsulotni saqlash
+    setSelectedApp1(app);
   };
 
   const CloseModal = () => {
     setSelectedApp(null);
     setSelectedApp1(null);
-    SetIsOpen(false);
   };
 
   const search = () => {

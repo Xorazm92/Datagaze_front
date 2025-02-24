@@ -19,12 +19,10 @@ const apps: AppsData[] = [
     img: "img/icons/support.png"
   },
   {
-    id: "Users",
+    id: "users",
     title: "Users list",
-    desktop: false,
-    width: 600,
-    height: 580,
-    y: -20,
+    desktop: true,
+    content: <SuperAdmin_users />,
     img: "img/icons/users.png"
   },
   {
@@ -70,7 +68,6 @@ const apps: AppsData[] = [
     img: "img/icons/terminal.png",
     content: <Terminal />
   },
-
   {
     id: "licenses",
     title: "Licenses",

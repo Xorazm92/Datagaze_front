@@ -3,13 +3,21 @@ import { LaunchpadData } from "~/types";
 import { CiClock2 } from "react-icons/ci";
 import { BiMemoryCard } from "react-icons/bi";
 import { IoMdCloseCircle } from "react-icons/io";
+import { EditDetailsModal } from "./edit";
 
 const LicenseModal = ({ app, onClose }: { app: LaunchpadData; onClose: () => void }) => {
   const [tabValue, setTabValue] = useState("Server Details");
+  const [isEditModalOpen, setEditModalOpen] = useState(false);
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setTabValue(newValue);
   };
+  const handleEditClick = () => {
+    setEditModalOpen(true);
+  };
 
+  const handleEditClose = () => {
+    setEditModalOpen(false);
+  };
   return (
     <Modal open={true} onClose={onClose} aria-labelledby="modal-title">
       <Box
@@ -41,8 +49,8 @@ const LicenseModal = ({ app, onClose }: { app: LaunchpadData; onClose: () => voi
           className="flex items-center gap-3"
           sx={{ fontWeight: "bold", textAlign: "center", mt: 1 }}
         >
-          <img className="w-[56px] h-[56px]" src={app.img} alt="" />
-          <p className="text-[40px] font-[500]">{app.title}</p>
+          <img className="w-[56px] h-[56px]" src={app.img} alt={app.title} />
+          <p className="text-[40px] font-500">{app.title}</p>
         </Typography>
         <Tabs
           value={tabValue}
@@ -161,16 +169,43 @@ const LicenseModal = ({ app, onClose }: { app: LaunchpadData; onClose: () => voi
         )}
 
         <div className="flex text-[18px] font-700 items-center justify-between">
-          <Button color="error">Uninstall</Button>
+          <Button
+            sx={{
+              textTransform: "capitalize",
+              mr: 1,
+              fontFamily: "Inter, sans-serif" // Shrfit turi
+            }}
+            color="error"
+          >
+            Uninstall
+          </Button>
           <div className="flex items-center gap-1 ">
-            <Button color="primary" sx={{ mr: 1 }}>
+            <Button
+              sx={{
+                textTransform: "capitalize",
+                mr: 1,
+                fontFamily: "Inter, sans-serif" // Shrfit turi
+              }}
+              color="primary"
+            >
               Go to server
             </Button>
-            <Button variant="outlined" onClick={onClose}>
+            <Button
+              sx={{
+                textTransform: "capitalize",
+                mr: 1,
+                background: "white",
+                padding: "8px",
+                borderRadius: "8px",
+                fontFamily: "Inter, sans-serif" // Shrfit turi
+              }}
+              onClick={handleEditClick}
+            >
               Edit details
             </Button>
           </div>
         </div>
+        {isEditModalOpen && <EditDetailsModal app={app} onClose={handleEditClose} />}
       </Box>
     </Modal>
   );

@@ -10,5 +10,6 @@ export {
   SiteSectionData,
   SiteData,
   RegisterType,
-  Apptable
+  Apptable,
+  ApplicationType
 } from "./configs";

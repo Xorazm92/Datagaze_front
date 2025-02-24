@@ -8,3 +8,4 @@ export { UserData } from "./user";
 export { WallpaperData } from "./wallpaper";
 export { WebsitesData, SiteSectionData, SiteData } from "./websites";
 export { Apptable } from "./app_comp";
+export { ApplicationType } from "./applications";

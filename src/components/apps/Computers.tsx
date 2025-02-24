@@ -191,12 +191,12 @@ const Computers = () => {
                 variant="fullWidth"
                 TabIndicatorProps={{
                   style: {
-                    display: "none" // Indikatorni olib tashlash
+                    display: "none"
                   }
                 }}
                 sx={{
-                  backgroundColor: "#e4ebfd", // Yengil kulrang fon
-                  borderRadius: "999px", // Yumaloq shakl
+                  backgroundColor: "#e4ebfd",
+                  borderRadius: "999px",
                   padding: "2px",
                   display: "flex",
                   justifyContent: "space-between",

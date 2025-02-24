@@ -12,7 +12,7 @@ export const useAxios = () => {
   const response = async ({ url, headers, params, method = "GET", body }: PropsType) => {
     try {
       const { data } = await api({
-        url: `${import.meta.env.VITE_BASE_URL}/${url}`,
+        url: `${import.meta.env.VITE_BASE_URL}${url}`,
         data: body,
         method,
         params: {

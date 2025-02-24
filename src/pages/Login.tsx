@@ -4,17 +4,15 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import CircularProgress from "@mui/material/CircularProgress";
 export default function Login() {
-  const { mutate } = useRegister();
+  const { mutate, isError, isPending } = useRegister();
 
   const registerSchema = z.object({
     username: z.string().min(3, "Username must be at least 3 characters long").max(12),
-    email: z.string().email("Enter email"),
+    // email: z.string().email("Enter email"),
     password: z.string().min(4, "Password must contain at least 4 characters").max(22)
   });
 
   type RegisterForm = z.infer<typeof registerSchema>;
-
-  const [Loading, Setloading] = useState(false);
 
   const {
     register,
@@ -25,12 +23,6 @@ export default function Login() {
   });
 
   const onSubmit = async (e: RegisterForm) => {
-    // Setloading(true);
-    // setTimeout(() => {
-    //   Setloading(false);
-    //   // mutate({ data });
-    // }, 3000);
-
     await mutate({ data: e });
   };
 
@@ -45,19 +37,20 @@ export default function Login() {
                   <span className="flex items-center text-[25px] font-bold gap-3 mb-5">
                     <img
                       className="w-[50px] h-[50px]"
-                      src="../../../public/logo/logoRegister.png"
+                      src="/logo/logoRegister.png"
                       alt="logo"
                     />
                     Datagaze All in one
                   </span>
-                  Sign up
+                  Log in
                 </h1>
               </div>
 
-              <div className="w-full flex-1  mt-8">
+              <div className="w-full flex-1 p-3 mt-8">
                 <div className="mx-auto w-[300px]">
                   <form onSubmit={handleSubmit(onSubmit)}>
                     <input
+                      value={"superadmin"}
                       className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
                       type="text"
                       placeholder="Username"
@@ -69,17 +62,8 @@ export default function Login() {
 
                     <input
                       className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
-                      type="email"
-                      placeholder="Email"
-                      {...register("email")}
-                    />
-                    {errors.email && (
-                      <p className="text-red-500 text-sm">{errors.email.message}</p>
-                    )}
-
-                    <input
-                      className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
                       type="password"
+                      value={"superadmin"}
                       placeholder="Password"
                       {...register("password")}
                     />
@@ -92,25 +76,14 @@ export default function Login() {
                       className="mt-5 tracking-wide font-semibold bg-indigo-500 text-gray-100 w-full py-4 rounded-lg hover:bg-indigo-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
                     >
                       <span className="ml-3">
-                        {!Loading ? (
-                          "Sign Up"
+                        {isError || isPending ? (
+                          <CircularProgress size={25} color="primary" />
                         ) : (
-                          <CircularProgress size={25} color="warning" />
+                          "Log in"
                         )}
                       </span>
                     </button>
                   </form>
-
-                  <p className="mt-6 text-xs text-gray-600 text-center">
-                    I agree to abide by templatana's
-                    <a href="#" className="border-b border-gray-500 border-dotted">
-                      Terms of Service
-                    </a>
-                    and its
-                    <a href="#" className="border-b border-gray-500 border-dotted">
-                      Privacy Policy
-                    </a>
-                  </p>
                 </div>
               </div>
             </div>
