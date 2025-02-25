@@ -19,7 +19,7 @@ export default function Launchpad({ show, toggleLaunchpad }: LaunchpadProps) {
 
   const { data } = useQueryApi({
     pathname: "app",
-    url: "/api/1/desktop/list-of-web-applications"
+    url: "/api/1/desktop/web-applications"
   });
   console.log(data);
 

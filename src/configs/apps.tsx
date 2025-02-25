@@ -6,7 +6,7 @@ const apps: AppsData[] = [
     id: "launchpad",
     title: "Applications",
     desktop: false,
-    img: "img/icons/servis/icon-4.png"
+    img: "/icons/icon-4.png"
   },
 
   {
@@ -16,14 +16,14 @@ const apps: AppsData[] = [
     width: 600,
     height: 580,
     y: -20,
-    img: "img/icons/support.png"
+    img: "/icons/support.png"
   },
   {
     id: "users",
     title: "Users list",
     desktop: true,
     content: <SuperAdmin_users />,
-    img: "img/icons/users.png"
+    img: "/icons/users.png"
   },
   {
     id: "safari",
@@ -33,7 +33,7 @@ const apps: AppsData[] = [
     minWidth: 375,
     minHeight: 200,
     x: -20,
-    img: "img/icons/safari.png",
+    img: "/icons/safari.png",
     content: <Safari />
   },
   {
@@ -44,14 +44,14 @@ const apps: AppsData[] = [
     height: 600,
     x: 80,
     y: -30,
-    img: "img/icons/vscode.png",
+    img: "/icons/vscode.png",
     content: <VSCode />
   },
   {
     id: "facetime",
     title: "FaceTime",
     desktop: true,
-    img: "img/icons/facetime.png",
+    img: "/icons/facetime.png",
     width: 500 * 1.7,
     height: 500 + appBarHeight,
     minWidth: 350 * 1.7,
@@ -65,21 +65,21 @@ const apps: AppsData[] = [
     id: "terminal",
     title: "Terminal",
     desktop: true,
-    img: "img/icons/terminal.png",
+    img: "/icons/terminal.png",
     content: <Terminal />
   },
   {
     id: "licenses",
     title: "Licenses",
     desktop: true,
-    img: "img/icons/Liceses.png",
+    img: "/icons/Liceses.png",
     content: <ModalLicense />
   },
   {
     id: "computers",
     title: "Computers",
     desktop: true,
-    img: "img/icons/camputers.png",
+    img: "/icons/camputers.png",
     content: <Computers />
   }
 ];
