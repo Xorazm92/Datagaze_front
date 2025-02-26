@@ -101,21 +101,21 @@ const LicenseModal = ({ app, onClose }: { app: LaunchpadData; onClose: () => voi
             <div className="w-[100%] p-6 gap-[30px] pt-4 justify-center h-[180px] grid grid-cols-2 rounded-[8px] bg-[#fdfcfe]">
               <div className="flex flex-col items-start gap-3">
                 <div className="flex items-center gap-3">
-                  <img src="/img/icons/file_market.png" alt="count" />
+                  <img src="/icons/file_market.png" alt="count" />
                   <p>License count</p>
                 </div>
                 <p className="text-[16px] font-500">{app.License_count}</p>
               </div>
               <div className="flex flex-col items-start gap-3">
                 <div className="flex items-center gap-3">
-                  <img src="/img/icons/Vector.png" alt="cersion" />
+                  <img src="/icons/Vector.png" alt="cersion" />
                   <p>Agent version</p>
                 </div>
                 <p className="text-[16px] font-500">{app.Agent_version}</p>
               </div>
               <div className="flex flex-col items-start gap-3">
                 <div className="flex items-center gap-3">
-                  <img src="/img/icons/computer.png" alt="adress" />
+                  <img src="/icons/computer.png" alt="adress" />
                   <p>IP address</p>
                 </div>
                 <p className="text-[16px] font-500">{app.adress}</p>
@@ -151,7 +151,7 @@ const LicenseModal = ({ app, onClose }: { app: LaunchpadData; onClose: () => voi
               </div>
               <div className="flex flex-col items-start gap-3">
                 <div className="flex items-center gap-3">
-                  <img src="/img/icons/Vector.png" alt="cersion" />
+                  <img src="/icons/Vector.png" alt="cersion" />
                   <p>Agent version</p>
                 </div>
                 <p className="text-[16px] font-500">{app.Agent_version}</p>

@@ -46,6 +46,17 @@ export default function Launchpad({ show, toggleLaunchpad }: LaunchpadProps) {
     return list;
   };
 
+  // const search = () => {
+  //   if (searchText === "") return launchpadApps;
+  //   const text = searchText.toLowerCase();
+  //   const list = launchpadApps.filter((item) => {
+  //     return (
+  //       item.title.toLowerCase().includes(text) || item.id.toLowerCase().includes(text)
+  //     );
+  //   });
+  //   return list;
+  // };
+
   const close = show ? "" : "opacity-0 invisible transition-opacity duration-200";
 
   return (

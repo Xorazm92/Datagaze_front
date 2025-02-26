@@ -8,6 +8,8 @@ import { RiComputerLine } from "react-icons/ri";
 import ReportGmailerrorredIcon from "@mui/icons-material/ReportGmailerrorred";
 import { FiGlobe } from "react-icons/fi";
 import { Stepper, Step, StepLabel, Button } from "@mui/material";
+import { useState } from "react";
+
 const steps = ["System requirements", "Server configs", "Completed"];
 
 const LicenseModalinstall = ({
@@ -17,13 +19,27 @@ const LicenseModalinstall = ({
   app: LaunchpadData;
   onClose: () => void;
 }) => {
+  const [formData, setFormData] = useState({
+    ipAddress: "",
+    portNumber: "",
+    username: "",
+    password: "",
+    remindCheckbox: ""
+  });
   const [activeStep, setActiveStep] = useState(0);
-
   const [OpenModal, SetOpenModal] = useState(false);
-  const handleNext = () => {
-    if (activeStep < steps.length - 1) {
-      setActiveStep((prev) => prev + 1);
-    }
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log("Form ma'lumotlari:", formData);
+    setActiveStep((prev) => prev + 1);
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value
+    }));
   };
 
   const handleBack = () => {
@@ -36,6 +52,13 @@ const LicenseModalinstall = ({
   const CloseModal = () => {
     SetOpenModal(false);
   };
+
+  const handleNext = () => {
+    if (activeStep < steps.length - 1) {
+      setActiveStep((prev) => prev + 1);
+    }
+  };
+
   return (
     <Modal open={true} onClose={onClose} aria-labelledby="modal-title">
       <Box
@@ -55,13 +78,13 @@ const LicenseModalinstall = ({
           boxShadow: 24
         }}
       >
-        <div className="flex items-center w-[75vh] px-2 h-[30px] gap-2 mb-6   justify-start">
+        <div className="flex items-center w-[75vh] px-2 h-[30px] gap-2 mb-6 justify-start">
           <IoMdCloseCircle
             size={18}
             className="cursor-pointer text-gray-500 hover:text-gray-700"
             onClick={onClose}
           />
-          <p className="text-[13px]  font-600 text-[grey]">{app.title}</p>
+          <p className="text-[13px] font-600 text-[grey]">{app.title}</p>
         </div>
         <Typography
           variant="h4"
@@ -78,7 +101,6 @@ const LicenseModalinstall = ({
             <div className="flex flex-col items-start gap-3">
               <div className="flex items-center gap-3">
                 <BsCpuFill color="grey" />
-
                 <p>CPU</p>
               </div>
               <p className="text-[16px] font-500">{app.CPU}</p>
@@ -86,7 +108,6 @@ const LicenseModalinstall = ({
             <div className="flex flex-col items-start gap-3">
               <div className="flex items-center gap-3">
                 <BiMemoryCard />
-
                 <p>RAM</p>
               </div>
               <p className="text-[16px] font-500">{app.File_size}</p>
@@ -94,7 +115,6 @@ const LicenseModalinstall = ({
             <div className="flex flex-col items-start gap-3">
               <div className="flex items-center gap-3">
                 <RiComputerLine />
-
                 <p>Storage</p>
               </div>
               <p className="text-[16px] font-500">{app.Storage}</p>
@@ -102,7 +122,6 @@ const LicenseModalinstall = ({
             <div className="flex flex-col items-start gap-3">
               <div className="flex items-center gap-3">
                 <FiGlobe />
-
                 <p>Network</p>
               </div>
               <p className="text-[16px] font-500">{app.Network}</p>
@@ -111,7 +130,7 @@ const LicenseModalinstall = ({
         </div>
 
         <div className="flex text-[10px] font-normal items-center justify-end">
-          <div className="flex items-center gap-1 ">
+          <div className="flex items-center gap-1">
             <Button
               onChange={CloseModal}
               sx={{
@@ -126,7 +145,7 @@ const LicenseModalinstall = ({
             </Button>
             <button
               onClick={OpenInstallModal}
-              className="flex w-[90px] h-[40px] rounded-[12px]  text-[#1A79D8] font-500 text-[14px] items-center flex justify-center gap-1 bg-[white]"
+              className="flex w-[90px] h-[40px] rounded-[12px] text-[#1A79D8] font-500 text-[14px] items-center justify-center gap-1 bg-[white]"
             >
               Install
               <FiCheck size={19} />
@@ -161,7 +180,6 @@ const LicenseModalinstall = ({
                     {activeStep === 0 && (
                       <div className="flex flex-col gap-2">
                         <h3 className="text-[18px] font-600">Basic requirements</h3>
-
                         <p className="text-[16px] text-[grey] mt-[60px] font-400">
                           CPU:<span className="text-black">{app.CPU}</span>
                         </p>
@@ -177,11 +195,14 @@ const LicenseModalinstall = ({
                       </div>
                     )}
                     {activeStep === 1 && (
-                      <div>
-                        <div className="mt-[30px] grid grid-cols-2 gap-5 ">
+                      <form onSubmit={handleSubmit}>
+                        <div className="mt-[30px] grid grid-cols-2 gap-5">
                           <label className="flex flex-col text-[13px] font-600 gap-1">
                             IP address
                             <input
+                              name="ipAddress"
+                              onChange={handleChange}
+                              value={formData.ipAddress}
                               type="text"
                               className="rounded-[8px] bg-white font-500 w-[232px] h-[32px] p-1 px-2"
                               placeholder="Ip adress"
@@ -190,6 +211,9 @@ const LicenseModalinstall = ({
                           <label className="flex flex-col text-[13px] font-600 gap-1">
                             Port number
                             <input
+                              name="portNumber"
+                              value={formData.portNumber}
+                              onChange={handleChange}
                               type="text"
                               className="rounded-[8px] bg-white font-500 w-[232px] h-[32px] p-1 px-2"
                               placeholder="Port number "
@@ -198,6 +222,9 @@ const LicenseModalinstall = ({
                           <label className="flex flex-col text-[13px] font-600 gap-1">
                             Username
                             <input
+                              name="username"
+                              onChange={handleChange}
+                              value={formData.username}
                               type="text"
                               className="rounded-[8px] bg-white font-500 w-[232px] h-[32px] p-1 px-2"
                               placeholder="Username"
@@ -206,6 +233,9 @@ const LicenseModalinstall = ({
                           <label className="flex flex-col text-[13px] font-600 gap-1">
                             Password
                             <input
+                              name="password"
+                              onChange={handleChange}
+                              value={formData.password}
                               type="text"
                               className="rounded-[8px] bg-white font-500 w-[232px] h-[32px] p-1 px-2"
                               placeholder="Password"
@@ -215,45 +245,80 @@ const LicenseModalinstall = ({
                         <label className="flex flex-col text-[13px] mt-4 mb-5 font-600 gap-1">
                           Remind it checkbox
                           <input
+                            name="remindCheckbox"
+                            onChange={handleChange}
+                            value={formData.remindCheckbox}
                             type="text"
                             className="rounded-[8px] bg-white font-500 w-[232px] h-[32px] p-1 px-2"
                             placeholder="Remind it checkbox"
                           />
                         </label>
-                      </div>
+                        {/* Forma ichida tugmalar */}
+                        <div className="flex gap-2 justify-between items-center mt-[70px]">
+                          <ReportGmailerrorredIcon className="text-[#1380ED] cursor-pointer" />
+                          <div className="flex gap-3">
+                            <Button
+                              onClick={handleBack}
+                              className="w-[137px]"
+                              variant="outlined"
+                              sx={{ textTransform: "capitalize" }}
+                            >
+                              Cancel
+                            </Button>
+                            <Button
+                              type="submit"
+                              className="w-[137px]"
+                              variant="contained"
+                              sx={{ textTransform: "capitalize" }}
+                              color="primary"
+                            >
+                              Next
+                            </Button>
+                          </div>
+                        </div>
+                      </form>
                     )}
                     {activeStep === 2 && (
-                      <div>
-                        <h3 className="text-lg font-semibold">Installation Completed</h3>
-                        <p className="text-gray-600 mt-2">
-                          Your software is successfully installed.
-                        </p>
+                      <div className="fixed inset-0 bg-white mt-3 flex flex-col items-center justify-start overflow-hidden">
+                        <div className="flex items-center p-1 gap-2 justify-start w-full bg-gray-200">
+                          <IoMdCloseCircle
+                            onClick={onClose}
+                            size={15}
+                            className="cursor-pointer text-gray-500"
+                          />
+                          <span className="text-sm font-normal">Terminal</span>
+                        </div>
+                        <div className="w-full h-full overflow-hidden">
+                          <Terminal />
+                        </div>
                       </div>
                     )}
                   </div>
 
-                  <div className="flex gap-2 justify-between items-center mt-[70px]">
-                    <ReportGmailerrorredIcon className="text-[#1380ED] cursor-pointer" />
-                    <div className="flex gap-3">
-                      <Button
-                        onClick={handleBack}
-                        className="w-[137px]"
-                        variant="outlined"
-                        sx={{ textTransform: "capitalize" }}
-                      >
-                        Cancel
-                      </Button>
-                      <Button
-                        onClick={handleNext}
-                        className="w-[137px]"
-                        variant="contained"
-                        sx={{ textTransform: "capitalize" }}
-                        color="primary"
-                      >
-                        {activeStep === steps.length - 1 ? "Finish" : "Next"}
-                      </Button>
+                  {activeStep === 0 && (
+                    <div className="flex gap-2 justify-between items-center mt-[70px]">
+                      <ReportGmailerrorredIcon className="text-[#1380ED] cursor-pointer" />
+                      <div className="flex gap-3">
+                        <Button
+                          onClick={handleBack}
+                          className="w-[137px]"
+                          variant="outlined"
+                          sx={{ textTransform: "capitalize" }}
+                        >
+                          Cancel
+                        </Button>
+                        <Button
+                          onClick={handleNext}
+                          className="w-[137px]"
+                          variant="contained"
+                          sx={{ textTransform: "capitalize" }}
+                          color="primary"
+                        >
+                          Next
+                        </Button>
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </div>
               </div>
             </div>

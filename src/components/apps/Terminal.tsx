@@ -1,87 +1,11 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { terminal } from "~/configs";
 import type { TerminalData } from "~/types";
-
-const CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789落霞与孤鹜齐飞秋水共长天一色";
-const EMOJIS = ["\\(o_o)/", "(˚Δ˚)b", "(^-^*)", "(╯‵□′)╯", "\\(°ˊДˋ°)/", "╰(‵□′)╯"];
-
-const getEmoji = () => {
-  return EMOJIS[Math.floor(Math.random() * EMOJIS.length)];
-};
 
 interface TerminalState {
   rmrf: boolean;
   content: JSX.Element[];
 }
-
-const HowDare = ({ setRMRF }: { setRMRF: (value: boolean) => void }) => {
-  const FONT_SIZE = 12;
-
-  const [emoji, setEmoji] = useState("");
-  const [drops, setDrops] = useState<number[]>([]);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  useEffect(() => {
-    const container = containerRef.current;
-    const canvas = canvasRef.current;
-
-    if (!container || !canvas) return;
-
-    canvas.height = container.offsetHeight;
-    canvas.width = container.offsetWidth;
-
-    const columns = Math.floor(canvas.width / FONT_SIZE);
-    setDrops(Array(columns).fill(1));
-
-    setEmoji(getEmoji());
-  }, []);
-
-  const rain = () => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext("2d")!;
-
-    ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    ctx.fillStyle = "#2e9244";
-    ctx.font = `${FONT_SIZE}px arial`;
-
-    drops.forEach((y, x) => {
-      const text = CHARACTERS[Math.floor(Math.random() * CHARACTERS.length)];
-      ctx.fillText(text, x * FONT_SIZE, y * FONT_SIZE);
-    });
-
-    setDrops(
-      drops.map((y) => {
-        // sends the drop back to the top randomly after it has crossed the screen
-        // adding randomness to the reset to make the drops scattered on the Y axis
-        if (y * FONT_SIZE > canvas.height && Math.random() > 0.975) return 1;
-        // increments Y coordinate
-        else return y + 1;
-      })
-    );
-  };
-
-  useInterval(rain, 33);
-
-  return (
-    <div
-      ref={containerRef}
-      className="fixed size-full bg-black text-white"
-      onClick={() => setRMRF(false)}
-    >
-      <canvas ref={canvasRef}></canvas>
-      <div className="font-avenir absolute h-28 text-center space-y-4 m-auto inset-0">
-        <div text-4xl>{emoji}</div>
-        <div text-3xl>HOW DARE YOU!</div>
-        <div>Click to go back</div>
-      </div>
-    </div>
-  );
-};
 
 export default class Terminal extends React.Component<any, TerminalState> {
   private history = [] as string[];
@@ -104,7 +28,8 @@ export default class Terminal extends React.Component<any, TerminalState> {
       ls: this.ls,
       cat: this.cat,
       clear: this.clear,
-      help: this.help
+      help: this.help,
+      ssh: this.ssh
     };
   }
 
@@ -117,7 +42,9 @@ export default class Terminal extends React.Component<any, TerminalState> {
     const terminal = document.querySelector("#terminal-content") as HTMLElement;
     terminal.innerHTML = "";
   };
-
+  ssh = () => {
+    this.generateResultRow(this.curInputTimes, <span>Hello, world!</span>);
+  };
   addRow = (row: JSX.Element) => {
     if (this.state.content.find((item) => item.key === row.key)) return;
 
@@ -141,22 +68,17 @@ export default class Terminal extends React.Component<any, TerminalState> {
     return children;
   };
 
-  // move into a specified folder
   cd = (args?: string) => {
     if (args === undefined || args === "~") {
-      // move to root
       this.curDirPath = [];
       this.curChildren = terminal;
     } else if (args === ".") {
-      // stay in the current folder
       return;
     } else if (args === "..") {
-      // move to parent folder
       if (this.curDirPath.length === 0) return;
       this.curDirPath.pop();
       this.curChildren = this.getCurChildren();
     } else {
-      // move to certain child folder
       const target = this.curChildren.find((item: TerminalData) => {
         return item.title === args && item.type === "folder";
       });
@@ -172,14 +94,13 @@ export default class Terminal extends React.Component<any, TerminalState> {
     }
   };
 
-  // display content of a specified folder
   ls = () => {
     const result = [];
     for (const item of this.curChildren) {
       result.push(
         <span
           key={`terminal-result-ls-${this.curInputTimes}-${item.id}`}
-          className={`${item.type === "file" ? "text-white" : "text-purple-300"}`}
+          className={`${item.type === "file" ? "text-black" : "text-purple-300"}`}
         >
           {item.title}
         </span>
@@ -191,7 +112,6 @@ export default class Terminal extends React.Component<any, TerminalState> {
     );
   };
 
-  // display content of a specified file
   cat = (args?: string) => {
     const file = this.curChildren.find((item: TerminalData) => {
       return item.title === args && item.type === "file";
@@ -207,7 +127,6 @@ export default class Terminal extends React.Component<any, TerminalState> {
     }
   };
 
-  // clear terminal
   clear = () => {
     this.curInputTimes += 1;
     this.reset();
@@ -281,13 +200,9 @@ export default class Terminal extends React.Component<any, TerminalState> {
     const input = inputText.split(" ");
 
     if (keyCode === "Enter") {
-      // ----------- run command -----------
       this.history.push(inputText);
-
       const cmd = input[0];
       const args = input[1];
-
-      // we can't edit the past input
       inputElement.setAttribute("readonly", "true");
 
       if (inputText.substring(0, 6) === "rm -rf") this.setState({ rmrf: true });
@@ -300,21 +215,16 @@ export default class Terminal extends React.Component<any, TerminalState> {
         );
       }
 
-      // point to the last history command
       this.curHistory = this.history.length;
-
-      // generate new input row
       this.curInputTimes += 1;
       this.generateInputRow(this.curInputTimes);
     } else if (keyCode === "ArrowUp") {
-      // ----------- previous history command -----------
       if (this.history.length > 0) {
         if (this.curHistory > 0) this.curHistory--;
         const historyCommand = this.history[this.curHistory];
         inputElement.value = historyCommand;
       }
     } else if (keyCode === "ArrowDown") {
-      // ----------- next history command -----------
       if (this.history.length > 0) {
         if (this.curHistory < this.history.length) this.curHistory++;
         if (this.curHistory === this.history.length) inputElement.value = "";
@@ -324,9 +234,7 @@ export default class Terminal extends React.Component<any, TerminalState> {
         }
       }
     } else if (keyCode === "Tab") {
-      // ----------- auto complete -----------
       inputElement.value = this.autoComplete(inputText);
-      // prevent tab outside the terminal
       e.preventDefault();
     }
   };
@@ -340,14 +248,14 @@ export default class Terminal extends React.Component<any, TerminalState> {
     const newRow = (
       <div key={`terminal-input-row-${id}`} flex>
         <div className="w-max hstack space-x-1.5">
-          <span text-yellow-200>
-            zou@macbook-pro <span text-green-300>{this.getCurDirName()}</span>
+          <span text-black>
+            solikhov <span text-green-300>{this.getCurDirName()}</span>
           </span>
           <span text-red-400>{">"}</span>
         </div>
         <input
           id={`terminal-input-${id}`}
-          className="flex-1 px-1 text-white outline-none bg-transparent"
+          className="flex-1 px-1 text-black outline-none bg-transparent"
           onKeyDown={this.keyPress}
           autoFocus={true}
         />
@@ -368,17 +276,11 @@ export default class Terminal extends React.Component<any, TerminalState> {
   render() {
     return (
       <div
-        className="terminal font-terminal font-normal relative h-full bg-gray-800/90 overflow-y-scroll"
-        text="white sm"
+        className="terminal font-terminal font-normal relative h-full bg-white overflow-y-scroll"
+        text="black sm"
         onClick={() => this.focusOnInput(this.curInputTimes)}
       >
-        {this.state.rmrf && (
-          <HowDare setRMRF={(value: boolean) => this.setState({ rmrf: value })} />
-        )}
-        <div p="y-2 x-1.5">
-          <span className="text-green-300">ヽ(ˋ▽ˊ)ノ</span>: Hey, you found the terminal!
-          Type `help` to get started.
-        </div>
+        <div p="y-2 x-1.5">Hey, you found the terminal! Type `help` to get started.</div>
         <div id="terminal-content" p="x-1.5 b-2">
           {this.state.content}
         </div>
