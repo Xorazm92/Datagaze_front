@@ -14,3 +14,15 @@ export interface LaunchpadData {
   Network?: string;
   Storage?: string;
 }
+export interface InstallAppInfoType {
+  application_name?: string;
+  cpu?: string;
+  id: string;
+  network_bandwidth?: string;
+  pathToIcon?: string;
+  publisher?: string;
+  ram?: string;
+  release_date?: string;
+  storage?: string;
+  version?: string;
+}

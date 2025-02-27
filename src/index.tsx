@@ -5,7 +5,7 @@ import { Toaster } from "sonner";
 import Desktop from "~/pages/Desktop";
 import Login from "~/pages/Login";
 import Boot from "~/pages/Boot";
-
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import "@unocss/reset/tailwind.css";
 import "uno.css";
 import "katex/dist/katex.min.css";
@@ -44,6 +44,7 @@ const queryClinet = new QueryClient();
 root.render(
   <QueryClientProvider client={queryClinet}>
     <Toaster position="top-right" richColors />
+    <ReactQueryDevtools initialIsOpen={false} />
     <RouterProvider router={router} />
   </QueryClientProvider>
 );

@@ -1,8 +1,10 @@
-import { launchpadApps } from "~/configs";
 import LicenseModal from "./modal_app";
 import { useState } from "react";
 import LicenseModalinstall from "./modal_app/install";
 import { useQueryApi } from "~/hooks/useQuery";
+import { ApplicationType } from "~/types";
+import { AiOutlineCloudUpload } from "react-icons/ai";
+import axios from "axios";
 
 interface LaunchpadProps {
   show: boolean;
@@ -17,45 +19,36 @@ export default function Launchpad({ show, toggleLaunchpad }: LaunchpadProps) {
   const [selectedApp, setSelectedApp] = useState<any>(null);
   const [selectedApp1, setSelectedApp1] = useState<any>(null);
 
-  const { data } = useQueryApi({
+  const { data, isLoading, isError } = useQueryApi({
     pathname: "app",
     url: "/api/1/desktop/web-applications"
   });
-  console.log(data);
 
-  const OpenModal = (app: any) => {
+  const applications: ApplicationType[] = data || [];
+
+  const OpenModal = (app: ApplicationType) => {
     setSelectedApp(app);
   };
-  const OpenModalinstall = (app: any) => {
+  const OpenModalinstall = (app: ApplicationType) => {
     setSelectedApp1(app);
   };
 
   const CloseModal = () => {
     setSelectedApp(null);
+  };
+  const CloseModalInstall = () => {
     setSelectedApp1(null);
   };
-
-  const search = () => {
-    if (searchText === "") return launchpadApps;
-    const text = searchText.toLowerCase();
-    const list = launchpadApps.filter((item) => {
+  const search = (): ApplicationType[] => {
+    if (!searchText.trim()) return applications;
+    const text = searchText?.toLowerCase();
+    return applications.filter((item) => {
       return (
-        item.title.toLowerCase().includes(text) || item.id.toLowerCase().includes(text)
+        item.application_name?.toLowerCase().includes(text) ||
+        item.id?.toLowerCase().includes(text)
       );
     });
-    return list;
   };
-
-  // const search = () => {
-  //   if (searchText === "") return launchpadApps;
-  //   const text = searchText.toLowerCase();
-  //   const list = launchpadApps.filter((item) => {
-  //     return (
-  //       item.title.toLowerCase().includes(text) || item.id.toLowerCase().includes(text)
-  //     );
-  //   });
-  //   return list;
-  // };
 
   const close = show ? "" : "opacity-0 invisible transition-opacity duration-200";
 
@@ -95,29 +88,39 @@ export default function Launchpad({ show, toggleLaunchpad }: LaunchpadProps) {
           className="max-w-[1100px] mx-auto mt-8 w-full px-4 sm:px-10"
           grid="~ flow-row cols-4 sm:cols-7"
         >
-          {search().map((app) => (
-            <div key={`launchpad-${app.id}`} h="32 sm:36" flex="~ col">
-              <a
-                className="w-14 text-white  sm:w-20 mx-auto cursor-pointer"
-                onClick={!app.icon ? () => OpenModal(app) : () => OpenModalinstall(app)}
-              >
-                <img src={app.img} alt={app.title} title={app.title} />
-              </a>
-              <span
-                m="t-2 x-auto "
-                className="flex items-center gap-2 cursor-pointer"
-                text="white xs sm:sm"
-              >
-                {app.icon && <app.icon size={18} />}
-                {app.title}
-              </span>
-            </div>
-          ))}
+          {isLoading || isError ? (
+            "Loading...."
+          ) : Array.isArray(search()) ? (
+            search().map((app: ApplicationType) => (
+              <div key={`launchpad-${app.id}`} h="32 sm:36" flex="~ col">
+                <a
+                  className="w-14 text-white  sm:w-20 mx-auto cursor-pointer"
+                  onClick={
+                    app?.is_installed ? () => OpenModal(app) : () => OpenModalinstall(app)
+                  }
+                >
+                  <img src={`/icons/${app.pathToIcon}`} alt={app?.application_name} />
+                </a>
+                <span
+                  m="t-2 x-auto "
+                  className="flex items-center gap-2 cursor-pointer"
+                  text="white xs sm:sm"
+                >
+                  {!app?.is_installed && <AiOutlineCloudUpload size={20} />}
+                  <p className="text-[16px] font-500">{app?.application_name}</p>
+                </span>
+              </div>
+            ))
+          ) : (
+            <p>Not data</p>
+          )}
         </div>
       </div>
 
       {selectedApp && <LicenseModal app={selectedApp} onClose={CloseModal} />}
-      {selectedApp1 && <LicenseModalinstall app={selectedApp1} onClose={CloseModal} />}
+      {selectedApp1 && (
+        <LicenseModalinstall app={selectedApp1} onClose={CloseModalInstall} />
+      )}
     </div>
   );
 }

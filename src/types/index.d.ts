@@ -11,5 +11,6 @@ export {
   SiteData,
   RegisterType,
   Apptable,
-  ApplicationType
+  ApplicationType,
+  InstallAppInfoType
 } from "./configs";
