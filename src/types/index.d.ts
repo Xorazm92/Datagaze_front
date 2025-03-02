@@ -12,5 +12,6 @@ export {
   RegisterType,
   Apptable,
   ApplicationType,
-  InstallAppInfoType
+  InstallAppInfoType,
+  InistallApplicationType
 } from "./configs";

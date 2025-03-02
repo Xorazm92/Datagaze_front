@@ -10,3 +10,4 @@ export { WebsitesData, SiteSectionData, SiteData } from "./websites";
 export { Apptable } from "./app_comp";
 export { ApplicationType } from "./applications";
 export { InstallAppInfoType } from "./launchpad";
+export { InistallApplicationType } from "./register";

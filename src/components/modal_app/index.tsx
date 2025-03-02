@@ -4,10 +4,12 @@ import { CiClock2 } from "react-icons/ci";
 import { BiMemoryCard } from "react-icons/bi";
 import { IoMdCloseCircle } from "react-icons/io";
 import { EditDetailsModal } from "./edit";
+import { useDeleteApplication } from "~/hooks/useQuery/useQueryaction";
 
 const LicenseModal = ({ app, onClose }: { app: LaunchpadData; onClose: () => void }) => {
   const [tabValue, setTabValue] = useState("Server Details");
   const [isEditModalOpen, setEditModalOpen] = useState(false);
+  const { mutate } = useDeleteApplication();
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setTabValue(newValue);
   };
@@ -15,6 +17,10 @@ const LicenseModal = ({ app, onClose }: { app: LaunchpadData; onClose: () => voi
     setEditModalOpen(true);
   };
 
+  const UninstallApplication = (id: any) => {
+    mutate({ id });
+    setEditModalOpen(false);
+  };
   const handleEditClose = () => {
     setEditModalOpen(false);
   };
@@ -170,6 +176,7 @@ const LicenseModal = ({ app, onClose }: { app: LaunchpadData; onClose: () => voi
 
         <div className="flex text-[18px] font-700 items-center justify-between">
           <Button
+            onClick={() => UninstallApplication(app.id)}
             sx={{
               textTransform: "capitalize",
               mr: 1,

@@ -26,4 +26,42 @@ const useRegister = () => {
   });
 };
 
-export { useRegister };
+const useInstallApplication = () => {
+  const axios = useAxios();
+  return useMutation({
+    mutationFn: async ({ id, data }: { id: string; data?: any }) =>
+      await axios({
+        url: `/api/1/desktop/install/${id}`,
+        body: data,
+        method: "POST",
+        headers: { "Content-Type": "application/json" }
+      }),
+    onSuccess: () => {
+      console.log("succsess");
+    },
+    onError: (err) => {
+      console.log(err.message);
+    }
+  });
+};
+
+const useDeleteApplication = () => {
+  const axios = useAxios();
+  return useMutation({
+    mutationFn: async ({ id }: { id: string }) => {
+      await axios({
+        url: `/api/1/desktop/uninstall/${id}`,
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" }
+      });
+    },
+    onSuccess: () => {
+      console.log("Delete application");
+    },
+    onError: (error) => {
+      console.log(error.message);
+    }
+  });
+};
+
+export { useRegister, useInstallApplication, useDeleteApplication };

@@ -4,7 +4,6 @@ import LicenseModalinstall from "./modal_app/install";
 import { useQueryApi } from "~/hooks/useQuery";
 import { ApplicationType } from "~/types";
 import { AiOutlineCloudUpload } from "react-icons/ai";
-import axios from "axios";
 
 interface LaunchpadProps {
   show: boolean;
@@ -20,7 +19,7 @@ export default function Launchpad({ show, toggleLaunchpad }: LaunchpadProps) {
   const [selectedApp1, setSelectedApp1] = useState<any>(null);
 
   const { data, isLoading, isError } = useQueryApi({
-    pathname: "app",
+    pathname: "application",
     url: "/api/1/desktop/web-applications"
   });
 

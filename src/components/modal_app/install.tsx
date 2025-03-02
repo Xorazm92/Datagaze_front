@@ -1,5 +1,5 @@
 import { Modal, Box, Typography, Tabs, Tab } from "@mui/material";
-import { InstallAppInfoType, LaunchpadData } from "~/types";
+import { InistallApplicationType, InstallAppInfoType } from "~/types";
 import { BiMemoryCard } from "react-icons/bi";
 import { IoMdCloseCircle } from "react-icons/io";
 import { FiCheck } from "react-icons/fi";
@@ -10,33 +10,38 @@ import { FiGlobe } from "react-icons/fi";
 import { Stepper, Step, StepLabel, Button } from "@mui/material";
 import { useState } from "react";
 import { useQueryApi } from "~/hooks/useQuery";
+import { useInstallApplication } from "~/hooks/useQuery/useQueryaction";
 
 const steps = ["System requirements", "Server configs", "Completed"];
-const token = localStorage.getItem("token") || null;
 
 const LicenseModalinstall = ({ app, onClose }: { app: any; onClose: () => void }) => {
   const [formData, setFormData] = useState({
-    ipAddress: "",
-    portNumber: "",
-    username: "",
-    password: "",
-    remindCheckbox: ""
+    host: "209.38.250.43",
+    port: "22",
+    username: "root",
+    password: "Datagaze2134$Platform"
   });
+  const data2 = {
+    host: "209.38.250.43",
+    port: "22",
+    username: "root",
+    password: "Datagaze2134$Platform"
+  };
+  const { mutate } = useInstallApplication();
   const [activeStep, setActiveStep] = useState(0);
   const [OpenModal, SetOpenModal] = useState(false);
 
   const { data } = useQueryApi({
-    pathname: "key",
+    pathname: "information_app",
     url: `/api/1/desktop/${app.id}`
   });
   const configs: InstallAppInfoType = data;
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: any) => {
     e.preventDefault();
-    console.log("Form ma'lumotlari:", formData);
+    mutate({ id: app.id, data: data2 });
     setActiveStep((prev) => prev + 1);
   };
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData((prev) => ({
       ...prev,
@@ -210,14 +215,14 @@ const LicenseModalinstall = ({ app, onClose }: { app: any; onClose: () => void }
                       </div>
                     )}
                     {activeStep === 1 && (
-                      <form onSubmit={handleSubmit}>
+                      <form onSubmit={(e) => handleSubmit(e)}>
                         <div className="mt-[30px] grid grid-cols-2 gap-5">
                           <label className="flex flex-col text-[13px] font-600 gap-1">
                             IP address
                             <input
                               name="ipAddress"
                               onChange={handleChange}
-                              value={formData.ipAddress}
+                              value={formData.host}
                               type="text"
                               className="rounded-[8px] bg-white font-500 w-[232px] h-[32px] p-1 px-2"
                               placeholder="Ip adress"
@@ -227,7 +232,7 @@ const LicenseModalinstall = ({ app, onClose }: { app: any; onClose: () => void }
                             Port number
                             <input
                               name="portNumber"
-                              value={formData.portNumber}
+                              value={formData.port}
                               onChange={handleChange}
                               type="text"
                               className="rounded-[8px] bg-white font-500 w-[232px] h-[32px] p-1 px-2"
@@ -262,7 +267,7 @@ const LicenseModalinstall = ({ app, onClose }: { app: any; onClose: () => void }
                           <input
                             name="remindCheckbox"
                             onChange={handleChange}
-                            value={formData.remindCheckbox}
+                            // value={formData.remindCheckbox}
                             type="text"
                             className="rounded-[8px] bg-white font-500 w-[232px] h-[32px] p-1 px-2"
                             placeholder="Remind it checkbox"
@@ -303,7 +308,7 @@ const LicenseModalinstall = ({ app, onClose }: { app: any; onClose: () => void }
                           <span className="text-sm font-normal">Terminal</span>
                         </div>
                         <div className="w-full h-full overflow-hidden">
-                          <Terminal token={token} autoSsh={true} />
+                          <Terminal autoSsh={true} />
                         </div>
                       </div>
                     )}
