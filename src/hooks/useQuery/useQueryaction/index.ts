@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { notificationApi } from "~/generic/notification";
 import { useAxios } from "~/hooks/useAxios";
 import { useNavigate } from "react-router-dom";
@@ -27,6 +27,7 @@ const useRegister = () => {
 };
 
 const useInstallApplication = () => {
+  // const queryClient = useQueryClient();
   const axios = useAxios();
   return useMutation({
     mutationFn: async ({ id, data }: { id: string; data?: any }) =>
@@ -36,8 +37,11 @@ const useInstallApplication = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" }
       }),
-    onSuccess: () => {
-      console.log("succsess");
+    onSuccess: (response) => {
+      console.log("succsess application", response);
+      // queryClient.invalidateQueries({
+      //   queryKey: ["information_app", id]
+      // });
     },
     onError: (err) => {
       console.log(err.message);
@@ -55,8 +59,8 @@ const useDeleteApplication = () => {
         headers: { "Content-Type": "application/json" }
       });
     },
-    onSuccess: () => {
-      console.log("Delete application");
+    onSuccess: (res) => {
+      console.log("Delete application", res);
     },
     onError: (error) => {
       console.log(error.message);

@@ -21,12 +21,14 @@ const LicenseModalinstall = ({ app, onClose }: { app: any; onClose: () => void }
     username: "root",
     password: "Datagaze2134$Platform"
   });
+
   const data2 = {
     host: "209.38.250.43",
     port: "22",
     username: "root",
     password: "Datagaze2134$Platform"
   };
+
   const { mutate } = useInstallApplication();
   const [activeStep, setActiveStep] = useState(0);
   const [OpenModal, SetOpenModal] = useState(false);
@@ -35,6 +37,7 @@ const LicenseModalinstall = ({ app, onClose }: { app: any; onClose: () => void }
     pathname: "information_app",
     url: `/api/1/desktop/${app.id}`
   });
+
   const configs: InstallAppInfoType = data;
 
   const handleSubmit = (e: any) => {

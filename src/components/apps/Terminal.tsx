@@ -1,22 +1,21 @@
 import React, { useState, useEffect, useRef } from "react";
-import { io, Socket } from "socket.io-client"; // Socket.IO ishlatiladi
 import { terminal } from "~/configs";
 import type { TerminalData } from "~/types";
+import { SocketService } from "~/types/configs/SockedServis";
 
 interface TerminalProps {
-  token?: string | null;
   autoSsh?: boolean;
 }
 
 const Terminal = ({ autoSsh = false }: TerminalProps) => {
   const token = localStorage.getItem("token");
   const [content, setContent] = useState<JSX.Element[]>([]);
+  const [progress, setProgress] = useState<string | number | null>(null);
   const history = useRef<string[]>([]);
   const curInputTimes = useRef(0);
   const curDirPath = useRef<string[]>([]);
   const curChildren = useRef<any>(terminal);
-  const socket = useRef<Socket | null>(null);
-
+  const socketService = useRef<SocketService | null>(null);
   const reset = () => setContent([]);
   const addRow = (row: JSX.Element) => setContent((prev) => [...prev, row]);
 
@@ -76,6 +75,7 @@ const Terminal = ({ autoSsh = false }: TerminalProps) => {
   const clear = () => {
     curInputTimes.current++;
     reset();
+    setProgress(null);
   };
 
   const help = () => {
@@ -90,49 +90,28 @@ const Terminal = ({ autoSsh = false }: TerminalProps) => {
     );
   };
 
-  const connectSocket = () => {
-    if (!token) {
-      generateResultRow("❌ Error: Token topilmadi!");
-      return null;
-    }
+  // const ssh = (args?: string) => {
+  //   if (!token) {
+  //     generateResultRow("❌ Error: Token topilmadi!");
+  //     return;
+  //   }
 
-    if (socket.current?.connected) {
-      console.log(socket.current);
+  //   if (!socketService.current) {
 
-      return socket.current;
-    }
+  //     socketService.current = new SocketService(token);
+  //     socketService.current.onMessage((data) => {
 
-    socket.current = io(
-      `wss://datagaze-platform-9cab2c02bc91.herokuapp.com/terminal?token=${token}`,
-      {
-        transports: ["websocket"]
-      }
-    );
-    console.log(socket.current);
+  //       const { success, result} = data.data || data;
+  //       generateResultRow(success ? `🚀 ${result}` : `❌ Xato: ${result}`);
+  //     });
+  //     socketService.current.onProgress((progressData) => {
+  //       console.log("Progress set to:", progressData); // Bu chiqmadi?
+  //       setProgress(progressData !== undefined ? progressData : null);
+  //     });
+  //   }
 
-    socket.current.on("connect", () => {
-      console.log("Socket.IO ulandi");
-      generateResultRow("✅ Socket.IO serveriga ulandi");
-    });
-
-    socket.current.on("message", (data) => {
-      const { success, result } = data.data || data;
-      generateResultRow(success ? `🚀 ${result}` : `❌ Xato: ${result}`);
-    });
-
-    socket.current.on("connect_error", (error) => {
-      console.error("Socket.IO xatoligi:", error);
-      generateResultRow(`❌ Ulanish xatosi: ${error.message}`);
-    });
-
-    socket.current.on("disconnect", () => {
-      console.log("Socket.IO yopildi");
-      generateResultRow("🔌 Socket.IO ulanishi yopildi");
-      socket.current = null;
-    });
-
-    return socket.current;
-  };
+  //   socketService.current.sendCommand(args || "ssh root@209.38.250.43");
+  // };
 
   const ssh = (args?: string) => {
     if (!token) {
@@ -140,18 +119,21 @@ const Terminal = ({ autoSsh = false }: TerminalProps) => {
       return;
     }
 
-    const sock = connectSocket();
-    if (!sock) return;
+    generateResultRow("🚀 SSH ulanish boshlandi...");
 
-    if (sock.connected) {
-      sock.emit("command", args);
-    } else {
-      sock.on("connect", () => {
-        sock.emit("command", args);
-      });
-    }
+    let progressValue = 0;
+    const interval = setInterval(() => {
+      progressValue += 10;
+      setProgress(progressValue);
+      console.log("Progress set to:", progressValue);
+
+      if (progressValue > 100 || progressValue == 100) {
+        clearInterval(interval);
+        generateResultRow("✅ SSH ulanish muvaffaqiyatli yakunlandi!");
+        setTimeout(() => setProgress(null), 2000);
+      }
+    }, 2000);
   };
-
   const commands: Record<string, (arg?: string) => void> = {
     cd,
     ls,
@@ -167,20 +149,15 @@ const Terminal = ({ autoSsh = false }: TerminalProps) => {
       generateInputRow();
 
       if (autoSsh) {
-        const sock = connectSocket();
-        if (sock) {
-          sock.on("connect", () => {
-            sock.emit("command", { command: "ssh root@209.38.250.43" });
-          });
-        }
+        ssh("ssh root@209.38.250.43");
       }
     };
 
     initializeTerminal();
 
     return () => {
-      if (socket.current?.connected) {
-        socket.current.disconnect();
+      if (socketService.current) {
+        socketService.current.disconnect();
       }
     };
   }, [autoSsh]);
@@ -238,6 +215,17 @@ const Terminal = ({ autoSsh = false }: TerminalProps) => {
       <div className="py-2 px-1.5">
         Hey, you found the terminal! Type `help` to get started.
       </div>
+      {progress !== null && (
+        <div className="px-1.5 py-1 text-blue-500">
+          Progress:
+          {typeof progress === "number" && progress <= 100 ? `${progress}%` : progress}
+          {typeof progress === "number" && (
+            <div className="w-full bg-gray-200 h-2">
+              <div className="bg-blue-500 h-2" style={{ width: `${progress}%` }}></div>
+            </div>
+          )}
+        </div>
+      )}
       <div className="px-1.5 pb-2">{content}</div>
     </div>
   );
