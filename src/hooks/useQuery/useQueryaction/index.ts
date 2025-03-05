@@ -59,8 +59,8 @@ const useDeleteApplication = () => {
         headers: { "Content-Type": "application/json" }
       });
     },
-    onSuccess: (res) => {
-      console.log("Delete application", res);
+    onSuccess: () => {
+      console.log("Delete application", 1);
     },
     onError: (error) => {
       console.log(error.message);

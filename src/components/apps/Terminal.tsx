@@ -14,8 +14,9 @@ const Terminal = ({ autoSsh = false }: TerminalProps) => {
   const history = useRef<string[]>([]);
   const curInputTimes = useRef(0);
   const curDirPath = useRef<string[]>([]);
-  const curChildren = useRef<any>(terminal);
+  const curChildren = useRef<TerminalData[]>(terminal); // Tipni to'g'riladik
   const socketService = useRef<SocketService | null>(null);
+
   const reset = () => setContent([]);
   const addRow = (row: JSX.Element) => setContent((prev) => [...prev, row]);
 
@@ -41,12 +42,12 @@ const Terminal = ({ autoSsh = false }: TerminalProps) => {
       const target = curChildren.current.find(
         (item: TerminalData) => item.title === args && item.type === "folder"
       );
-      if (target) {
-        curDirPath.current.push(target.title);
-        curChildren.current = target.children;
-      } else {
-        generateResultRow(`cd: no such file or directory: ${args}`);
-      }
+      // if (target) {
+      //   curDirPath.current.push(target.title);
+      //   curChildren.current = target.children;
+      // } else {
+      //   generateResultRow(`cd: no such file or directory: ${args}`);
+      // }
     }
   };
 
@@ -69,7 +70,7 @@ const Terminal = ({ autoSsh = false }: TerminalProps) => {
     const file = curChildren.current.find(
       (item: TerminalData) => item.title === args && item.type === "file"
     );
-    generateResultRow(file ? file.content : `cat: ${args}: No such file or directory`);
+    // generateResultRow(file ? file.content : `cat: ${args}: No such file or directory`);
   };
 
   const clear = () => {
@@ -90,50 +91,37 @@ const Terminal = ({ autoSsh = false }: TerminalProps) => {
     );
   };
 
-  // const ssh = (args?: string) => {
-  //   if (!token) {
-  //     generateResultRow("❌ Error: Token topilmadi!");
-  //     return;
-  //   }
-
-  //   if (!socketService.current) {
-
-  //     socketService.current = new SocketService(token);
-  //     socketService.current.onMessage((data) => {
-
-  //       const { success, result} = data.data || data;
-  //       generateResultRow(success ? `🚀 ${result}` : `❌ Xato: ${result}`);
-  //     });
-  //     socketService.current.onProgress((progressData) => {
-  //       console.log("Progress set to:", progressData); // Bu chiqmadi?
-  //       setProgress(progressData !== undefined ? progressData : null);
-  //     });
-  //   }
-
-  //   socketService.current.sendCommand(args || "ssh root@209.38.250.43");
-  // };
-
   const ssh = (args?: string) => {
     if (!token) {
       generateResultRow("❌ Error: Token topilmadi!");
       return;
     }
 
-    generateResultRow("🚀 SSH ulanish boshlandi...");
+    if (!socketService.current) {
+      socketService.current = new SocketService(token);
+      socketService.current.onMessage((data) => {
+        const { success, result } = data.data || data; // Serverdan kelgan data ichidagi ichki obyektdan olish
+        generateResultRow(
+          success ? `🚀 ${result || "Command executed"}` : `❌ Xato: ${result}`
+        );
+      });
+      socketService.current.onProgress((progressData) => {
+        console.log("Progress set to:", progressData);
+        setProgress(progressData !== undefined ? progressData : null);
+      });
+      socketService.current.onCommandResponse((data) => {
+        const { success, result } = data.data || data; // Ichki data dan olish
+        console.log("Command response data:", data); // Debug
+        generateResultRow(
+          success ? `🚀 ${result || "Command executed"}` : `❌ Xato: ${result}`
+        );
+      });
+    }
 
-    let progressValue = 0;
-    const interval = setInterval(() => {
-      progressValue += 10;
-      setProgress(progressValue);
-      console.log("Progress set to:", progressValue);
-
-      if (progressValue > 100 || progressValue == 100) {
-        clearInterval(interval);
-        generateResultRow("✅ SSH ulanish muvaffaqiyatli yakunlandi!");
-        setTimeout(() => setProgress(null), 2000);
-      }
-    }, 2000);
+    socketService.current.sendCommand(args || "ssh root@209.38.250.43");
+    console.log("SSH command sent with args:", args);
   };
+
   const commands: Record<string, (arg?: string) => void> = {
     cd,
     ls,
@@ -217,6 +205,7 @@ const Terminal = ({ autoSsh = false }: TerminalProps) => {
       </div>
       {progress !== null && (
         <div className="px-1.5 py-1 text-blue-500">
+          <p>O‘rnatish boshlandi...</p>
           Progress:
           {typeof progress === "number" && progress <= 100 ? `${progress}%` : progress}
           {typeof progress === "number" && (
@@ -224,6 +213,7 @@ const Terminal = ({ autoSsh = false }: TerminalProps) => {
               <div className="bg-blue-500 h-2" style={{ width: `${progress}%` }}></div>
             </div>
           )}
+          <p>✅ Jarayon yakunlandi</p>
         </div>
       )}
       <div className="px-1.5 pb-2">{content}</div>

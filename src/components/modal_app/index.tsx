@@ -1,31 +1,62 @@
-import { Modal, Box, Typography, Button, Tabs, Tab } from "@mui/material";
+import {
+  Modal,
+  Box,
+  Typography,
+  Button,
+  Tabs,
+  Tab,
+  CircularProgress
+} from "@mui/material";
 import { LaunchpadData } from "~/types";
 import { CiClock2 } from "react-icons/ci";
 import { BiMemoryCard } from "react-icons/bi";
 import { IoMdCloseCircle } from "react-icons/io";
 import { EditDetailsModal } from "./edit";
 import { useDeleteApplication } from "~/hooks/useQuery/useQueryaction";
+import { useState } from "react"; // useState import qilish
 
 const LicenseModal = ({ app, onClose }: { app: LaunchpadData; onClose: () => void }) => {
   const [tabValue, setTabValue] = useState("Server Details");
   const [isEditModalOpen, setEditModalOpen] = useState(false);
-  const { mutate } = useDeleteApplication();
+  const [isModalOpen, setIsModalOpen] = useState(true);
+  const { mutate, isPending, isError } = useDeleteApplication();
+
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+    event.preventDefault();
     setTabValue(newValue);
   };
+
   const handleEditClick = () => {
     setEditModalOpen(true);
   };
 
   const UninstallApplication = (id: any) => {
-    mutate({ id });
-    setEditModalOpen(false);
+    mutate(
+      { id },
+      {
+        onSuccess: () => {
+          console.log("Uninstall successful");
+          setIsModalOpen(false);
+        },
+        onError: (error) => {
+          console.error("Uninstall failed:", error);
+        }
+      }
+    );
   };
+
   const handleEditClose = () => {
     setEditModalOpen(false);
   };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+    onClose();
+  };
+
+  console.log("Rendering LicenseModal, isModalOpen:", isModalOpen);
   return (
-    <Modal open={true} onClose={onClose} aria-labelledby="modal-title">
+    <Modal open={isModalOpen} onClose={handleModalClose} aria-labelledby="modal-title">
       <Box
         sx={{
           position: "absolute",
@@ -36,19 +67,19 @@ const LicenseModal = ({ app, onClose }: { app: LaunchpadData; onClose: () => voi
           bgcolor: "white",
           borderRadius: "10px",
           p: 2,
-          backgroundColor: ["#e0e3fa"],
+          backgroundColor: "#e0e3fa",
           height: 478,
           width: 520,
           boxShadow: 24
         }}
       >
-        <div className="flex items-center gap-2 mb-6  justify-start">
+        <div className="flex items-center gap-2 mb-6 justify-start">
           <IoMdCloseCircle
             size={18}
             className="cursor-pointer text-gray-500 hover:text-gray-700"
-            onClick={onClose}
+            onClick={handleModalClose}
           />
-          <p className="text-[13px] font-600 text-[grey]">{app.title}</p>
+          <p className="text-[13px] font-600 text-gray-500">{app.title}</p>
         </div>
         <Typography
           variant="h4"
@@ -114,14 +145,14 @@ const LicenseModal = ({ app, onClose }: { app: LaunchpadData; onClose: () => voi
               </div>
               <div className="flex flex-col items-start gap-3">
                 <div className="flex items-center gap-3">
-                  <img src="/icons/Vector.png" alt="cersion" />
+                  <img src="/icons/Vector.png" alt="version" />
                   <p>Agent version</p>
                 </div>
                 <p className="text-[16px] font-500">{app.Agent_version}</p>
               </div>
               <div className="flex flex-col items-start gap-3">
                 <div className="flex items-center gap-3">
-                  <img src="/icons/computer.png" alt="adress" />
+                  <img src="/icons/computer.png" alt="address" />
                   <p>IP address</p>
                 </div>
                 <p className="text-[16px] font-500">{app.adress}</p>
@@ -129,7 +160,6 @@ const LicenseModal = ({ app, onClose }: { app: LaunchpadData; onClose: () => voi
               <div className="flex flex-col items-start gap-3">
                 <div className="flex items-center gap-3">
                   <BiMemoryCard />
-
                   <p>File size</p>
                 </div>
                 <p className="text-[16px] font-500">{app.File_size}GB</p>
@@ -142,7 +172,6 @@ const LicenseModal = ({ app, onClose }: { app: LaunchpadData; onClose: () => voi
               <div className="flex flex-col items-start gap-3">
                 <div className="flex items-center gap-3">
                   <CiClock2 />
-
                   <p>First upload date</p>
                 </div>
                 <p className="text-[16px] font-500">{app.First_upload_date}</p>
@@ -150,14 +179,13 @@ const LicenseModal = ({ app, onClose }: { app: LaunchpadData; onClose: () => voi
               <div className="flex flex-col items-start gap-3">
                 <div className="flex items-center gap-3">
                   <CiClock2 />
-
                   <p>Last upload date</p>
                 </div>
                 <p className="text-[16px] font-500">{app.Last_upload_date}</p>
               </div>
               <div className="flex flex-col items-start gap-3">
                 <div className="flex items-center gap-3">
-                  <img src="/icons/Vector.png" alt="cersion" />
+                  <img src="/icons/Vector.png" alt="version" />
                   <p>Agent version</p>
                 </div>
                 <p className="text-[16px] font-500">{app.Agent_version}</p>
@@ -165,7 +193,6 @@ const LicenseModal = ({ app, onClose }: { app: LaunchpadData; onClose: () => voi
               <div className="flex flex-col items-start gap-3">
                 <div className="flex items-center gap-3">
                   <BiMemoryCard />
-
                   <p>File size</p>
                 </div>
                 <p className="text-[16px] font-500">{app.File_size}GB</p>
@@ -180,18 +207,18 @@ const LicenseModal = ({ app, onClose }: { app: LaunchpadData; onClose: () => voi
             sx={{
               textTransform: "capitalize",
               mr: 1,
-              fontFamily: "Inter, sans-serif" // Shrfit turi
+              fontFamily: "Inter, sans-serif"
             }}
             color="error"
           >
-            Uninstall
+            {isPending || isError ? <CircularProgress size="30px" /> : "Uninstall"}
           </Button>
-          <div className="flex items-center gap-1 ">
+          <div className="flex items-center gap-1">
             <Button
               sx={{
                 textTransform: "capitalize",
                 mr: 1,
-                fontFamily: "Inter, sans-serif" // Shrfit turi
+                fontFamily: "Inter, sans-serif"
               }}
               color="primary"
             >
@@ -204,7 +231,7 @@ const LicenseModal = ({ app, onClose }: { app: LaunchpadData; onClose: () => voi
                 background: "white",
                 padding: "8px",
                 borderRadius: "8px",
-                fontFamily: "Inter, sans-serif" // Shrfit turi
+                fontFamily: "Inter, sans-serif"
               }}
               onClick={handleEditClick}
             >

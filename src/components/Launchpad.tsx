@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useQueryApi } from "~/hooks/useQuery";
 import { ApplicationType } from "~/types";
 import { AiOutlineCloudUpload } from "react-icons/ai";
+import { Box, CircularProgress } from "@mui/material";
 
 interface LaunchpadProps {
   show: boolean;
@@ -45,7 +46,7 @@ export default function Launchpad({ show, toggleLaunchpad }: LaunchpadProps) {
 
   return (
     <div
-      className={`${close} z-30 transform scale-100 size-full fixed overflow-hidden bg-center bg-cover`}
+      className={`${close} z-30 transform scale-100 fixed overflow-hidden`}
       id="launchpad"
       style={{
         background: "linear-gradient(to bottom, rgb(6, 70, 246), #ffffff)"
@@ -74,10 +75,15 @@ export default function Launchpad({ show, toggleLaunchpad }: LaunchpadProps) {
           />
         </div>
 
-        <div className="max-w-[1100px] mx-auto mt-6 w-full px-4">
+        <div className="mx-auto mt-6 w-full px-4">
           <div className="grid grid-cols-3 xs:grid-cols-4 sm:grid-cols-5 md:grid-cols-7 gap-4 sm:gap-6">
             {isLoading || isError ? (
-              <p className="text-white text-center col-span-full">Loading...</p>
+              <p className="text-white text-center col-span-full">
+                Loading...
+                <Box sx={{ display: "flex" }}>
+                  <CircularProgress />
+                </Box>
+              </p>
             ) : Array.isArray(search()) ? (
               search().map((app: ApplicationType) => (
                 <div
@@ -93,7 +99,7 @@ export default function Launchpad({ show, toggleLaunchpad }: LaunchpadProps) {
                     }
                   >
                     <img
-                      src={`/icons/${app.pathToIcon}`}
+                      src={`/icons/${app?.pathToIcon}`}
                       alt={app?.application_name}
                       className="w-full h-full object-contain"
                     />
