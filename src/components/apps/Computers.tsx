@@ -49,7 +49,7 @@ const Computers = () => {
     <div className="p-4 bg-gray-100 min-h-screen ">
       {openTable && <Computers_app />}
       <div className="overflow-x-auto bg-white shadow-lg rounded-lg">
-        <div className="bg-[#e1e9fb] w-full flex items-center justify-between h-[64px] px-4">
+        <div className="bg-[#e2eafb] w-full flex items-center justify-between h-[64px] px-4">
           <TextField
             value={value}
             onChange={searchFuctions}
@@ -128,7 +128,7 @@ const Computers = () => {
         <div className="max-h-[600px] overflow-y-auto">
           <table className="w-full text-left border-collapse bg-white  shadow-md rounded-lg">
             <thead>
-              <tr className="border-b border-gray-300  text-gray-600 text-sm bg-[#ccdbf7]">
+              <tr className="border-b border-gray-300  text-gray-600 text-sm bg-[#ccdaf8]">
                 <th className="p-3">
                   <input type="checkbox" />
                 </th>
@@ -141,10 +141,10 @@ const Computers = () => {
               </tr>
             </thead>
             <tbody>
-              {filteredComputers.map((item) => (
+              {filteredComputers.map((item, index) => (
                 <tr
                   key={item.id}
-                  className="border-b border-gray-200 p-4 text-sm hover:bg-gray-50"
+                  className={`border-b border-gray-200 p-4 text-sm  ${index % 2 == 0 ? "bg-[grey-50]" : "bg-[#ccdaf8]"}`}
                 >
                   <td className="p-3">
                     <input type="checkbox" />
@@ -155,10 +155,12 @@ const Computers = () => {
                   </td>
                   <td className="p-3">{item.OS}</td>
                   <td className="p-3">{item.adress}</td>
-                  <td
-                    className={`p-3 ${item.active === "Active" ? "text-green-600" : "text-gray-500"}`}
-                  >
-                    {item.active}
+                  <td>
+                    <p
+                      className={`${item.active === "Active" ? "bg-[#DCFCE7] flex text-green-600 w-[49px] h-[20px] items-center justify-center p-2 rounded-[8px] text-[12px]" : "text-[grey] bg-[#dfe8fb] flex  w-[49px] h-[20px] text-[12px] items-center justify-center px-2 py-2 rounded-[8px]"}`}
+                    >
+                      {item.active}
+                    </p>
                   </td>
                   <td
                     className="p-3 text-blue-500 cursor-pointer"

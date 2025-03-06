@@ -48,9 +48,6 @@ export default function Launchpad({ show, toggleLaunchpad }: LaunchpadProps) {
     <div
       className={`${close} z-30 transform scale-100 fixed overflow-hidden`}
       id="launchpad"
-      style={{
-        background: "linear-gradient(to bottom, rgb(6, 70, 246), #ffffff)"
-      }}
       onClick={() => toggleLaunchpad(true)}
     >
       <div className="size-full absolute bg-gray-900/20 backdrop-blur-2xl">

@@ -86,13 +86,17 @@ const TopBar = (props: any) => {
   return (
     <div>
       <div
-        className={`w-full h-8 px-2 fixed top-0 hstack justify-between ${
+        className={`w-full h-[44px] px-2 fixed top-0 flex items-center justify-between ${
           props.hide ? "z-0" : "z-20"
         } text-sm text-white bg-gray-700/10 backdrop-blur-2xl shadow transition`}
       >
-        <div className="hstack space-x-1">
+        <div className="items-center flex space-x-1">
           <TopBarItem className="px-2" onClick={toggleAppleMenu} ref={appleBtnRef}>
-            <img src="/logo/logo_data.svg" alt="Datagaze" className="w-6 h-6" />
+            <img
+              src="/logo/logo_data.svg"
+              alt="Datagaze"
+              className="w-[16px] h-[28px] "
+            />
           </TopBarItem>
           <TopBarItem
             className="font-semibold px-2"
@@ -100,13 +104,13 @@ const TopBar = (props: any) => {
               if (state.showAppleMenu) toggleAppleMenu();
             }}
           >
-            <p>DataGaze LTD 2025</p>
+            <p className="font-normal">DataGaze LTD 2025</p>
           </TopBarItem>
         </div>
 
         {/* Open this when clicking on Apple logo */}
 
-        <div className="hstack flex-row justify-end space-x-5">
+        <div className="items-center flex flex-row justify-end space-x-5">
           <TopBarItem onClick={() => window.open("https://www.datagaze.uz/", "_blank")}>
             <span className="i-bx:bx-globe text-[17px]" />
             <span>Go to website</span>
@@ -140,7 +144,6 @@ const TopBar = (props: any) => {
             </div>
           )}
 
-          <Battery />
           <TopBarItem>
             <span className="i-bx:bxs-smile text-[17px]" />
             <span>Jam</span>

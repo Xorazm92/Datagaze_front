@@ -18,7 +18,6 @@ export class SocketService {
   }
 
   private setupEventListeners(): void {
-    // Terminal socket events
     this.terminalSocket.on("connect", () => {
       console.log("Connected to terminal socket");
     });
@@ -31,7 +30,6 @@ export class SocketService {
       console.log("Terminal response received:", data);
     });
 
-    // Progress socket events
     this.progressSocket.on("connect", () => {
       console.log("Connected to progress socket");
     });

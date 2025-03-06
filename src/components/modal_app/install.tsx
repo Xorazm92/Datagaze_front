@@ -1,5 +1,5 @@
 import { Modal, Box, Typography, Tabs, Tab } from "@mui/material";
-import { InistallApplicationType, InstallAppInfoType } from "~/types";
+import { ApplicationType, InistallApplicationType, InstallAppInfoType } from "~/types";
 import { BiMemoryCard } from "react-icons/bi";
 import { IoMdCloseCircle } from "react-icons/io";
 import { FiCheck } from "react-icons/fi";
@@ -14,7 +14,15 @@ import { useInstallApplication } from "~/hooks/useQuery/useQueryaction";
 
 const steps = ["System requirements", "Server configs", "Completed"];
 
-const LicenseModalinstall = ({ app, onClose }: { app: any; onClose: () => void }) => {
+const LicenseModalinstall = ({
+  app,
+  onClose
+}: {
+  app: ApplicationType;
+  onClose: () => void;
+}) => {
+  console.log(app);
+
   const [formData, setFormData] = useState({
     host: "209.38.250.43",
     port: "22",
@@ -78,17 +86,18 @@ const LicenseModalinstall = ({ app, onClose }: { app: any; onClose: () => void }
           left: "50%",
           transform: "translate(-50%, -50%)",
           bgcolor: "white",
-          borderRadius: "10px",
-          padding: 1,
+          borderRadius: "8px",
+          padding: 2,
           paddingX: 2,
-          backgroundColor: ["#e0e3fa"],
+          paddingY: 1,
+          backgroundColor: "#e0e3fa",
           height: 446,
           width: 579,
           alignItems: "start",
-          boxShadow: 24
+          boxShadow: 124
         }}
       >
-        <div className="flex items-center w-[69vh] px-2 h-[30px] gap-2 mb-6 justify-start">
+        <div className="flex items-center absolute top-0 w-[100%] left-0  m-auto  bg-[#fdfcfe]  px-2 h-[30px] gap-2  rounded-[6px]">
           <IoMdCloseCircle
             size={18}
             className="cursor-pointer text-gray-500 hover:text-gray-700"
@@ -98,7 +107,7 @@ const LicenseModalinstall = ({ app, onClose }: { app: any; onClose: () => void }
         </div>
         <Typography
           variant="h4"
-          className="flex items-center gap-3"
+          className="flex items-center gap-3 !mt-[50px]"
           sx={{ fontWeight: "bold", textAlign: "center", mt: 1 }}
         >
           <img
@@ -270,7 +279,6 @@ const LicenseModalinstall = ({ app, onClose }: { app: any; onClose: () => void }
                           <input
                             name="remindCheckbox"
                             onChange={handleChange}
-                            // value={formData.remindCheckbox}
                             type="text"
                             className="rounded-[8px] bg-white font-500 w-[232px] h-[32px] p-1 px-2"
                             placeholder="Remind it checkbox"

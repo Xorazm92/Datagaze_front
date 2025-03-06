@@ -83,7 +83,7 @@ const Computers_app = () => {
               {filteredComputers.map((item, index) => (
                 <tr
                   key={index}
-                  className="border-b border-gray-200 p-4 text-sm hover:bg-gray-50"
+                  className={`border-b border-gray-200 p-4 text-sm ${index % 2 == 0 ? "bg-[grey-50]" : "bg-[#ccdaf8]"}`}
                 >
                   <td className="p-3">{item.Product_name}</td>
                   <td className="p-3">{item.File_size}</td>

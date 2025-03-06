@@ -10,7 +10,7 @@ const ModalLicense = () => {
       <div className="overflow-hidden rounded-lg shadow-md">
         <table className="w-full text-left border-collapse bg-white shadow-md !rounded-lg">
           <thead>
-            <tr className="border-b border-gray-300 text-gray-600 text-sm bg-[#ccdbf7]">
+            <tr className="border-b border-gray-300 text-gray-600 text-sm bg-[#d4e0f9]">
               <th className="p-3">Product name</th>
               <th className="p-3">Server address</th>
               <th className="p-3">Computers count</th>
@@ -20,13 +20,17 @@ const ModalLicense = () => {
             </tr>
           </thead>
           <tbody>
-            {ModalLicenseTable.map((item: ModalLicenseType) => (
+            {ModalLicenseTable.map((item: ModalLicenseType, index) => (
               <tr
                 key={item.id}
-                className="border-b border-gray-200 text-sm hover:bg-gray-50"
+                className={`border-b border-[gray-200] text-sm ${index % 2 == 0 ? "bg-[grey-50]" : "bg-[#ccdaf8]"}`}
               >
                 <td className="p-3 flex items-center gap-2">
-                  <img className="w-[30px] h-[30px]" src={item.icons} alt="icon" />
+                  <img
+                    className="w-[24px] rounded-[8px] h-[24px]"
+                    src={item.icons}
+                    alt="icon"
+                  />
                   {item.name}
                 </td>
                 <td className="p-3">{item.adress}</td>

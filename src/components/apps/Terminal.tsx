@@ -14,7 +14,7 @@ const Terminal = ({ autoSsh = false }: TerminalProps) => {
   const history = useRef<string[]>([]);
   const curInputTimes = useRef(0);
   const curDirPath = useRef<string[]>([]);
-  const curChildren = useRef<TerminalData[]>(terminal); // Tipni to'g'riladik
+  const curChildren = useRef<TerminalData[]>(terminal);
   const socketService = useRef<SocketService | null>(null);
 
   const reset = () => setContent([]);
@@ -42,12 +42,6 @@ const Terminal = ({ autoSsh = false }: TerminalProps) => {
       const target = curChildren.current.find(
         (item: TerminalData) => item.title === args && item.type === "folder"
       );
-      // if (target) {
-      //   curDirPath.current.push(target.title);
-      //   curChildren.current = target.children;
-      // } else {
-      //   generateResultRow(`cd: no such file or directory: ${args}`);
-      // }
     }
   };
 
@@ -70,13 +64,13 @@ const Terminal = ({ autoSsh = false }: TerminalProps) => {
     const file = curChildren.current.find(
       (item: TerminalData) => item.title === args && item.type === "file"
     );
-    // generateResultRow(file ? file.content : `cat: ${args}: No such file or directory`);
   };
 
   const clear = () => {
     curInputTimes.current++;
     reset();
     setProgress(null);
+    setContent(() => []);
   };
 
   const help = () => {
@@ -100,7 +94,7 @@ const Terminal = ({ autoSsh = false }: TerminalProps) => {
     if (!socketService.current) {
       socketService.current = new SocketService(token);
       socketService.current.onMessage((data) => {
-        const { success, result } = data.data || data; // Serverdan kelgan data ichidagi ichki obyektdan olish
+        const { success, result } = data.data || data;
         generateResultRow(
           success ? `🚀 ${result || "Command executed"}` : `❌ Xato: ${result}`
         );
@@ -110,8 +104,8 @@ const Terminal = ({ autoSsh = false }: TerminalProps) => {
         setProgress(progressData !== undefined ? progressData : null);
       });
       socketService.current.onCommandResponse((data) => {
-        const { success, result } = data.data || data; // Ichki data dan olish
-        console.log("Command response data:", data); // Debug
+        const { success, result } = data.data || data;
+        console.log("Command response data:", data);
         generateResultRow(
           success ? `🚀 ${result || "Command executed"}` : `❌ Xato: ${result}`
         );
@@ -172,7 +166,7 @@ const Terminal = ({ autoSsh = false }: TerminalProps) => {
     addRow(
       <div key={curInputTimes.current} className="flex">
         <span className="text-black">
-          solikhov <span className="text-green-300">{getCurDirName()}</span>{" "}
+          solikhov <span className="text-green-300">{getCurDirName()}</span>
           <span className="text-red-400"></span>
         </span>
         <input
