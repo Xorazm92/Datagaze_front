@@ -29,6 +29,7 @@
     "@rooks/use-raf": "^4.11.2",
     "@tanstack/react-query": "^5.66.0",
     "@tanstack/react-query-devtools": "^5.66.9",
+    "@xterm/xterm": "^5.5.0",
     "axios": "^1.7.9",
     "date-fns": "^3.6.0",
     "framer-motion": "^11.1.7",
