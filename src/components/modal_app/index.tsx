@@ -73,7 +73,7 @@ const LicenseModal = ({ app, onClose }: { app: LaunchpadData; onClose: () => voi
           boxShadow: 24
         }}
       >
-        <div className="flex items-center gap-2 mb-6 justify-start">
+        <div className="flex items-center absolute top-0 w-[100%] left-0  m-auto  bg-transparent  px-4 h-[30px] gap-2  rounded-[8px]">
           <IoMdCloseCircle
             size={18}
             className="cursor-pointer text-gray-500 hover:text-gray-700"
@@ -83,7 +83,7 @@ const LicenseModal = ({ app, onClose }: { app: LaunchpadData; onClose: () => voi
         </div>
         <Typography
           variant="h4"
-          className="flex items-center gap-3"
+          className="flex items-center gap-3 !mt-[50px]"
           sx={{ fontWeight: "bold", textAlign: "center", mt: 1 }}
         >
           <img className="w-[56px] h-[56px]" src={app.img} alt={app.title} />

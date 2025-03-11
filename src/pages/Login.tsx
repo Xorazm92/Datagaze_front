@@ -94,10 +94,10 @@ export default function Login() {
                     )}
 
                     <button
-                      type="submit"
-                      className="mt-5 tracking-wide font-semibold bg-[#1380ED] text-gray-100 w-full h-10 rounded-lg hover:bg-indigo-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
+                      className={`${isPending && "w-full h-10  rounded-lg"} mt-5 tracking-wide font-semibold bg-[#1380ED] text-gray-100 w-full h-10 rounded-lg hover:bg-indigo-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none`}
+                      disabled={isPending}
                     >
-                      <span className="ml-3">
+                      <span className="ml-3 flex items-center justify-center">
                         {isError || isPending ? (
                           <CircularProgress size={30} className="!text-[black]" />
                         ) : (

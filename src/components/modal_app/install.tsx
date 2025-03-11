@@ -97,7 +97,7 @@ const LicenseModalinstall = ({
           boxShadow: 124
         }}
       >
-        <div className="flex items-center absolute top-0 w-[100%] left-0  m-auto  bg-[#fdfcfe]  px-2 h-[30px] gap-2  rounded-[6px]">
+        <div className="flex items-center absolute top-0 w-[100%] left-0  m-auto  bg-[#fdfcfe]  px-4 h-[30px] gap-2  rounded-[2px]">
           <IoMdCloseCircle
             size={18}
             className="cursor-pointer text-gray-500 hover:text-gray-700"

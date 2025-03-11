@@ -16,6 +16,7 @@ const useRegister = () => {
       if (data.status === "success") {
         localStorage.setItem("token", data.token);
       }
+
       navigate("/desktop");
       notify("superadmin");
     },
@@ -27,24 +28,27 @@ const useRegister = () => {
 };
 
 const useInstallApplication = () => {
-  // const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
   const axios = useAxios();
+
   return useMutation({
-    mutationFn: async ({ id, data }: { id: string; data?: any }) =>
-      await axios({
+    mutationFn: async ({ id, data }: { id: string; data?: any }) => {
+      const response = await axios({
         url: `/api/1/desktop/install/${id}`,
-        body: data,
         method: "POST",
-        headers: { "Content-Type": "application/json" }
-      }),
-    onSuccess: (response) => {
-      console.log("succsess application", response);
-      // queryClient.invalidateQueries({
-      //   queryKey: ["information_app", id]
-      // });
+        headers: { "Content-Type": "application/json" },
+        body: data
+      });
+      return response.data;
+    },
+    onSuccess: (response, variables) => {
+      console.log("Success application:", response);
+      queryClient.invalidateQueries({
+        queryKey: ["information_app", variables.id]
+      });
     },
     onError: (err) => {
-      console.log(err.message);
+      console.error("Error installing application:", err.message);
     }
   });
 };
