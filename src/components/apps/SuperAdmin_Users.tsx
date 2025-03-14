@@ -4,19 +4,41 @@ import TextField from "@mui/material/TextField";
 import AddIcon from "@mui/icons-material/Add";
 
 export const SuperAdmin_users = () => {
-  const [value, Setvalue] = useState("");
+  const [value, setValue] = useState("");
   const [filteredComputers, setFilteredComputers] = useState(Admin_users);
   const [open, setOpenModal] = useState(false);
   const [openUser, setOpenModalAdd] = useState(false);
   const [openDelete, setOpenModalDelete] = useState(false);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [page, setPage] = useState(0);
 
   const searchFunctions = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value.toLowerCase();
-    Setvalue(query);
+    setValue(query);
     const filtered = Admin_users.filter((comp) =>
       comp.fullname?.toLowerCase().includes(query)
     );
     setFilteredComputers(filtered);
+    setPage(0);
+  };
+
+  const paginatedComputers = filteredComputers.slice(
+    page * rowsPerPage,
+    page * rowsPerPage + rowsPerPage
+  );
+
+  const totalPages = Math.ceil(filteredComputers.length / rowsPerPage);
+
+  const handleChangePage = (newPage: number) => {
+    if (newPage >= 0 && newPage < totalPages) {
+      setPage(newPage);
+    }
+  };
+
+  const handleChangeRowsPerPage = (event: React.ChangeEvent<{ value: unknown }>) => {
+    const newRowsPerPage = Number(event.target.value);
+    setRowsPerPage(newRowsPerPage);
+    setPage(0); // Qatorlar soni o'zgarganda birinchi sahifaga qaytish
   };
 
   const EditOpenModal = () => {
@@ -122,7 +144,7 @@ export const SuperAdmin_users = () => {
               </div>
             )}
             <tbody>
-              {filteredComputers.map((item, index) => (
+              {paginatedComputers.map((item, index) => (
                 <tr
                   key={index}
                   className="border-b border-gray-200 p-4 text-sm hover:bg-gray-50"
@@ -141,6 +163,51 @@ export const SuperAdmin_users = () => {
               ))}
             </tbody>
           </table>
+        </div>
+        <div className="flex items-center justify-between px-4 py-2 border-t border-gray-200 bg-white">
+          <div className="flex items-center gap-2">
+            <span className="text-gray-700 text-sm">Rows per page:</span>
+            <select
+              value={rowsPerPage}
+              onChange={handleChangeRowsPerPage}
+              className="text-gray-700 text-sm border border-gray-300 rounded p-1 bg-white hover:bg-gray-50"
+            >
+              <option value={5}>5</option>
+              <option value={10}>10</option>
+            </select>
+          </div>
+          <span className="text-gray-700 text-sm">
+            {page * rowsPerPage + 1}–
+            {Math.min((page + 1) * rowsPerPage, filteredComputers.length)} of{" "}
+            {filteredComputers.length}
+          </span>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => handleChangePage(page - 1)}
+              disabled={page === 0}
+              className="px-2 py-1 border border-gray-300 rounded text-gray-700 disabled:opacity-50 hover:bg-gray-50"
+            >
+              &lt;
+            </button>
+            {Array.from({ length: totalPages }, (_, i) => (
+              <button
+                key={i}
+                onClick={() => handleChangePage(i)}
+                className={`px-3 py-1 border border-gray-300 rounded text-gray-700 ${
+                  page === i ? "bg-gray-200" : "hover:bg-gray-50"
+                }`}
+              >
+                {i + 1}
+              </button>
+            ))}
+            <button
+              onClick={() => handleChangePage(page + 1)}
+              disabled={page >= totalPages - 1}
+              className="px-2 py-1 border border-gray-300 rounded text-gray-700 disabled:opacity-50 hover:bg-gray-50"
+            >
+              &gt;
+            </button>
+          </div>
         </div>
       </div>
       {open && (
@@ -194,19 +261,21 @@ export const SuperAdmin_users = () => {
       )}
       {openDelete && (
         <div className="fixed inset-0 bg-black bg-opacity-40 flex flex-col items-center justify-center">
-          <div className="className = bg-[#e7ecf8] rounded-2xl shadow-lg text-center p-6 w-[340px] h-[204px]">
-            <p className="font-500 text-[20px]">Are you sure you want to delete user?</p>
-            <p className="font-400 text-[14px] text-[grey]">
+          <div className="bg-[#e7ecf8] rounded-2xl shadow-lg text-center p-6 w-[340px] h-[204px]">
+            <p className="font-medium text-[20px]">
+              Are you sure you want to delete user?
+            </p>
+            <p className="font-normal text-[14px] text-gray-500">
               Confirming process cancellation the <br /> installation
             </p>
             <div className="flex gap-2 mt-5 justify-center">
               <button
                 onClick={CloseModal}
-                className="border-[solid] font-500 text-[14px] text-[#1A79D8] border-[1px] border-[grey] px-6 py-2 rounded-lg"
+                className="border border-gray-300 font-medium text-[14px] text-[#1A79D8] px-6 py-2 rounded-lg hover:bg-gray-50"
               >
                 Cancel
               </button>
-              <button className="text-red font-500 text-[14px] px-6 py-2 border-[solid] border-[1px] border-[grey] rounded-lg">
+              <button className="text-red-500 font-medium text-[14px] px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
                 Yes
               </button>
             </div>

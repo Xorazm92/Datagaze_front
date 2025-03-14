@@ -13,5 +13,6 @@ export {
   Apptable,
   ApplicationType,
   InstallAppInfoType,
-  InistallApplicationType
+  InistallApplicationType,
+  ComputersType
 } from "./configs";

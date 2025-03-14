@@ -29,6 +29,7 @@ declare global {
   const VSCode: typeof import('./components/apps/VSCode')['default']
   const WifiMenu: typeof import('./components/menus/WifiMenu')['default']
   const Window: (typeof import("./components/Window"))["default"]
+  const aboutFc: typeof import('./components/modal_app/about_fc')['default']
   const computerApp: typeof import('./components/apps/Computer_app')['default']
   const createRef: typeof import('react')['createRef']
   const form: (typeof import("./components/modal_app"))["default"]

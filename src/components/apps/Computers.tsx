@@ -1,63 +1,120 @@
-import React, { useState } from "react";
-import { computers } from "~/configs";
-import { ComputerType } from "~/types/configs/computers";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import Box from "@mui/material/Box";
-import { FiColumns } from "react-icons/fi";
+import React, { useState, useEffect } from "react";
+import { ComputersType, ComputerType } from "~/types/configs/computers";
 
+import { FiColumns } from "react-icons/fi";
 import TextField from "@mui/material/TextField";
 import { FormControl, Select, MenuItem } from "@mui/material";
-import { IoMdCloseCircle } from "react-icons/io";
-import { FilterList, ViewColumn } from "@mui/icons-material";
-import { LinearProgress, Typography } from "@mui/material";
+
 import Computers_app from "./Computer_app";
+import { useQueryApi } from "~/hooks/useQuery";
+import { useSearchParams } from "react-router-dom";
+import About_fc from "../modal_app/about_fc";
 
 const Computers = () => {
+  const [params, setSearchparams] = useSearchParams();
   const [openModal, setOpenModal] = useState(false);
   const [openTable, setOpenTable] = useState(false);
-  const [selected, setSelected] = useState<ComputerType | null>(null);
-  const [tabValue, setTabValue] = useState("os");
-  const [value, Setvalue] = useState("");
-  const [filteredComputers, setFilteredComputers] = useState(computers);
-  const searchFuctions = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const query = e.target.value.toLowerCase();
-    Setvalue(query);
-    const filtered = computers.filter((comp) => comp.name?.toLowerCase().includes(query));
-    setFilteredComputers(filtered);
-  };
+  const [selectedId, setSelected] = useState<string | null>(null);
+  const [value, setValue] = useState("");
+  const [filteredComputers, setFilteredComputers] = useState<ComputersType[]>([]);
+  const [allComputers, setAllComputers] = useState<ComputersType[]>([]); // Store all data
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [page, setPage] = useState(0);
 
-  const apptable = () => {
-    setOpenTable(true);
-  };
+  const Status = params.get("status") || "all";
 
-  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
-    setTabValue(newValue);
-  };
+  // Fetch all data without status filter in the query
+  const { data } = useQueryApi({
+    url: `/api/1/device/computers?page=${page + 1}&limit=${rowsPerPage}`,
+    pathname: "computers"
+  });
 
-  const showModal = (item: ComputerType) => {
+  const showModal = (id: string) => {
     setOpenModal(true);
-    setSelected(item);
+    setSelected(id);
   };
 
   const closeModal = () => {
     setOpenModal(false);
     setSelected(null);
   };
+  // Store all fetched data when it arrives
+  useEffect(() => {
+    if (data && Array.isArray(data)) {
+      setAllComputers(data); // Store all computers
+      filterComputers(data, Status, value); // Filter initially based on status and search
+    }
+  }, [data]);
+
+  // Filter computers based on status and search value
+  const filterComputers = (
+    computers: ComputersType[],
+    status: string,
+    search: string
+  ) => {
+    let filtered = [...computers];
+
+    // Filter by status
+    if (status !== "all") {
+      filtered = filtered.filter((comp) => comp.status === status);
+    }
+
+    // Filter by search query
+    if (search) {
+      filtered = filtered.filter((comp) =>
+        comp?.computer_name?.toLowerCase().includes(search.toLowerCase())
+      );
+    }
+
+    setFilteredComputers(filtered);
+  };
+
+  // Handle search input change
+  const searchFunctions = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const query = e.target.value;
+    setValue(query);
+    filterComputers(allComputers, Status, query); // Filter locally
+    setPage(0);
+  };
+
+  // Handle status filter change
+  const handleFilterChange = (event: any) => {
+    const newStatus = event.target.value;
+    setSearchparams({ status: newStatus });
+    filterComputers(allComputers, newStatus, value); // Filter locally
+    setPage(0);
+  };
+
+  const apptable = () => {
+    setOpenTable(true);
+  };
+
+  const paginatedComputers: ComputersType[] = filteredComputers.slice(
+    page * rowsPerPage,
+    page * rowsPerPage + rowsPerPage
+  );
+
+  const totalPages = Math.ceil(filteredComputers.length / rowsPerPage);
+
+  const handleChangePage = (newPage: number) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event: React.ChangeEvent<{ value: unknown }>) => {
+    const newRowsPerPage = Number(event.target.value);
+    setRowsPerPage(newRowsPerPage);
+    setPage(0);
+  };
 
   return (
-    <div className="p-4 bg-gray-100 min-h-screen ">
+    <div className="p-4 bg-gray-100 min-h-screen">
       {openTable && <Computers_app />}
       <div className="overflow-x-auto bg-white shadow-lg rounded-lg">
         <div className="bg-[#e2eafb] w-full flex items-center justify-between h-[64px] px-4">
           <TextField
             value={value}
-            onChange={searchFuctions}
-            sx={{
-              "& .MuiInputLabel-root": {
-                fontSize: "18px"
-              }
-            }}
+            onChange={searchFunctions}
+            sx={{ "& .MuiInputLabel-root": { fontSize: "18px" } }}
             placeholder="Search"
             slotProps={{
               input: {
@@ -67,12 +124,13 @@ const Computers = () => {
             }}
           />
           <div className="flex gap-2">
-            {/* Filters Select */}
             <FormControl sx={{ minWidth: 140 }}>
               <Select
                 size="small"
+                value={Status}
+                onChange={handleFilterChange}
                 displayEmpty
-                defaultValue=""
+                renderValue={(selected) => (selected === "all" ? "All" : selected)}
                 sx={{
                   height: 30,
                   borderRadius: "8px",
@@ -87,15 +145,11 @@ const Computers = () => {
                   }
                 }}
               >
-                <MenuItem value="" disabled>
-                  <FilterList fontSize="small" /> Filters
-                </MenuItem>
-                <MenuItem value="option1">Option 1</MenuItem>
-                <MenuItem value="option2">Option 2</MenuItem>
+                <MenuItem value="all">All</MenuItem>
+                <MenuItem value="active">Active</MenuItem>
+                <MenuItem value="inactive">Inactive</MenuItem>
               </Select>
             </FormControl>
-
-            {/* Customize Columns Select */}
             <FormControl sx={{ minWidth: 180 }}>
               <Select
                 size="small"
@@ -116,8 +170,7 @@ const Computers = () => {
                 }}
               >
                 <MenuItem value="" disabled>
-                  <FiColumns />
-                  Customize columns
+                  <FiColumns /> Customize columns
                 </MenuItem>
                 <MenuItem value="column1">Column 1</MenuItem>
                 <MenuItem value="column2">Column 2</MenuItem>
@@ -126,9 +179,9 @@ const Computers = () => {
           </div>
         </div>
         <div className="max-h-[600px] overflow-y-auto">
-          <table className="w-full text-left border-collapse bg-white  shadow-md rounded-lg">
+          <table className="w-full text-left border-collapse bg-white shadow-md rounded-lg">
             <thead>
-              <tr className="border-b border-gray-300  text-gray-600 text-sm bg-[#ccdaf8]">
+              <tr className="border-b border-gray-300 text-gray-600 text-sm bg-[#ccdaf8]">
                 <th className="p-3">
                   <input type="checkbox" />
                 </th>
@@ -141,30 +194,36 @@ const Computers = () => {
               </tr>
             </thead>
             <tbody>
-              {filteredComputers.map((item, index) => (
+              {paginatedComputers.map((item, index) => (
                 <tr
                   key={item.id}
-                  className={`border-b border-gray-200 p-4 text-sm  ${index % 2 == 0 ? "bg-[grey-50]" : "bg-[#ccdaf8]"}`}
+                  className={`border-b border-gray-200 p-4 text-sm ${
+                    index % 2 === 0 ? "bg-[grey-50]" : "bg-[#ccdaf8]"
+                  }`}
                 >
                   <td className="p-3">
                     <input type="checkbox" />
                   </td>
-                  <td className="p-3">{item.id}</td>
+                  <td className="p-3">{index + 1}</td>
                   <td className="p-3 cursor-pointer" onClick={() => apptable()}>
-                    {item.name}
+                    {item.computer_name}
                   </td>
-                  <td className="p-3">{item.OS}</td>
-                  <td className="p-3">{item.adress}</td>
+                  <td className="p-3">{item.os}</td>
+                  <td className="p-3">{item.computer_name}</td>
                   <td>
                     <p
-                      className={`${item.active === "Active" ? "bg-[#DCFCE7] flex text-green-600 w-[49px] h-[20px] items-center justify-center p-2 rounded-[8px] text-[12px]" : "text-[grey] bg-[#dfe8fb] flex  w-[49px] h-[20px] text-[12px] items-center justify-center px-2 py-2 rounded-[8px]"}`}
+                      className={`${
+                        item.status === "active"
+                          ? "bg-[#DCFCE7] flex text-green-600 w-[49px] h-[20px] items-center justify-center p-2 rounded-[8px] text-[12px]"
+                          : "text-[grey] bg-[#dfe8fb] flex w-[49px] h-[20px] text-[12px] items-center justify-center px-2 py-2 rounded-[8px]"
+                      }`}
                     >
-                      {item.active}
+                      {item.status}
                     </p>
                   </td>
                   <td
                     className="p-3 text-blue-500 cursor-pointer"
-                    onClick={() => showModal(item)}
+                    onClick={() => showModal(item.id)}
                   >
                     About PC
                   </td>
@@ -173,204 +232,53 @@ const Computers = () => {
             </tbody>
           </table>
         </div>
-      </div>
-      {selected && openModal && (
-        <div className="fixed inset-0 flex items-center  w-[100vh] m-auto justify-center  bg-opacity-50">
-          <div className="bg-[#d3def7]  rounded-lg shadow-lg p-4  flex flex-col overflow-auto">
-            <Box sx={{ width: "100%" }}>
-              <div className="flex items-center gap-2 py-3 mt-4 justify-start">
-                <IoMdCloseCircle
-                  size={18}
-                  className="cursor-pointer text-gray-500 hover:text-gray-700"
-                  onClick={closeModal}
-                />
-                <p className="text-[13px] font-600 text-[grey]">About PC</p>
-              </div>
-              <Tabs
-                value={tabValue}
-                onChange={handleChange}
-                textColor="inherit"
-                variant="fullWidth"
-                TabIndicatorProps={{
-                  style: {
-                    display: "none"
-                  }
-                }}
-                sx={{
-                  backgroundColor: "#e4ebfd",
-                  borderRadius: "999px",
-                  padding: "2px",
-                  display: "flex",
-                  justifyContent: "space-between",
-                  height: "18px",
-                  width: "100%",
-                  marginBottom: "30px"
-                }}
+        <div className="flex items-center justify-between px-4 py-2 bg-white border-t">
+          <div>
+            <span>Rows per page: </span>
+            <select
+              value={rowsPerPage}
+              onChange={handleChangeRowsPerPage}
+              className="border rounded px-2 py-1"
+            >
+              <option value={5}>5</option>
+              <option value={10}>10</option>
+            </select>
+          </div>
+          <div>
+            <span>
+              {page * rowsPerPage + 1}–
+              {Math.min((page + 1) * rowsPerPage, filteredComputers.length)} of{" "}
+              {filteredComputers.length}
+            </span>
+          </div>
+          <div className="flex gap-2">
+            <button
+              onClick={() => handleChangePage(page - 1)}
+              disabled={page === 0}
+              className="px-2 py-1 border rounded disabled:opacity-50"
+            >
+              {"<"}
+            </button>
+            {Array.from({ length: totalPages }, (_, i) => (
+              <button
+                key={i}
+                onClick={() => handleChangePage(i)}
+                className={`px-3 py-1 border rounded ${page === i ? "bg-gray-200" : ""}`}
               >
-                <Tab
-                  value="os"
-                  label="OS"
-                  sx={{
-                    minWidth: "100px",
-                    borderRadius: "999px",
-                    textTransform: "none",
-                    height: "40px",
-                    fontWeight: 500,
-                    backgroundColor: tabValue === "os" ? "#fff" : "transparent",
-                    boxShadow:
-                      tabValue === "os" ? "0px 4px 6px rgba(0, 0, 0, 0.1)" : "none"
-                  }}
-                />
-                <Tab
-                  value="processor"
-                  label="Processor"
-                  sx={{
-                    minWidth: "100px",
-                    borderRadius: "999px",
-                    textTransform: "none",
-                    height: "40px",
-
-                    fontWeight: 500,
-                    backgroundColor: tabValue === "processor" ? "#fff" : "transparent",
-                    boxShadow:
-                      tabValue === "processor" ? "0px 4px 6px rgba(0, 0, 0, 0.1)" : "none"
-                  }}
-                />
-                <Tab
-                  value="network"
-                  label="Network"
-                  sx={{
-                    minWidth: "100px",
-                    borderRadius: "15px",
-                    textTransform: "none",
-                    height: "40px",
-
-                    fontWeight: 500,
-                    backgroundColor: tabValue === "network" ? "#fff" : "transparent",
-                    boxShadow:
-                      tabValue === "network" ? "0px 4px 6px rgba(0, 0, 0, 0.1)" : "none"
-                  }}
-                />
-              </Tabs>
-            </Box>
-
-            <div className=" pb-3 rounded-4 bg-[#FFFFFF] p-2">
-              {tabValue === "os" && (
-                <div className="grid grid-cols-2 gap-3">
-                  <span className="flex flex-col gap-1">
-                    <p className="text-gray-500 text-sm">Operation System</p>
-                    <p className="text-lg font-500">{selected.OS}</p>
-                  </span>
-                  <span className="flex flex-col gap-1">
-                    <p className="text-gray-500 text-sm">Platform</p>
-                    <p className="text-lg font-500">{selected.platform}</p>
-                  </span>
-                  <span className="flex flex-col gap-1">
-                    <p className="text-gray-500 text-sm">Build number</p>
-                    <p className="text-lg font-500">{selected.build_number}</p>
-                  </span>
-                  <span className="flex flex-col gap-1">
-                    <p className="text-gray-500 text-sm">Version</p>
-                    <p className="text-lg font-500">{selected.version}</p>
-                  </span>
-                </div>
-              )}
-              {tabValue === "processor" && (
-                <div className="grid grid-cols-2 gap-4">
-                  <span className="flex flex-col gap-1">
-                    <p className="text-gray-500 text-sm">CPU</p>
-                    <p className="text-lg font-500">{selected.CPU}</p>
-                  </span>
-                  <span className="flex flex-col gap-1">
-                    <p className="text-gray-500 text-sm">Model</p>
-                    <p className="text-lg font-500">{selected.model}</p>
-                  </span>
-                  <span className="flex flex-col gap-1">
-                    <p className="text-gray-500 text-sm">Cores</p>
-                    <p className="text-lg font-500">{selected.cores}</p>
-                  </span>
-                </div>
-              )}
-              {tabValue === "network" && (
-                <div className="grid grid-cols-2 gap-3">
-                  <span className="flex flex-col gap-1">
-                    <p className="text-gray-500 text-sm">NIC name</p>
-                    <p className="text-lg font-500">{selected.Nic_name}</p>
-                  </span>
-                  <span className="flex flex-col gap-1">
-                    <p className="text-gray-500 text-sm">IP Address</p>
-                    <p className="text-lg font-500">{selected.adress}</p>
-                  </span>
-                  <span className="flex flex-col gap-1">
-                    <p className="text-gray-500 text-sm">IP Address</p>
-                    <p className="text-lg font-500">{selected.adress}</p>
-                  </span>
-                  <span className="flex flex-col gap-1">
-                    <p className="text-gray-500 text-sm">Aviable</p>
-                    <p
-                      className={`text-[12px]  font-[500] p-2  w-[51px] rounded-[6px] flex  items-center  ${selected.Aviable === "Online" ? "text-[#1A8F44] bg-[#e5fbef] " : "text-[red] bg-[#fee7e6] "}`}
-                    >
-                      {selected.Aviable}
-                    </p>
-                  </span>
-                </div>
-              )}
-            </div>
-            <div className="mb-[30px] mt-5 p-2 rounded-4 bg-[#FFFFFF]">
-              <Box display="flex" alignItems="center" marginTop={1}>
-                <Box width="100%" mr={1}>
-                  <label className="block font-500 text-[17px]">
-                    RAM
-                    <span className="text-gray-500 text-[14px] font-normal">(8GB)</span>
-                  </label>
-                  <LinearProgress
-                    variant="determinate"
-                    value={selected.Ram}
-                    className="h-[10px] p-1 mt-3 rounded-[5px]"
-                  />
-                </Box>
-                <Typography variant="body2" color="textSecondary">
-                  {`${Math.round(selected.Ram)}%`}
-                </Typography>
-              </Box>
-
-              <Box display="flex" alignItems="center" marginTop={1}>
-                <Box width="100%" mr={1}>
-                  <label className="block font-500 text-[17px]">
-                    Disk D{" "}
-                    <span className="text-gray-500 text-[14px] font-normal">(1TB)</span>
-                  </label>
-                  <LinearProgress
-                    variant="determinate"
-                    value={selected.Disk_D}
-                    className="h-[10px] p-1 mt-3 rounded-[5px]"
-                  />
-                </Box>
-                <Typography variant="body2" color="textSecondary">
-                  {`${Math.round(selected.Disk_D)}%`}
-                </Typography>
-              </Box>
-
-              <Box display="flex" alignItems="center" marginTop={1}>
-                <Box width="100%" mr={1}>
-                  <label className="block font-500 text-[17px]">
-                    Disk C{" "}
-                    <span className="text-gray-500 text-[14px] font-normal">(1TB)</span>
-                  </label>
-                  <LinearProgress
-                    variant="determinate"
-                    value={selected.Disk_C}
-                    className="h-[10px] p-1 mt-3 rounded-[5px]"
-                  />
-                </Box>
-                <Typography variant="body2" color="textSecondary">
-                  {`${Math.round(selected.Disk_C)}%`}
-                </Typography>
-              </Box>
-            </div>
+                {i + 1}
+              </button>
+            ))}
+            <button
+              onClick={() => handleChangePage(page + 1)}
+              disabled={page >= totalPages - 1}
+              className="px-2 py-1 border rounded disabled:opacity-50"
+            >
+              {">"}
+            </button>
           </div>
         </div>
-      )}
+      </div>
+      {openModal && selectedId && <About_fc id={selectedId} close={closeModal} />}
     </div>
   );
 };

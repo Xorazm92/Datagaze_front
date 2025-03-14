@@ -11,6 +11,7 @@ const useQueryApi = <T>({ pathname, url, params }: useQueryApiType<T>) => {
   const axios = useAxios();
   return useQuery({
     queryKey: [pathname],
+
     queryFn: async () => {
       if (!url) throw new Error("URL berilishi shart!");
       const data = await axios({ url, params });

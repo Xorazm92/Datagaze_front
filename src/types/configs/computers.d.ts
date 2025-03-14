@@ -1,9 +1,6 @@
 export interface ComputerType {
   id?: number;
-  name?: string;
-  OS?: string;
   adress?: string;
-  active?: string;
   about?: string;
   platform?: string;
   version?: string;
@@ -14,7 +11,49 @@ export interface ComputerType {
   Nic_name?: string;
   Mac_adress?: string;
   Aviable?: string;
-  Ram: number;
-  Disk_D: number;
-  Disk_C: number;
+  Ram?: number;
+  Disk_D?: number;
+  Disk_C?: number;
+}
+export interface ComputersType {
+  computer_name: string;
+  hostname: string;
+  id: string;
+  os: string;
+  status: string;
+}
+export interface computersbyIdType {
+  os_details?: {
+    os?: string;
+    platform?: string;
+    build_number?: string;
+    version?: string;
+  };
+  processor_details?: {
+    cpu?: string;
+    core?: string;
+    generation?: string;
+  };
+  network_details: NetworkDetail[];
+
+  memory_storage_details?: {
+    ram?: string;
+    drives: RamType[];
+  };
+}
+export interface NetworkDetail {
+  nic_name?: string;
+  ip_address?: string;
+  available?: string;
+  type?: string;
+  wifi_name?: string;
+  either_net_name?: string;
+  mac_address?: string;
+  status?: string;
+}
+
+export interface RamType {
+  drive_letter: string;
+  total_size: string;
+  free_size: string;
 }

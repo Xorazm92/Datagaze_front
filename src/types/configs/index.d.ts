@@ -11,3 +11,4 @@ export { Apptable } from "./app_comp";
 export { ApplicationType } from "./applications";
 export { InstallAppInfoType } from "./launchpad";
 export { InistallApplicationType } from "./register";
+export { ComputerType, ComputersType, computersbyIdType } from "./computers";

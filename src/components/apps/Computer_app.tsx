@@ -5,17 +5,35 @@ import { FormControl, Select, MenuItem } from "@mui/material";
 import { FilterList } from "@mui/icons-material";
 
 const Computers_app = () => {
-  const [value, Setvalue] = useState("");
+  const [value, setValue] = useState("");
   const [filteredComputers, setFilteredComputers] = useState(app_comp);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const searchFunctions = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value.toLowerCase();
-    Setvalue(query);
+    setValue(query);
     const filtered = app_comp.filter((comp) =>
       comp.Product_name?.toLowerCase().includes(query)
     );
     setFilteredComputers(filtered);
+    setPage(0);
   };
+
+  const handleChangePage = (newPage: number) => {
+    setPage(newPage);
+  };
+  const totalPages = Math.ceil(filteredComputers.length / rowsPerPage);
+
+  const handleChangeRowsPerPage = (event: React.ChangeEvent<{ value: unknown }>) => {
+    setRowsPerPage(Number(event.target.value));
+    setPage(0);
+  };
+
+  const paginatedComputers = filteredComputers.slice(
+    page * rowsPerPage,
+    page * rowsPerPage + rowsPerPage
+  );
 
   return (
     <div className="p-4 bg-gray-100 min-h-screen">
@@ -66,7 +84,7 @@ const Computers_app = () => {
             </FormControl>
           </div>
         </div>
-        <div className="max-h-[600px]  overflow-y-auto">
+        <div className="max-h-[600px] overflow-y-auto">
           <table className="w-full text-left border-collapse bg-white shadow-md rounded-lg">
             <thead className="sticky top-0 bg-[#ccdbf7]">
               <tr className="border-b border-gray-300 text-gray-600 text-sm">
@@ -80,10 +98,12 @@ const Computers_app = () => {
               </tr>
             </thead>
             <tbody>
-              {filteredComputers.map((item, index) => (
+              {paginatedComputers.map((item, index) => (
                 <tr
                   key={index}
-                  className={`border-b border-gray-200 p-4 text-sm ${index % 2 == 0 ? "bg-[grey-50]" : "bg-[#ccdaf8]"}`}
+                  className={`border-b border-gray-200 p-4 text-sm ${
+                    index % 2 == 0 ? "bg-gray-50" : "bg-[#ccdaf8]"
+                  }`}
                 >
                   <td className="p-3">{item.Product_name}</td>
                   <td className="p-3">{item.File_size}</td>
@@ -91,11 +111,56 @@ const Computers_app = () => {
                   <td className="p-3">{item.Instaled_date}</td>
                   <td className="p-3"></td>
                   <td className="p-3 text-[#1A79D8] cursor-pointer">Update</td>
-                  <td className="p-3 text-[red] cursor-pointer">Delete</td>
+                  <td className="p-3 text-red-600 cursor-pointer">Delete</td>
                 </tr>
               ))}
             </tbody>
           </table>
+        </div>
+        <div className="flex items-center justify-between px-4 py-2 bg-white border-t">
+          <div>
+            <span>Rows per page: </span>
+            <select
+              value={rowsPerPage}
+              onChange={handleChangeRowsPerPage}
+              className="border rounded px-2 py-1"
+            >
+              <option value={6}>5</option>
+              <option value={12}>12</option>
+            </select>
+          </div>
+          <div>
+            <span>
+              {page * rowsPerPage + 1}–
+              {Math.min((page + 1) * rowsPerPage, filteredComputers.length)} of{" "}
+              {filteredComputers.length}
+            </span>
+          </div>
+          <div className="flex gap-2">
+            <button
+              onClick={() => handleChangePage(page - 1)}
+              disabled={page === 0}
+              className="px-2 py-1 border rounded disabled:opacity-50"
+            >
+              &lt;
+            </button>
+            {Array.from({ length: totalPages }, (_, i) => (
+              <button
+                key={i}
+                onClick={() => handleChangePage(i)}
+                className={`px-3 py-1 border rounded ${page === i ? "bg-gray-200" : ""}`}
+              >
+                {i + 1}
+              </button>
+            ))}
+            <button
+              onClick={() => handleChangePage(page + 1)}
+              disabled={page >= totalPages - 1}
+              className="px-2 py-1 border rounded disabled:opacity-50"
+            >
+              &gt;
+            </button>
+          </div>
         </div>
       </div>
     </div>

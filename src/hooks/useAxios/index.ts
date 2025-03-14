@@ -28,12 +28,3 @@ export const useAxios = () => {
   };
   return response;
 };
-// Foydalanish
-/*
-const data = await fetchApi({
-  url: '/users',
-  method: 'GET',
-  params: { id: 1 },
-  headers: { 'Custom-Header': 'value' }
-});
-*/
