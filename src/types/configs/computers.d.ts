@@ -21,6 +21,7 @@ export interface ComputersType {
   id: string;
   os: string;
   status: string;
+  ip_address: string;
 }
 export interface computersbyIdType {
   os_details?: {
@@ -53,7 +54,15 @@ export interface NetworkDetail {
 }
 
 export interface RamType {
-  drive_letter: string;
+  drive_name: string;
   total_size: string;
   free_size: string;
+}
+
+export interface ComputersAppType {
+  id: string;
+  name: string;
+  file_size: string;
+  installation_type: string;
+  installed_date: string;
 }

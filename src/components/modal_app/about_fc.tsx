@@ -10,7 +10,7 @@ import { useQueryApi } from "~/hooks/useQuery";
 // Hajmlarni son sifatida olish uchun yordamchi funksiya
 const getSizeInGB = (size: string): number => {
   const num = parseFloat(size.replace(/[^0-9.]/g, ""));
-  return size.includes("TB") ? num * 1024 : num; // TB ni GB ga aylantirish
+  return size.includes("TB") ? num * 1024 : num;
 };
 
 const About_fc = ({ id, close }: { id: string; close: () => void }) => {
@@ -198,7 +198,6 @@ const About_fc = ({ id, close }: { id: string; close: () => void }) => {
             </Typography>
           </Box>
 
-          {/* Disklar qismi - map faqat disklar uchun */}
           {data?.memory_storage_details?.drives.map((val, idx) => {
             const totalSize = getSizeInGB(val.total_size || "0GB");
             const freeSize = getSizeInGB(val.free_size || "0GB");
@@ -210,7 +209,7 @@ const About_fc = ({ id, close }: { id: string; close: () => void }) => {
               <Box key={idx} display="flex" alignItems="center" marginTop={1}>
                 <Box width="100%" mr={1}>
                   <label className="block font-medium text-[17px]">
-                    Disk {val.drive_letter}
+                    Disk {val.drive_name}
                     <span className="text-gray-500 text-[14px] font-normal">
                       ({val?.total_size})
                     </span>

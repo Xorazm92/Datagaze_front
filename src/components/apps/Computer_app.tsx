@@ -1,20 +1,30 @@
 import React, { useState } from "react";
-import { app_comp } from "~/configs";
 import TextField from "@mui/material/TextField";
 import { FormControl, Select, MenuItem } from "@mui/material";
 import { FilterList } from "@mui/icons-material";
+import { useQueryApi } from "~/hooks/useQuery";
+import { ComputersAppType } from "~/types/configs/computers";
 
-const Computers_app = () => {
+const Computers_app = ({ id }: { id: string }) => {
+  const { data } = useQueryApi({
+    url: `/api/1/device/${id}/apps`,
+    pathname: "apps"
+  });
+
   const [value, setValue] = useState("");
-  const [filteredComputers, setFilteredComputers] = useState(app_comp);
+  const [filteredComputers, setFilteredComputers] = useState<ComputersAppType[]>([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-
+  useEffect(() => {
+    if (data && Array.isArray(data)) {
+      setFilteredComputers(data);
+    }
+  }, [data]);
   const searchFunctions = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value.toLowerCase();
     setValue(query);
-    const filtered = app_comp.filter((comp) =>
-      comp.Product_name?.toLowerCase().includes(query)
+    const filtered = data.filter((comp: any): string =>
+      comp.name?.toLowerCase().includes(query)
     );
     setFilteredComputers(filtered);
     setPage(0);
@@ -105,10 +115,10 @@ const Computers_app = () => {
                     index % 2 == 0 ? "bg-gray-50" : "bg-[#ccdaf8]"
                   }`}
                 >
-                  <td className="p-3">{item.Product_name}</td>
-                  <td className="p-3">{item.File_size}</td>
-                  <td className="p-3">{item.Type}</td>
-                  <td className="p-3">{item.Instaled_date}</td>
+                  <td className="p-3">{item.name}</td>
+                  <td className="p-3">{item.file_size}</td>
+                  <td className="p-3">{item.installation_type}</td>
+                  <td className="p-3">{item.installed_date}</td>
                   <td className="p-3"></td>
                   <td className="p-3 text-[#1A79D8] cursor-pointer">Update</td>
                   <td className="p-3 text-red-600 cursor-pointer">Delete</td>

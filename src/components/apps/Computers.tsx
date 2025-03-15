@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { ComputersType, ComputerType } from "~/types/configs/computers";
-
+import { ComputersType } from "~/types/configs/computers";
 import { FiColumns } from "react-icons/fi";
 import TextField from "@mui/material/TextField";
 import { FormControl, Select, MenuItem } from "@mui/material";
-
 import Computers_app from "./Computer_app";
 import { useQueryApi } from "~/hooks/useQuery";
 import { useSearchParams } from "react-router-dom";
@@ -15,15 +13,15 @@ const Computers = () => {
   const [openModal, setOpenModal] = useState(false);
   const [openTable, setOpenTable] = useState(false);
   const [selectedId, setSelected] = useState<string | null>(null);
+  const [selectedTableId, setSelectedTable] = useState<string | null>(null);
   const [value, setValue] = useState("");
   const [filteredComputers, setFilteredComputers] = useState<ComputersType[]>([]);
-  const [allComputers, setAllComputers] = useState<ComputersType[]>([]); // Store all data
+  const [allComputers, setAllComputers] = useState<ComputersType[]>([]);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [page, setPage] = useState(0);
 
   const Status = params.get("status") || "all";
 
-  // Fetch all data without status filter in the query
   const { data } = useQueryApi({
     url: `/api/1/device/computers?page=${page + 1}&limit=${rowsPerPage}`,
     pathname: "computers"
@@ -38,15 +36,13 @@ const Computers = () => {
     setOpenModal(false);
     setSelected(null);
   };
-  // Store all fetched data when it arrives
   useEffect(() => {
     if (data && Array.isArray(data)) {
-      setAllComputers(data); // Store all computers
-      filterComputers(data, Status, value); // Filter initially based on status and search
+      setAllComputers(data);
+      filterComputers(data, Status, value);
     }
   }, [data]);
 
-  // Filter computers based on status and search value
   const filterComputers = (
     computers: ComputersType[],
     status: string,
@@ -54,12 +50,10 @@ const Computers = () => {
   ) => {
     let filtered = [...computers];
 
-    // Filter by status
     if (status !== "all") {
       filtered = filtered.filter((comp) => comp.status === status);
     }
 
-    // Filter by search query
     if (search) {
       filtered = filtered.filter((comp) =>
         comp?.computer_name?.toLowerCase().includes(search.toLowerCase())
@@ -69,24 +63,23 @@ const Computers = () => {
     setFilteredComputers(filtered);
   };
 
-  // Handle search input change
   const searchFunctions = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value;
     setValue(query);
-    filterComputers(allComputers, Status, query); // Filter locally
+    filterComputers(allComputers, Status, query);
     setPage(0);
   };
 
-  // Handle status filter change
   const handleFilterChange = (event: any) => {
     const newStatus = event.target.value;
     setSearchparams({ status: newStatus });
-    filterComputers(allComputers, newStatus, value); // Filter locally
+    filterComputers(allComputers, newStatus, value);
     setPage(0);
   };
 
-  const apptable = () => {
+  const apptable = (id: string) => {
     setOpenTable(true);
+    setSelectedTable(id);
   };
 
   const paginatedComputers: ComputersType[] = filteredComputers.slice(
@@ -108,7 +101,8 @@ const Computers = () => {
 
   return (
     <div className="p-4 bg-gray-100 min-h-screen">
-      {openTable && <Computers_app />}
+      {openTable && selectedTableId && <Computers_app id={selectedTableId || ""} />}
+
       <div className="overflow-x-auto bg-white shadow-lg rounded-lg">
         <div className="bg-[#e2eafb] w-full flex items-center justify-between h-[64px] px-4">
           <TextField
@@ -205,11 +199,11 @@ const Computers = () => {
                     <input type="checkbox" />
                   </td>
                   <td className="p-3">{index + 1}</td>
-                  <td className="p-3 cursor-pointer" onClick={() => apptable()}>
+                  <td className="p-3 cursor-pointer" onClick={() => apptable(item.id)}>
                     {item.computer_name}
                   </td>
                   <td className="p-3">{item.os}</td>
-                  <td className="p-3">{item.computer_name}</td>
+                  <td className="p-3">{item.ip_address}</td>
                   <td>
                     <p
                       className={`${
