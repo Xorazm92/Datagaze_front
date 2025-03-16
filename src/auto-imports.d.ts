@@ -20,6 +20,7 @@ declare global {
   const ModalLicense: typeof import('./components/apps/ModalLicense')['default']
   const Safari: typeof import('./components/apps/Safari')['default']
   const Servis: (typeof import("./components/Servis"))["default"]
+  const SocketService: typeof import('./components/apps/Terminal')['SocketService']
   const Spotlight: typeof import('./components/Spotlight')['default']
   const SuperAdmin_users: typeof import('./components/apps/SuperAdmin_Users')['SuperAdmin_users']
   const Terminal: typeof import('./components/apps/Terminal')['default']

@@ -4,26 +4,31 @@ export class SocketService {
   private terminalSocket: Socket;
   private progressSocket: Socket;
   private baseUrl: string = "wss://datagaze-platform-9cab2c02bc91.herokuapp.com";
+  private password: string = "Datagaze2134$Platform";
 
   constructor(token: string) {
     const options = {
       transports: ["websocket"],
-      query: { token }
+      query: { token },
+      auth: { password: this.password }
     };
 
     this.terminalSocket = io(`${this.baseUrl}/terminal`, options);
     this.progressSocket = io(`${this.baseUrl}/progress`, options);
 
     this.setupEventListeners();
+    this.autoConnect();
   }
 
   private setupEventListeners(): void {
     this.terminalSocket.on("connect", () => {
       console.log("Connected to terminal socket");
+      this.progressSocket.emit("progressUpdate", "50"); // Socket ulandi
     });
 
     this.terminalSocket.on("connect_error", (err) => {
       console.error("Terminal connection error:", err);
+      this.progressSocket.emit("progressUpdate", "Error: Socket connection failed");
     });
 
     this.terminalSocket.on("command_response", (data) => {
@@ -37,9 +42,15 @@ export class SocketService {
     this.progressSocket.on("connect_error", (err) => {
       console.error("Progress connection error:", err);
     });
+  }
 
-    this.progressSocket.on("progressUpdate", (data) => {
-      console.log("Progress update received:", data);
+  private autoConnect(): void {
+    this.terminalSocket.on("connect", () => {
+      this.progressSocket.emit("progressUpdate", "70"); // SSH ulanish boshlandi
+      this.sendCommand("ssh root@209.38.250.43"); // Avtomatik SSH ulanish
+      setTimeout(() => {
+        this.progressSocket.emit("progressUpdate", "100"); // Ulanish tugadi
+      }, 1000); // Simulyatsiya uchun 1 soniya kutamiz
     });
   }
 
@@ -54,14 +65,12 @@ export class SocketService {
 
   onProgress(callback: (progress: number | string) => void): void {
     this.progressSocket.on("progressUpdate", (data) => {
-      console.log("onProgress triggered with:", data);
-      callback(data.progress || data);
+      callback(data);
     });
   }
 
   onCommandResponse(callback: (data: any) => void): void {
     this.terminalSocket.on("command_response", (data) => {
-      console.log("onCommandResponse triggered with:", data);
       callback(data);
     });
   }
