@@ -11,7 +11,6 @@ const TerminalComponent = () => {
   const commandBuffer = useRef<string>("");
 
   const prompt = () => {
-    // Haqiqiy terminalga o'xshash prompt
     xtermRef.current?.write("\r\nroot@server:~$ ");
   };
 
@@ -84,7 +83,6 @@ const TerminalComponent = () => {
       prompt();
     });
 
-    // Foydalanuvchi kiritgan buyruqlarni serverga yuborish
     term.onData((data) => {
       if (data === "\r") {
         const input = commandBuffer.current.trim();

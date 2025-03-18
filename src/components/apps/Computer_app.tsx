@@ -6,7 +6,7 @@ import { useQueryApi } from "~/hooks/useQuery";
 import { ComputersAppType } from "~/types/configs/computers";
 
 const Computers_app = ({ id }: { id: string }) => {
-  const { data } = useQueryApi({
+  const { data, isLoading, isError } = useQueryApi({
     url: `/api/1/device/${id}/apps`,
     pathname: "apps"
   });
@@ -104,26 +104,26 @@ const Computers_app = ({ id }: { id: string }) => {
                 <th className="p-3">Installed date</th>
                 <th className="p-3"></th>
                 <th className="p-3"></th>
-                <th className="p-3"></th>
               </tr>
             </thead>
             <tbody>
-              {paginatedComputers.map((item, index) => (
-                <tr
-                  key={index}
-                  className={`border-b border-gray-200 p-4 text-sm ${
-                    index % 2 == 0 ? "bg-gray-50" : "bg-[#ccdaf8]"
-                  }`}
-                >
-                  <td className="p-3">{item.name}</td>
-                  <td className="p-3">{item.file_size}</td>
-                  <td className="p-3">{item.installation_type}</td>
-                  <td className="p-3">{item.installed_date}</td>
-                  <td className="p-3"></td>
-                  <td className="p-3 text-[#1A79D8] cursor-pointer">Update</td>
-                  <td className="p-3 text-red-600 cursor-pointer">Delete</td>
-                </tr>
-              ))}
+              {isLoading || isError
+                ? "Loading ..."
+                : paginatedComputers.map((item, index) => (
+                    <tr
+                      key={index}
+                      className={`border-b border-gray-200 p-4 text-sm ${
+                        index % 2 == 0 ? "bg-gray-50" : "bg-[#ccdaf8]"
+                      }`}
+                    >
+                      <td className="p-3">{item.name}</td>
+                      <td className="p-3">{item.file_size}</td>
+                      <td className="p-3">{item.installation_type}</td>
+                      <td className="p-3">{item.installed_date}</td>
+                      <td className="p-3 text-[#1A79D8] cursor-pointer">Update</td>
+                      <td className="p-3 text-red-600 cursor-pointer">Delete</td>
+                    </tr>
+                  ))}
             </tbody>
           </table>
         </div>
@@ -152,7 +152,7 @@ const Computers_app = ({ id }: { id: string }) => {
               disabled={page === 0}
               className="px-2 py-1 border rounded disabled:opacity-50"
             >
-              &lt;
+              {"<"}
             </button>
             {Array.from({ length: totalPages }, (_, i) => (
               <button
@@ -168,7 +168,7 @@ const Computers_app = ({ id }: { id: string }) => {
               disabled={page >= totalPages - 1}
               className="px-2 py-1 border rounded disabled:opacity-50"
             >
-              &gt;
+              {">"}
             </button>
           </div>
         </div>
