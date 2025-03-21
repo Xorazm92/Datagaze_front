@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useRef, useState, useEffect, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import { isFullScreen } from "~/utils";
 
 interface TopBarItemProps {
@@ -10,7 +11,7 @@ interface TopBarItemProps {
   onMouseEnter?: () => void;
 }
 
-const TopBarItem = forwardRef(
+const TopBarItem = React.forwardRef(
   (props: TopBarItemProps, ref: React.ForwardedRef<HTMLDivElement>) => {
     const hide = props.hideOnMobile ? "hidden sm:inline-flex" : "inline-flex";
     const bg = props.forceHover
@@ -39,30 +40,32 @@ interface TopBarState {
 
 const TopBar = (props: any) => {
   const appleBtnRef = useRef<HTMLDivElement>(null);
-
+  const navigate = useNavigate();
   const [state, setState] = useState<TopBarState>({
     showControlCenter: false,
     showAppleMenu: false
   });
 
+  const useWindowSize = () => ({ winWidth: 1024, winHeight: 768 });
+
   const { winWidth, winHeight } = useWindowSize();
-  const { toggleFullScreen } = useStore((state) => ({
-    toggleFullScreen: state.toggleFullScreen,
-    setVolume: state.setVolume,
-    setBrightness: state.setBrightness
-  }));
+  const { toggleFullScreen } = useStore((state: any) => state);
 
   useEffect(() => {
     const isFull = isFullScreen();
     toggleFullScreen(isFull);
-  }, [winWidth, winHeight]);
+  }, [winWidth, winHeight, toggleFullScreen]);
 
-  const toggleAppleMenu = (): void => {
-    setState({
-      ...state,
-      showAppleMenu: !state.showAppleMenu
-    });
-  };
+  const toggleAppleMenu = useCallback(() => {
+    console.log("Menu toggled");
+    setState((prev) => ({ ...prev, showAppleMenu: !prev.showAppleMenu }));
+  }, []);
+
+  const handleLogout = useCallback(() => {
+    localStorage.removeItem("token"); // Remove token
+    setState((prev) => ({ ...prev, showAppleMenu: false })); // Close menu
+    navigate("/"); // Navigate to root
+  }, [navigate]);
 
   const [showNotifications, setShowNotifications] = useState(false);
 
@@ -86,37 +89,51 @@ const TopBar = (props: any) => {
   return (
     <div>
       <div
-        className={`w-full h-[44px] px-2 fixed top-0 flex items-center justify-between ${
-          props.hide ? "z-0" : "z-20"
-        } text-sm text-white bg-gray-700/10 backdrop-blur-2xl shadow transition`}
+        className={`w-full h-[44px] px-2 fixed top-0 flex items-center justify-between  text-sm text-white bg-gray-700/10 backdrop-blur-2xl shadow transition`}
       >
-        <div className="items-center flex space-x-1">
-          <TopBarItem className="px-2" onClick={toggleAppleMenu} ref={appleBtnRef}>
-            <img
-              src="/logo/logo_data.svg"
-              alt="Datagaze"
-              className="w-[16px] h-[28px] "
-            />
-          </TopBarItem>
+        <div className="items-start flex">
+          <div className="relative">
+            <TopBarItem onClick={toggleAppleMenu} ref={appleBtnRef}>
+              <img
+                src="/logo/logo_data.svg"
+                alt="Datagaze"
+                className="w-[15px] h-[28px] cursor-pointer"
+              />
+            </TopBarItem>
+            {state.showAppleMenu && (
+              <div className="absolute top-[20px] left-0 w-[120px] bg-[#4474f8] text-white rounded-lg shadow-lg z-30">
+                <button
+                  onClick={handleLogout}
+                  className="w-full h-[30px] bg-[black] text-red hover:text-[white] flex items-center justify-center cursor-pointer hover:bg-white/20 transition-colors duration-200 rounded-md text-sm font-medium"
+                >
+                  Log Out
+                </button>
+              </div>
+            )}
+          </div>
           <TopBarItem
             className="font-semibold px-2"
             onMouseEnter={() => {
               if (state.showAppleMenu) toggleAppleMenu();
             }}
           >
-            <p className="font-normal">DataGaze LTD 2025</p>
+            <p className="font-normal cursor-pointer">DataGaze LTD 2025</p>
           </TopBarItem>
         </div>
 
-        {/* Open this when clicking on Apple logo */}
-
         <div className="items-center flex flex-row justify-end space-x-5">
-          <TopBarItem onClick={() => window.open("https://www.datagaze.uz/", "_blank")}>
+          <TopBarItem
+            className="cursor-pointer"
+            onClick={() => window.open("https://www.datagaze.uz/", "_blank")}
+          >
             <span className="i-bx:bx-globe text-[17px]" />
             <span>Go to website</span>
           </TopBarItem>
 
-          <TopBarItem onClick={() => setShowNotifications(!showNotifications)}>
+          <TopBarItem
+            className="cursor-pointer"
+            onClick={() => setShowNotifications(!showNotifications)}
+          >
             <span className="i-bx:bx-bell text-[17px]" />
             <span>Notifications</span>
             {notifications.length > 0 && (
@@ -126,7 +143,7 @@ const TopBar = (props: any) => {
             )}
           </TopBarItem>
           {showNotifications && (
-            <div className="absolute top-12 right-5 w-80 space-y-3">
+            <div className="absolute top-12 right-5 w-80 space-y-3 z-30">
               {notifications.map((notif) => (
                 <div
                   key={notif.id}
@@ -144,7 +161,7 @@ const TopBar = (props: any) => {
             </div>
           )}
 
-          <TopBarItem>
+          <TopBarItem className="cursor-pointer">
             <span className="i-bx:bxs-smile text-[17px]" />
             <span>Jam</span>
             <span className="i-bx:bx-chevron-down text-[17px]" />

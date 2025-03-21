@@ -98,7 +98,7 @@ export default function Login() {
                       disabled={isPending}
                     >
                       <span className="ml-3 flex items-center justify-center">
-                        {isError || isPending ? (
+                        { isPending ? (
                           <CircularProgress size={30} className="!text-[black]" />
                         ) : (
                           "Sign in"

@@ -153,7 +153,6 @@ export default function Spotlight({
     const portfolio = getTypeAppList("portfolio", app.appIdList.length);
 
     const newAppIdList = [...app.appIdList, ...portfolio.appIdList];
-    // don't show app details when there is no associating app
     if (newAppIdList.length === 0) setCurDetails(null);
 
     const newAppList = (

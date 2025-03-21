@@ -23,8 +23,8 @@ api.interceptors.response.use(
   (error) => {
     if ((error.response && error.response.status === 401) || 500) {
       console.log("Token yaroqsiz yoki muddati tugagan. Foydalanuvchini logout qilamiz.");
-      // localStorage.removeItem("token");
-      // window.location.href = "/";
+      localStorage.removeItem("token");
+      window.location.href = "/";
     }
     return Promise.reject(error);
   }

@@ -2,9 +2,8 @@ export interface ModalLicenseType {
   id?: number;
   icons?: string;
   name: string;
-  adress: string;
-  computer_count: number;
-  uploaded: string;
-  valid: string;
-  valid_upload: string;
+  server_version: string;
+  agent_version: number;
+  publisher: string;
+  file_size: string;
 }

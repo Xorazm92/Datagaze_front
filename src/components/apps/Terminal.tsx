@@ -3,7 +3,7 @@ import { Terminal } from "@xterm/xterm";
 import "@xterm/xterm/css/xterm.css";
 import { SocketService } from "~/types/configs/SockedServis";
 
-const TerminalComponent = () => {
+const TerminalComponent = (autoSsh:any) => {
   const token = localStorage.getItem("token");
   const terminalRef = useRef<HTMLDivElement>(null);
   const xtermRef = useRef<Terminal | null>(null);

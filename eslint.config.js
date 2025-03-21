@@ -2,6 +2,7 @@ import { renovamen } from "@renovamen/eslint-config";
 
 const configs = renovamen({
   files: ["**/*.ts", "**/*.tsx"],
+  ignores: ["src/auto-imports.d.ts"],
   rules: {
     "@typescript-eslint/ban-types": "off",
     "@typescript-eslint/no-explicit-any": "off",

@@ -38,7 +38,7 @@ export const SuperAdmin_users = () => {
   const handleChangeRowsPerPage = (event: React.ChangeEvent<{ value: unknown }>) => {
     const newRowsPerPage = Number(event.target.value);
     setRowsPerPage(newRowsPerPage);
-    setPage(0); // Qatorlar soni o'zgarganda birinchi sahifaga qaytish
+    setPage(0); 
   };
 
   const EditOpenModal = () => {
@@ -178,7 +178,7 @@ export const SuperAdmin_users = () => {
           </div>
           <span className="text-gray-700 text-sm">
             {page * rowsPerPage + 1}–
-            {Math.min((page + 1) * rowsPerPage, filteredComputers.length)} of{" "}
+            {Math.min((page + 1) * rowsPerPage, filteredComputers.length)} of
             {filteredComputers.length}
           </span>
           <div className="flex items-center gap-2">
@@ -187,7 +187,7 @@ export const SuperAdmin_users = () => {
               disabled={page === 0}
               className="px-2 py-1 border border-gray-300 rounded text-gray-700 disabled:opacity-50 hover:bg-gray-50"
             >
-              &lt;
+              {"<"}
             </button>
             {Array.from({ length: totalPages }, (_, i) => (
               <button
@@ -205,7 +205,7 @@ export const SuperAdmin_users = () => {
               disabled={page >= totalPages - 1}
               className="px-2 py-1 border border-gray-300 rounded text-gray-700 disabled:opacity-50 hover:bg-gray-50"
             >
-              &gt;
+              {'>'}
             </button>
           </div>
         </div>

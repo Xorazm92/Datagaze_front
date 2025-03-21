@@ -2,94 +2,112 @@ import { ModalLicenseType } from "~/types/configs/Liceses";
 
 const ModalLicenseTable: ModalLicenseType[] = [
   {
-    id: 1,
+    id: 11,
     icons: "/logo/logoRegister.png",
     name: "DataGaze DLP",
-    adress: "192.168.1.1",
-    computer_count: 10,
-    uploaded: "2025-02-14",
-    valid: "2026-02-14",
-    valid_upload: "Upload license"
+    publisher: "192.168.1.1",
+    agent_version: 10,
+    server_version: "2025-02-14",
+    file_size: "2026-02-14"
+  },
+  {
+    id: 12,
+    icons: "/logo/logoRegister.png",
+    name: "DataGaze Siem",
+    publisher: "192.168.1.1",
+    agent_version: 15,
+    server_version: "2025-02-14",
+    file_size: "2026-02-14"
+  },
+  {
+    id: 13,
+    icons: "/logo/logoRegister.png",
+    name: "DataGaze DLP",
+    publisher: "192.168.1.1",
+    agent_version: 10,
+    server_version: "2025-02-14",
+    file_size: "2026-02-14"
   },
   {
     id: 2,
     icons: "/logo/logoRegister.png",
     name: "DataGaze Siem",
-    adress: "192.168.1.1",
-    computer_count: 15,
-    uploaded: "2025-02-14",
-    valid: "2026-02-14",
-    valid_upload: "Upload license"
+    publisher: "192.168.1.1",
+    agent_version: 15,
+    server_version: "2025-02-14",
+    file_size: "2026-02-14"
   },
   {
     id: 3,
     icons: "/logo/logoRegister.png",
     name: "DataGaze Waf",
-    adress: "192.168.1.1",
-    computer_count: 20,
-    uploaded: "2025-02-14",
-    valid: "2026-02-14",
-    valid_upload: "Upload license"
+    publisher: "192.168.1.1",
+    agent_version: 20,
+    server_version: "2025-02-14",
+    file_size: "2026-02-14"
   },
   {
-    id: 1,
+    id: 4,
     icons: "/logo/logoRegister.png",
     name: "DataGaze DLP",
-    adress: "192.168.1.1",
-    computer_count: 10,
-    uploaded: "2025-02-14",
-    valid: "2026-02-14",
-    valid_upload: "Upload license"
+    publisher: "192.168.1.1",
+    agent_version: 10,
+    server_version: "2025-02-14",
+    file_size: "2026-02-14"
   },
   {
-    id: 2,
+    id: 5,
     icons: "/logo/logoRegister.png",
     name: "DataGaze Siem",
-    adress: "192.168.1.1",
-    computer_count: 15,
-    uploaded: "2025-02-14",
-    valid: "2026-02-14",
-    valid_upload: "Upload license"
+    publisher: "192.168.1.1",
+    agent_version: 15,
+    server_version: "2025-02-14",
+    file_size: "2026-02-14"
   },
   {
-    id: 3,
+    id: 6,
     icons: "/logo/logoRegister.png",
     name: "DataGaze Waf",
-    adress: "192.168.1.1",
-    computer_count: 20,
-    uploaded: "2025-02-14",
-    valid: "2026-02-14",
-    valid_upload: "Upload license"
+    publisher: "192.168.1.1",
+    agent_version: 20,
+    server_version: "2025-02-14",
+    file_size: "2026-02-14"
   },
   {
-    id: 1,
+    id: 7,
     icons: "/logo/logoRegister.png",
     name: "DataGaze DLP",
-    adress: "192.168.1.1",
-    computer_count: 10,
-    uploaded: "2025-02-14",
-    valid: "2026-02-14",
-    valid_upload: "Upload license"
+    publisher: "192.168.1.1",
+    agent_version: 10,
+    server_version: "2025-02-14",
+    file_size: "2026-02-14"
   },
   {
-    id: 2,
+    id: 8,
     icons: "/logo/logoRegister.png",
     name: "DataGaze Siem",
-    adress: "192.168.1.1",
-    computer_count: 15,
-    uploaded: "2025-02-14",
-    valid: "2026-02-14",
-    valid_upload: "Upload license"
+    publisher: "192.168.1.1",
+    agent_version: 15,
+    server_version: "2025-02-14",
+    file_size: "2026-02-14"
   },
   {
-    id: 3,
+    id: 9,
     icons: "/logo/logoRegister.png",
     name: "DataGaze Waf",
-    adress: "192.168.1.1",
-    computer_count: 20,
-    uploaded: "2025-02-14",
-    valid: "2026-02-14",
-    valid_upload: "Upload license"
+    publisher: "192.168.1.1",
+    agent_version: 20,
+    server_version: "2025-02-14",
+    file_size: "2026-02-14"
+  },
+  {
+    id: 19,
+    icons: "/logo/logoRegister.png",
+    name: "DataGaze Waf",
+    publisher: "192.168.1.1",
+    agent_version: 20,
+    server_version: "2025-02-14",
+    file_size: "2026-02-14"
   }
 ];
 

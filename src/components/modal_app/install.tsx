@@ -1,5 +1,5 @@
-import { Modal, Box, Typography, Tabs, Tab } from "@mui/material";
-import { ApplicationType, InistallApplicationType, InstallAppInfoType } from "~/types";
+import { Modal, Box, Typography} from "@mui/material";
+import { ApplicationType,  InstallAppInfoType } from "~/types";
 import { BiMemoryCard } from "react-icons/bi";
 import { IoMdCloseCircle } from "react-icons/io";
 import { FiCheck } from "react-icons/fi";

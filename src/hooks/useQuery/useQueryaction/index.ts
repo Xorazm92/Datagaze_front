@@ -17,7 +17,7 @@ const useRegister = () => {
         localStorage.setItem("token", data.token);
       }
 
-      navigate("/desktop");
+      navigate("/desktop",{replace:true});
       notify("superadmin");
     },
     onError: (err) => {

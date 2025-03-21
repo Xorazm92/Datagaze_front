@@ -6,7 +6,6 @@
 export {}
 declare global {
   const AppWindow: typeof import('./components/AppWindow')['default']
-  const AppleMenu: (typeof import("./components/menus/AppleMenu"))["default"]
   const Battery: typeof import('./components/menus/Battery')['default']
   const Computers: typeof import('./components/apps/Computers')['default']
   const ControlCenterMenu: typeof import('./components/menus/ControlCenterMenu')['default']
@@ -41,6 +40,7 @@ declare global {
   const modal: (typeof import("./components/modal_app"))["default"]
   const modalApp: typeof import('./components/modal_app/index')['default']
   const startTransition: typeof import('react')['startTransition']
+  const superAdminUsers: typeof import('./components/apps/SuperAdmin_Users')['default']
   const tab: (typeof import("./components/modal_app"))["default"]
   const useAudio: typeof import('./hooks/useAudio')['useAudio']
   const useBattery: typeof import('./hooks/useBattery')['useBattery']

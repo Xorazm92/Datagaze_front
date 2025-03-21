@@ -20,7 +20,7 @@ const apps: AppsData[] = [
   },
   {
     id: "users",
-    title: "Users list",
+    title: "Superadmin",
     desktop: true,
     content: <SuperAdmin_users />,
     img: "/icons/users.png"
@@ -69,8 +69,8 @@ const apps: AppsData[] = [
     content: <Terminal />
   },
   {
-    id: "licenses",
-    title: "Licenses",
+    id: "Add product",
+    title: "Add product",
     desktop: true,
     img: "/icons/Liceses.png",
     content: <ModalLicense />
