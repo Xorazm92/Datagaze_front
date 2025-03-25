@@ -1,131 +1,137 @@
 import React, { useEffect, useRef } from "react";
-import { Terminal } from "@xterm/xterm";
-import "@xterm/xterm/css/xterm.css";
-import { SocketService } from "~/types/configs/SockedServis";
+import { Terminal } from "xterm";
+import { FitAddon } from "xterm-addon-fit";
+import "xterm/css/xterm.css";
+import io from "socket.io-client";
 
-const TerminalComponent = (autoSsh:any) => {
-  const token = localStorage.getItem("token");
-  const terminalRef = useRef<HTMLDivElement>(null);
-  const xtermRef = useRef<Terminal | null>(null);
-  const socketService = useRef<SocketService | null>(null);
-  const commandBuffer = useRef<string>("");
-
-  const prompt = () => {
-    xtermRef.current?.write("\r\nroot@server:~$ ");
-  };
-
-  const rewriteLine = () => {
-    const promptLength = "root@server:~$ ".length;
-    xtermRef.current?.write(
-      `\r${" ".repeat(promptLength + commandBuffer.current.length)}`
-    );
-    xtermRef.current?.write(`\rroot@server:~$ ${commandBuffer.current}`);
-  };
+const TerminalApp = () => {
+  const terminalRef = useRef<any>(null);
+  const socketRef = useRef<any>(null);
+  const termRef = useRef<any>(null);
 
   useEffect(() => {
-    if (!terminalRef.current) {
-      console.error("Terminal konteyneri topilmadi");
-      return;
-    }
-
-    const term = new Terminal({
+    // Terminalni boshlash
+    termRef.current = new Terminal({
       cursorBlink: true,
-      rows: 40,
-      cols: 100,
-      fontFamily: "Courier New, monospace", // Monospace shrift
-      fontSize: 14,
-      theme: {
-        background: "#1a1a1a", // Qora fon (klassik terminal rangi)
-        foreground: "#00ff00", // Yashil matn
-        cursor: "#00ff00", // Yashil kursor
-        selectionBackground: "#ffffff33" // Tanlangan qism rangi
-      }
+      
+      theme: { background: "#000765", foreground: "#fff" },
+      disableStdin: false // Inputni faollashtirish
     });
-    xtermRef.current = term;
 
-    term.open(terminalRef.current);
-    term.write("Connecting to server...\r\n");
+    const fitAddon = new FitAddon();
+    termRef.current.loadAddon(fitAddon);
+    termRef.current.open(terminalRef.current);
+    fitAddon.fit();
 
-    if (!token) {
-      term.write("❌ Error: Token topilmadi!\r\n");
-      prompt();
-      return;
-    }
+    // Terminalga fokus qo'yish
+    termRef.current.focus();
 
-    socketService.current = new SocketService(token);
+    termRef.current.write("Terminal ochildi! Serverga ulanmoqda...\r\n");
 
-    // Progressni ko'rsatish
-    socketService.current.onProgress((progressData) => {
-      if (progressData === "50") {
-        term.write("\x1b[33mUlanmoqda... 50%\x1b[0m\r\n"); // Sariq rang
-      } else if (progressData === "70") {
-        term.write("\x1b[33mSSH ulanish boshlandi... 70%\x1b[0m\r\n"); // Sariq rang
-      } else if (progressData === "100") {
-        term.write("\x1b[32mUlandi! Terminal tayyor.\x1b[0m\r\n"); // Yashil rang
-        prompt();
+    // Socket.IO ulanishini boshlash
+    socketRef.current = io(
+      "https://datagaze-platform-9cab2c02bc91.herokuapp.com/terminal",
+      {
+        transports: ["websocket"],
+        auth: {
+          token:
+            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZTFkYWJmNmEtZmM1My00OWY3LTgwYjUtY2NlNTg4MWI4NDQwIiwicm9sZSI6InN1cGVyYWRtaW4iLCJyb2xlX2lkIjoxLCJpYXQiOjE3NDI4NzY5MTQsImV4cCI6MTc0Mjk2MzMxNH0.iDYcjE1N7E6k1Ku2cYlY39no6g5eomY6fCGTKwzJkfw"
+        }
+      }
+    );
+
+    let rawInputMode = false;
+    let inputBuffer = "";
+
+    // Socket eventlari
+    socketRef.current.on("connect", () => {
+      termRef.current.write("\r\nHolat: Serverga ulandi!");
+      socketRef.current.emit("command", { command: "init" });
+      termRef.current.focus(); // Ulangandan keyin fokusni qaytarish
+    });
+
+    socketRef.current.on("disconnect", () => {
+      termRef.current.write("\r\nHolat: Serverdan uzildi! Qayta ulanmoqda...");
+      setTimeout(() => {
+        if (!socketRef.current.connected) socketRef.current.connect();
+      }, 1000);
+    });
+
+    socketRef.current.on("data", ({ sessionId, output }: any) => {
+      termRef.current.write(output);
+      termRef.current.focus(); // Ma'lumot kelganda fokusni saqlash
+    });
+
+    socketRef.current.on("command_response", ({ data }: any) => {
+      if (data.result.startsWith("CLIENT_ID:")) {
+        const clientId = data.result.split(":")[1];
+        rawInputMode = true;
+        termRef.current.write("\r\nRaw input rejimi yoqildi");
       } else {
-        term.write(`${progressData}\r\n`);
+        termRef.current.write(data.result);
       }
+      termRef.current.focus(); // Javob kelganda fokusni saqlash
     });
 
-    // Serverdan kelgan javoblarni ko'rsatish
-    socketService.current.onMessage((data) => {
-      const { success, result } = data.data || data;
-      term.write(
-        `${success ? ` ${result || ""}` : `\x1b[31m❌ Error: ${result}\x1b[0m`}`
-      );
-    });
-    socketService.current.onCommandResponse((data) => {
-      const { success, result } = data.data || data;
-      term.write(
-        `${success ? ` ${result || ""}` : `\x1b[31m❌ Error: ${result}\x1b[0m`}`
-      );
-      prompt();
+    socketRef.current.on("error", (err: any) => {
+      termRef.current.write("\r\nServer xatosi: " + err);
     });
 
-    term.onData((data) => {
-      if (data === "\r") {
-        const input = commandBuffer.current.trim();
-        term.write("\r\n");
-        if (input) {
-          socketService.current?.sendCommand(input);
+    socketRef.current.on("connect_error", (err: any) => {
+      termRef.current.write("\r\nUlanish xatosi: " + err.message);
+    });
+
+    // Terminal input handler
+    termRef.current.onData((data: any) => {
+      if (rawInputMode) {
+        socketRef.current.emit("command", { command: data });
+        termRef.current.write(data);
+      } else {
+        if (data === "\r") {
+          if (socketRef.current && socketRef.current.connected) {
+            if (inputBuffer.trim()) {
+              socketRef.current.emit("command", { command: inputBuffer });
+              inputBuffer = "";
+            }
+            termRef.current.write("\r\n");
+          } else {
+            termRef.current.write("\r\nXato: Serverga ulanib bo‘lmadi!");
+            inputBuffer = "";
+          }
+        } else if (data === "\u007F" || data === "\b") {
+          if (inputBuffer.length > 0) {
+            inputBuffer = inputBuffer.slice(0, -1);
+            termRef.current.write("\b \b");
+          }
         } else {
-          prompt();
+          inputBuffer += data;
+          termRef.current.write(data);
         }
-        commandBuffer.current = "";
-      } else if (data === "\u007F") {
-        if (commandBuffer.current.length > 0) {
-          commandBuffer.current = commandBuffer.current.slice(0, -1);
-          rewriteLine();
-        }
-      } else {
-        commandBuffer.current += data;
-        term.write(data);
       }
+    });
+
+    terminalRef.current.addEventListener("click", () => {
+      termRef.current.focus();
     });
 
     return () => {
-      term.dispose();
-      if (socketService.current) {
-        socketService.current.disconnect();
-      }
+      if (socketRef.current) socketRef.current.disconnect();
+      if (termRef.current) termRef.current.dispose();
     };
   }, []);
 
   return (
-    <div
-      ref={terminalRef}
-      style={{
-        width: "100%",
-        height: "100%",
-        background: "#1a1a1a", // Qora fon
-        padding: "10px",
-        borderRadius: "5px",
-        boxShadow: "0 0 10px rgba(0, 0, 0, 0.5)", // Soya effekti
-        border: "1px solid #333" // Chegara
-      }}
-    />
+    <div style={{ padding: "20px" }}>
+      <div
+        ref={terminalRef}
+        style={{
+          width: "100%",
+          height: "100vh",
+          background: "#000"
+        }}
+      />
+    </div>
   );
 };
 
-export default TerminalComponent;
+export default TerminalApp;

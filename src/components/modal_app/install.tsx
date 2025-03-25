@@ -1,5 +1,5 @@
-import { Modal, Box, Typography} from "@mui/material";
-import { ApplicationType,  InstallAppInfoType } from "~/types";
+import { Modal, Box, Typography } from "@mui/material";
+import { ApplicationType, InstallAppInfoType } from "~/types";
 import { BiMemoryCard } from "react-icons/bi";
 import { IoMdCloseCircle } from "react-icons/io";
 import { FiCheck } from "react-icons/fi";
@@ -61,7 +61,11 @@ const LicenseModalinstall = ({
   };
 
   const handleBack = () => {
-    SetOpenModal(false);
+    if (activeStep > 0) {
+      setActiveStep((prev) => prev - 1);
+    } else {
+      SetOpenModal(false);
+    }
   };
 
   const OpenInstallModal = () => {
@@ -293,7 +297,7 @@ const LicenseModalinstall = ({
                               variant="outlined"
                               sx={{ textTransform: "capitalize" }}
                             >
-                              Cancel
+                              {activeStep > 0 ? "< Back" : "Cancel"}
                             </Button>
                             <Button
                               type="submit"
@@ -319,7 +323,7 @@ const LicenseModalinstall = ({
                           <span className="text-sm font-normal">Terminal</span>
                         </div>
                         <div className="w-full h-full overflow-hidden">
-                          <Terminal autoSsh={true} />
+                          <Terminal />
                         </div>
                       </div>
                     )}

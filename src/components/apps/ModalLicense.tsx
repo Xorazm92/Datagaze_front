@@ -185,7 +185,7 @@ const ModalLicense = () => {
       {isOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center">
           <div className="bg-[#e7ecf8] rounded-2xl shadow-lg p-6 w-[620px] h-[610px]">
-            <div className="flex flex-col gap-[30px] justify-between">
+            <div className="flex flex-col gap-[40px] justify-between">
               <h2 className="text-[30px] font-bold">Add New Product</h2>
               <Stepper activeStep={activeStep} className="mt-4  text-[18px]">
                 {step.map((label, idx) => (

@@ -4,7 +4,6 @@ import { createBrowserRouter, RouterProvider, Route, Outlet } from "react-router
 import { Toaster } from "sonner";
 import Desktop from "~/pages/Desktop";
 import Login from "~/pages/Login";
-import Boot from "~/pages/Boot";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import "@unocss/reset/tailwind.css";
 import "uno.css";
@@ -25,7 +24,6 @@ const router = createBrowserRouter([
     children: [
       { path: "/", element: <Login /> },
       { path: "/desktop", element: <Desktop /> },
-      { path: "/boot", element: <Boot /> },
       {
         path: "*",
         element: (

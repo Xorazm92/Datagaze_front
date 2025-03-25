@@ -16,9 +16,10 @@ const useRegister = () => {
       if (data.status === "success") {
         localStorage.setItem("token", data.token);
       }
-
-      navigate("/desktop",{replace:true});
-      notify("superadmin");
+      setTimeout(() => {
+        navigate("/desktop", { replace: true });
+        notify("superadmin");
+      }, 500);
     },
     onError: (err) => {
       console.log(err.message);

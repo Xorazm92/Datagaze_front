@@ -7,7 +7,7 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useState } from "react";
 
 export default function Login() {
-  const { mutate, isError, isPending } = useRegister();
+  const { mutate, isPending } = useRegister();
   const [showPassword, setShowPassword] = useState(false);
   const togglePassword = () => setShowPassword(!showPassword);
 
@@ -98,7 +98,7 @@ export default function Login() {
                       disabled={isPending}
                     >
                       <span className="ml-3 flex items-center justify-center">
-                        { isPending ? (
+                        {isPending ? (
                           <CircularProgress size={30} className="!text-[black]" />
                         ) : (
                           "Sign in"

@@ -38,7 +38,7 @@ export const SuperAdmin_users = () => {
   const handleChangeRowsPerPage = (event: React.ChangeEvent<{ value: unknown }>) => {
     const newRowsPerPage = Number(event.target.value);
     setRowsPerPage(newRowsPerPage);
-    setPage(0); 
+    setPage(0);
   };
 
   const EditOpenModal = () => {
@@ -89,7 +89,6 @@ export const SuperAdmin_users = () => {
               <tr className="border-b border-gray-300 text-gray-600 text-sm">
                 <th className="p-3">Full name</th>
                 <th className="p-3">Email</th>
-                <th className="p-3">Computer name</th>
                 <th className="p-3">Degistered date</th>
                 <th className="p-3"></th>
               </tr>
@@ -117,16 +116,24 @@ export const SuperAdmin_users = () => {
                       />
                     </div>
                   </div>
-
-                  <div className="mb-4">
-                    <label className="block text-sm text-gray-700">Password</label>
-                    <input
-                      type="password"
-                      placeholder="password"
-                      className="w-[50%] border rounded-lg p-2 mt-1"
-                    />
+                  <div className="grid grid-cols-2 gap-4 mb-4">
+                    <div className="mb-4">
+                      <label className="block text-sm text-gray-700">Password</label>
+                      <input
+                        type="password"
+                        placeholder="password"
+                        className="w-full border rounded-lg p-2 mt-1"
+                      />
+                    </div>
+                    <div className="mb-4">
+                      <label className="block text-sm text-gray-700">Username</label>
+                      <input
+                        type="text"
+                        placeholder="Username"
+                        className="w-full border rounded-lg p-2 mt-1"
+                      />
+                    </div>
                   </div>
-
                   <div className="flex justify-end items-center mt-4">
                     <div className="flex gap-2">
                       <button
@@ -151,7 +158,6 @@ export const SuperAdmin_users = () => {
                 >
                   <td className="p-3">{item.fullname}</td>
                   <td className="p-3">{item.email}</td>
-                  <td className="p-3">{item.computer_name}</td>
                   <td className="p-3">{item.degistered_date}</td>
                   <td
                     className="p-3 text-[#1A79D8] cursor-pointer"
@@ -205,7 +211,7 @@ export const SuperAdmin_users = () => {
               disabled={page >= totalPages - 1}
               className="px-2 py-1 border border-gray-300 rounded text-gray-700 disabled:opacity-50 hover:bg-gray-50"
             >
-              {'>'}
+              {">"}
             </button>
           </div>
         </div>
@@ -233,14 +239,23 @@ export const SuperAdmin_users = () => {
                 />
               </div>
             </div>
-
-            <div className="mb-4">
-              <label className="block text-sm text-gray-700">Password</label>
-              <input
-                type="password"
-                placeholder="password"
-                className="w-[50%] border rounded-lg p-2 mt-1"
-              />
+            <div className="grid grid-cols-2 gap-4 mb-4">
+              <div className="mb-4">
+                <label className="block text-sm text-gray-700">Password</label>
+                <input
+                  type="password"
+                  placeholder="password"
+                  className="w-full border rounded-lg p-2 mt-1"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-sm text-gray-700">Username</label>
+                <input
+                  type="text"
+                  placeholder="Username"
+                  className="w-full border rounded-lg p-2 mt-1"
+                />
+              </div>
             </div>
 
             <div className="flex justify-between items-center mt-4">

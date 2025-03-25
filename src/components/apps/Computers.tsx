@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { ComputersType } from "~/types/configs/computers";
 import { FiColumns } from "react-icons/fi";
 import TextField from "@mui/material/TextField";
-import { FormControl, Select, MenuItem } from "@mui/material";
+import { FormControl, Select, MenuItem, CircularProgress } from "@mui/material";
 import Computers_app from "./Computer_app";
 import { useQueryApi } from "~/hooks/useQuery";
 import { useSearchParams } from "react-router-dom";
@@ -188,46 +188,45 @@ const Computers = () => {
               </tr>
             </thead>
             <tbody>
-              {isLoading || isError
-                ? "Loading..."
-                : paginatedComputers.map((item, index) => (
-                    <tr
-                      key={item.id}
-                      className={`border-b border-gray-200 p-4 text-sm ${
-                        index % 2 === 0 ? "bg-[grey-50]" : "bg-[#ccdaf8]"
-                      }`}
+              {isLoading || isError ? (
+                <CircularProgress />
+              ) : (
+                paginatedComputers.map((item, index) => (
+                  <tr
+                    key={item.id}
+                    className={`border-b border-gray-200 p-4 text-sm ${
+                      index % 2 === 0 ? "bg-[grey-50]" : "bg-[#ccdaf8]"
+                    }`}
+                  >
+                    <td className="p-3">
+                      <input type="checkbox" />
+                    </td>
+                    <td className="p-3">{index + 1}</td>
+                    <td className="p-3 cursor-pointer" onClick={() => apptable(item.id)}>
+                      {item.computer_name}
+                    </td>
+                    <td className="p-3">{item.os}</td>
+                    <td className="p-3">{item.ip_address}</td>
+                    <td>
+                      <p
+                        className={`${
+                          item.status === "active"
+                            ? "bg-[#DCFCE7] flex text-green-600 w-[49px] h-[20px] items-center justify-center p-2 rounded-[8px] text-[12px]"
+                            : "text-[grey] bg-[#dfe8fb] flex w-[49px] h-[20px] text-[12px] items-center justify-center px-2 py-2 rounded-[8px]"
+                        }`}
+                      >
+                        {item.status}
+                      </p>
+                    </td>
+                    <td
+                      className="p-3 text-blue-500 cursor-pointer"
+                      onClick={() => showModal(item.id)}
                     >
-                      <td className="p-3">
-                        <input type="checkbox" />
-                      </td>
-                      <td className="p-3">{index + 1}</td>
-                      <td
-                        className="p-3 cursor-pointer"
-                        onClick={() => apptable(item.id)}
-                      >
-                        {item.computer_name}
-                      </td>
-                      <td className="p-3">{item.os}</td>
-                      <td className="p-3">{item.ip_address}</td>
-                      <td>
-                        <p
-                          className={`${
-                            item.status === "active"
-                              ? "bg-[#DCFCE7] flex text-green-600 w-[49px] h-[20px] items-center justify-center p-2 rounded-[8px] text-[12px]"
-                              : "text-[grey] bg-[#dfe8fb] flex w-[49px] h-[20px] text-[12px] items-center justify-center px-2 py-2 rounded-[8px]"
-                          }`}
-                        >
-                          {item.status}
-                        </p>
-                      </td>
-                      <td
-                        className="p-3 text-blue-500 cursor-pointer"
-                        onClick={() => showModal(item.id)}
-                      >
-                        About PC
-                      </td>
-                    </tr>
-                  ))}
+                      About PC
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>

@@ -25,28 +25,7 @@ const apps: AppsData[] = [
     content: <SuperAdmin_users />,
     img: "/icons/users.png"
   },
-  {
-    id: "safari",
-    title: "Safari",
-    desktop: true,
-    width: 1024,
-    minWidth: 375,
-    minHeight: 200,
-    x: -20,
-    img: "/icons/safari.png",
-    content: <Safari />
-  },
-  {
-    id: "vscode",
-    title: "VSCode",
-    desktop: true,
-    width: 900,
-    height: 600,
-    x: 80,
-    y: -30,
-    img: "/icons/vscode.png",
-    content: <VSCode />
-  },
+
   {
     id: "facetime",
     title: "FaceTime",
