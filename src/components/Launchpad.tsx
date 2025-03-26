@@ -75,12 +75,12 @@ export default function Launchpad({ show, toggleLaunchpad }: LaunchpadProps) {
         <div className="mx-auto mt-6 w-full px-4">
           <div className="grid grid-cols-3 xs:grid-cols-4 sm:grid-cols-5 md:grid-cols-7 gap-4 sm:gap-6">
             {isLoading || isError ? (
-              <p className="text-white text-center col-span-full">
+              <div className="text-white text-center col-span-full">
                 Loading...
                 <Box sx={{ display: "flex" }}>
                   <CircularProgress />
                 </Box>
-              </p>
+              </div>
             ) : Array.isArray(search()) ? (
               search().map((app: ApplicationType) => (
                 <div
