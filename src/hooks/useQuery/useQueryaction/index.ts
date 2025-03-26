@@ -29,10 +29,10 @@ const useRegister = () => {
 
     onSuccess: (response) => {
       console.log('Login success response:', response);
-      if (response && response.token) {
+      if (response?.data?.token) {
         try {
-          localStorage.setItem("token", response.token);
-          localStorage.setItem("user", JSON.stringify(response.user));
+          localStorage.setItem("token", response.data.token);
+          localStorage.setItem("user", JSON.stringify(response.data.user));
           setLogin(true);
           notify("superadmin");
           setTimeout(() => {
