@@ -3,14 +3,15 @@ import { io, Socket } from "socket.io-client";
 export class SocketService {
   private terminalSocket: Socket;
   private progressSocket: Socket;
-  private baseUrl: string = "wss://datagaze-platform-9cab2c02bc91.herokuapp.com";
-  private password: string = "Datagaze2134$Platform";
-
+  private baseUrl: string = "http://localhost:3000"; // Updated to use local backend
+  
   constructor(token: string) {
     const options = {
       transports: ["websocket"],
       query: { token },
-      auth: { password: this.password }
+      extraHeaders: {
+        Authorization: `Bearer ${token}`
+      }
     };
 
     this.terminalSocket = io(`${this.baseUrl}/terminal`, options);
@@ -23,7 +24,7 @@ export class SocketService {
   private setupEventListeners(): void {
     this.terminalSocket.on("connect", () => {
       console.log("Connected to terminal socket");
-      this.progressSocket.emit("progressUpdate", "50"); // Socket ulandi
+      this.progressSocket.emit("progressUpdate", "50");
     });
 
     this.terminalSocket.on("connect_error", (err) => {
@@ -46,11 +47,10 @@ export class SocketService {
 
   private autoConnect(): void {
     this.terminalSocket.on("connect", () => {
-      this.progressSocket.emit("progressUpdate", "70"); // SSH ulanish boshlandi
-      this.sendCommand("ssh root@209.38.250.43"); // Avtomatik SSH ulanish
+      this.progressSocket.emit("progressUpdate", "70");
       setTimeout(() => {
-        this.progressSocket.emit("progressUpdate", "100"); // Ulanish tugadi
-      }, 1000); // Simulyatsiya uchun 1 soniya kutamiz
+        this.progressSocket.emit("progressUpdate", "100");
+      }, 1000);
     });
   }
 

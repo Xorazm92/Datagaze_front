@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_BASE_URL,
+  baseURL: import.meta.env.VITE_BASE_URL || 'http://localhost:3000',
   headers: {
     "Content-Type": "application/json"
   }
@@ -9,21 +9,30 @@ const api = axios.create({
 
 api.interceptors.request.use(
   (config) => {
+    console.log('Request config:', config);
     const token = localStorage.getItem("token");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => {
+    console.error('Request error:', error);
+    return Promise.reject(error);
+  }
 );
 
 api.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    console.log('Response data:', response.data);
+    return response.data;
+  },
   (error) => {
-    if ((error.response && error.response.status === 401) || 500) {
+    console.error('Response error:', error);
+    if (error.response?.status === 401) {
       console.log("Token yaroqsiz yoki muddati tugagan. Foydalanuvchini logout qilamiz.");
       localStorage.removeItem("token");
+      localStorage.removeItem("user");
       window.location.href = "/";
     }
     return Promise.reject(error);

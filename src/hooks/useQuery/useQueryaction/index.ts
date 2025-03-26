@@ -1,29 +1,55 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { notificationApi } from "~/generic/notification";
 import { useAxios } from "~/hooks/useAxios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import { RegisterType } from "~/types";
 
 const useRegister = () => {
   const axios = useAxios();
   const navigate = useNavigate();
   const notify = notificationApi();
+  const { setLogin } = useOutletContext<{ setLogin: (value: boolean) => void }>();
+  
   return useMutation({
-    mutationFn: async ({ data }: { data: RegisterType }) =>
-      await axios({ url: "/api/1/auth/login", body: data, method: "POST" }),
-
-    onSuccess: (data) => {
-      if (data.status === "success") {
-        localStorage.setItem("token", data.token);
+    mutationFn: async ({ data }: { data: RegisterType }) => {
+      try {
+        console.log('Sending login request with data:', data);
+        const response = await axios({ 
+          url: "/api/1/auth/login", 
+          body: data, 
+          method: "POST" 
+        });
+        console.log('Login response:', response);
+        return response;
+      } catch (error) {
+        console.error('Login error:', error);
+        throw error;
       }
-      setTimeout(() => {
-        navigate("/desktop", { replace: true });
-        notify("superadmin");
-      }, 500);
+    },
+
+    onSuccess: (response) => {
+      console.log('Login success response:', response);
+      if (response && response.token) {
+        try {
+          localStorage.setItem("token", response.token);
+          localStorage.setItem("user", JSON.stringify(response.user));
+          setLogin(true);
+          notify("superadmin");
+          setTimeout(() => {
+            navigate("/desktop", { replace: true });
+          }, 100);
+        } catch (error) {
+          console.error('Error saving data:', error);
+          notify("login_failed");
+        }
+      } else {
+        console.error('Invalid response format:', response);
+        notify("invalid_response");
+      }
     },
     onError: (err) => {
-      console.log(err.message);
-      notify("Not register");
+      console.error('Login error:', err);
+      notify("login_failed");
     }
   });
 };
