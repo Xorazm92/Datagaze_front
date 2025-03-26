@@ -13,7 +13,7 @@ const TerminalApp = () => {
     // Terminalni boshlash
     termRef.current = new Terminal({
       cursorBlink: true,
-      
+
       theme: { background: "#000765", foreground: "#fff" },
       disableStdin: false // Inputni faollashtirish
     });
@@ -29,16 +29,20 @@ const TerminalApp = () => {
     termRef.current.write("Terminal ochildi! Serverga ulanmoqda...\r\n");
 
     // Socket.IO ulanishini boshlash
-    socketRef.current = io(
-      "https://datagaze-platform-9cab2c02bc91.herokuapp.com/terminal",
-      {
-        transports: ["websocket"],
-        auth: {
-          token:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZTFkYWJmNmEtZmM1My00OWY3LTgwYjUtY2NlNTg4MWI4NDQwIiwicm9sZSI6InN1cGVyYWRtaW4iLCJyb2xlX2lkIjoxLCJpYXQiOjE3NDI4NzY5MTQsImV4cCI6MTc0Mjk2MzMxNH0.iDYcjE1N7E6k1Ku2cYlY39no6g5eomY6fCGTKwzJkfw"
-        }
+    socketRef.current = io(`${import.meta.env.VITE_BASE_URL}/terminal`, {
+      transports: ["websocket"],
+      auth: {
+        token: localStorage.getItem("token")
       }
-    );
+    });
+
+    // socketRef.current = io("", {
+    //   transports: ["websocket"],
+    //   auth: {
+    //     token:
+    //       "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZTFkYWJmNmEtZmM1My00OWY3LTgwYjUtY2NlNTg4MWI4NDQwIiwicm9sZSI6InN1cGVyYWRtaW4iLCJyb2xlX2lkIjoxLCJpYXQiOjE3NDI4NzY5MTQsImV4cCI6MTc0Mjk2MzMxNH0.iDYcjE1N7E6k1Ku2cYlY39no6g5eomY6fCGTKwzJkfw"
+    //   }
+    // });
 
     let rawInputMode = false;
     let inputBuffer = "";

@@ -13,8 +13,8 @@ const useRegister = () => {
       await axios({ url: "/api/1/auth/login", body: data, method: "POST" }),
 
     onSuccess: (data) => {
-      if (data.status === "success") {
-        localStorage.setItem("token", data.token);
+      if (data.status === "success" && data?.data?.token) {
+        localStorage.setItem("token", data?.data?.token);
       }
       setTimeout(() => {
         navigate("/desktop", { replace: true });

@@ -26,8 +26,8 @@ export default function Login() {
     resolver: zodResolver(registerSchema)
   });
 
-  const onSubmit = async (e: RegisterForm) => {
-    await mutate({ data: e });
+  const onSubmit = (e: RegisterForm) => {
+    mutate({ data: e });
   };
 
   return (
