@@ -9,7 +9,7 @@ const useRegister = () => {
   const navigate = useNavigate();
   const notify = notificationApi();
   const { setLogin } = useOutletContext<{ setLogin: (value: boolean) => void }>();
-  
+
   return useMutation({
     mutationFn: async ({ data }: { data: RegisterType }) => {
       try {
