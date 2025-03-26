@@ -93,63 +93,6 @@ export const SuperAdmin_users = () => {
                 <th className="p-3"></th>
               </tr>
             </thead>
-            {openUser && (
-              <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center">
-                <div className="bg-[#e7ecf8] rounded-2xl shadow-lg p-6 w-[550px] h-[320px]">
-                  <h2 className="text-xl font-semibold mb-4">Add new user</h2>
-
-                  <div className="grid grid-cols-2 gap-4 mb-4">
-                    <div>
-                      <label className="block text-sm text-gray-700">Full name</label>
-                      <input
-                        type="text"
-                        defaultValue="Morgan Master"
-                        className="w-full border rounded-lg p-2 mt-1"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm text-gray-700">Email</label>
-                      <input
-                        type="email"
-                        defaultValue="david.wilson@data.com"
-                        className="w-full border rounded-lg p-2 mt-1"
-                      />
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-2 gap-4 mb-4">
-                    <div className="mb-4">
-                      <label className="block text-sm text-gray-700">Password</label>
-                      <input
-                        type="password"
-                        placeholder="password"
-                        className="w-full border rounded-lg p-2 mt-1"
-                      />
-                    </div>
-                    <div className="mb-4">
-                      <label className="block text-sm text-gray-700">Username</label>
-                      <input
-                        type="text"
-                        placeholder="Username"
-                        className="w-full border rounded-lg p-2 mt-1"
-                      />
-                    </div>
-                  </div>
-                  <div className="flex justify-end items-center mt-4">
-                    <div className="flex gap-2">
-                      <button
-                        onClick={CloseModal}
-                        className="border px-4 py-2 rounded-lg"
-                      >
-                        Cancel
-                      </button>
-                      <button className="bg-blue-500 text-white px-4 py-2 rounded-lg">
-                        Next
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
             <tbody>
               {paginatedComputers.map((item, index) => (
                 <tr
@@ -216,6 +159,63 @@ export const SuperAdmin_users = () => {
           </div>
         </div>
       </div>
+      {openUser && (
+        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+          <div className="bg-[#e7ecf8] rounded-2xl shadow-lg p-6 w-[550px] h-[320px]">
+            <h2 className="text-xl font-semibold mb-4">Add new user</h2>
+
+            <div className="grid grid-cols-2 gap-4 mb-4">
+              <div>
+                <label className="block text-sm text-gray-700">Full name</label>
+                <input
+                  type="text"
+                  defaultValue="Morgan Master"
+                  className="w-full border rounded-lg p-2 mt-1"
+                />
+              </div>
+              <div>
+                <label className="block text-sm text-gray-700">Email</label>
+                <input
+                  type="email"
+                  defaultValue="david.wilson@data.com"
+                  className="w-full border rounded-lg p-2 mt-1"
+                />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4 mb-4">
+              <div className="mb-4">
+                <label className="block text-sm text-gray-700">Password</label>
+                <input
+                  type="password"
+                  placeholder="password"
+                  className="w-full border rounded-lg p-2 mt-1"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-sm text-gray-700">Username</label>
+                <input
+                  type="text"
+                  placeholder="Username"
+                  className="w-full border rounded-lg p-2 mt-1"
+                />
+              </div>
+            </div>
+            <div className="flex justify-end items-center mt-4">
+              <div className="flex gap-2">
+                <button
+                  onClick={CloseModal}
+                  className="border px-4 py-2 rounded-lg"
+                >
+                  Cancel
+                </button>
+                <button className="bg-blue-500 text-white px-4 py-2 rounded-lg">
+                  Next
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
       {open && (
         <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center">
           <div className="bg-[#e7ecf8] rounded-2xl shadow-lg p-6 w-[550px] h-[320px]">
