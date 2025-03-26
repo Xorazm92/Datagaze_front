@@ -1,0 +1,36 @@
+Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+
+                
+          
+          
+          
+         Chrome is moving towards a new experience that allows users to choose to browse without third-party cookies.Understand this warningAI
+index.ts:16 Sending login request with data: {username: 'superadmin', password: 'superadmin'}password: "superadmin"username: "superadmin"[[Prototype]]: Object
+index.ts:12 Request config: {transitional: {…}, adapter: Array(3), transformRequest: Array(1), transformResponse: Array(1), timeout: 0, …}adapter: (3) ['xhr', 'http', 'fetch']allowAbsoluteUrls: truebaseURL: "http://0.0.0.0:3000"data: "{\"username\":\"superadmin\",\"password\":\"superadmin\"}"env: {FormData: ƒ, Blob: ƒ}headers: AxiosHeaders {Accept: 'application/json, text/plain, */*', Content-Type: 'application/json'}maxBodyLength: -1maxContentLength: -1method: "post"params: {}timeout: 0transformRequest: [ƒ]transformResponse: [ƒ]transitional: {silentJSONParsing: true, forcedJSONParsing: true, clarifyTimeoutError: false}url: "http://0.0.0.0:3000/api/1/auth/login"validateStatus: ƒ validateStatus(status)xsrfCookieName: "XSRF-TOKEN"xsrfHeaderName: "X-XSRF-TOKEN"[[Prototype]]: Object
+index.ts:27 Response data: {data: {…}, status: 'success', timestamp: '2025-03-26T10:39:42.436Z'}data: {status: 'success', token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxM…TgyfQ.6H3plpB5ip0c9yMgPSQD0twBNe8GSRsKc5oB8vTjQeI', user: {…}}status: "success"timestamp: "2025-03-26T10:39:42.436Z"[[Prototype]]: Object
+index.ts:22 Login response: {status: 'success', token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxM…TgyfQ.6H3plpB5ip0c9yMgPSQD0twBNe8GSRsKc5oB8vTjQeI', user: {…}}status: "success"token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjNlNDU2Ny1lODliLTEyZDMtYTQ1Ni00MjY2MTQxNzQwMDAiLCJ1c2VybmFtZSI6InN1cGVyYWRtaW4iLCJyb2xlIjoic3VwZXJhZG1pbiIsImlhdCI6MTc0Mjk4NTU4MiwiZXhwIjoxNzQzMDcxOTgyfQ.6H3plpB5ip0c9yMgPSQD0twBNe8GSRsKc5oB8vTjQeI"user: {id: '123e4567-e89b-12d3-a456-426614174000', username: 'superadmin', role: 'superadmin'}[[Prototype]]: Object
+index.ts:31 Login success response: {status: 'success', token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxM…TgyfQ.6H3plpB5ip0c9yMgPSQD0twBNe8GSRsKc5oB8vTjQeI', user: {…}}
+index.ts:46 Invalid response format: {status: 'success', token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxM…TgyfQ.6H3plpB5ip0c9yMgPSQD0twBNe8GSRsKc5oB8vTjQeI', user: {…}}status: "success"token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjNlNDU2Ny1lODliLTEyZDMtYTQ1Ni00MjY2MTQxNzQwMDAiLCJ1c2VybmFtZSI6InN1cGVyYWRtaW4iLCJyb2xlIjoic3VwZXJhZG1pbiIsImlhdCI6MTc0Mjk4NTU4MiwiZXhwIjoxNzQzMDcxOTgyfQ.6H3plpB5ip0c9yMgPSQD0twBNe8GSRsKc5oB8vTjQeI"user: {id: '123e4567-e89b-12d3-a456-426614174000', username: 'superadmin', role: 'superadmin'}[[Prototype]]: Object
+onSuccess @ index.ts:46
+execute @ chunk-HU6PDPOE.js?v=cc539daf:1236
+await in execute
+mutate @ chunk-HU6PDPOE.js?v=cc539daf:2661
+(anonymous) @ chunk-HU6PDPOE.js?v=cc539daf:3386
+onSubmit @ Login.tsx:30
+(anonymous) @ chunk-JHPPEXU2.js?v=cc539daf:1683
+await in (anonymous)
+callCallback2 @ chunk-276SZO74.js?v=cc539daf:3674
+invokeGuardedCallbackDev @ chunk-276SZO74.js?v=cc539daf:3699
+invokeGuardedCallback @ chunk-276SZO74.js?v=cc539daf:3733
+invokeGuardedCallbackAndCatchFirstError @ chunk-276SZO74.js?v=cc539daf:3736
+executeDispatch @ chunk-276SZO74.js?v=cc539daf:7014
+processDispatchQueueItemsInOrder @ chunk-276SZO74.js?v=cc539daf:7034
+processDispatchQueue @ chunk-276SZO74.js?v=cc539daf:7043
+dispatchEventsForPlugins @ chunk-276SZO74.js?v=cc539daf:7051
+(anonymous) @ chunk-276SZO74.js?v=cc539daf:7174
+batchedUpdates$1 @ chunk-276SZO74.js?v=cc539daf:18913
+batchedUpdates @ chunk-276SZO74.js?v=cc539daf:3579
+dispatchEventForPluginEventSystem @ chunk-276SZO74.js?v=cc539daf:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-276SZO74.js?v=cc539daf:5478
+dispatchEvent @ chunk-276SZO74.js?v=cc539daf:5472
+dispatchDiscreteEvent @ chunk-276SZO74.js?v=cc539daf:5449Understand this errorAI
