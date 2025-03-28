@@ -45,8 +45,8 @@ const LicenseModalinstall = ({
     pathname: "information_app",
     url: `/api/1/desktop/${app.id}`
   });
-
-  const configs: InstallAppInfoType = data;
+  
+  const configs: InstallAppInfoType = data?.data || [];
 
   const handleSubmit = (e: any) => {
     e.preventDefault();

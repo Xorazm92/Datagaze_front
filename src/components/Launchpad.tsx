@@ -22,17 +22,19 @@ export default function Launchpad({ show, toggleLaunchpad }: LaunchpadProps) {
   const { data, isLoading, isError } = useQueryApi({
     pathname: "application",
     url: "/api/1/desktop/web-applications"
+
   });
+  
 
-  const applications: ApplicationType[] = data || [];
-
+  const applications: ApplicationType[] = data?.data || [];
+  
   const OpenModal = (app: ApplicationType) => setSelectedApp(app);
   const OpenModalinstall = (app: ApplicationType) => setSelectedApp1(app);
   const CloseModal = () => setSelectedApp(null);
   const CloseModalInstall = () => setSelectedApp1(null);
 
-  const search = (): ApplicationType[] => {
-    if (!searchText.trim()) return applications;
+  function search(): ApplicationType[] {
+    if (!searchText.trim()) return applications
     const text = searchText.toLowerCase();
     return applications.filter((item) => {
       return (
@@ -40,10 +42,10 @@ export default function Launchpad({ show, toggleLaunchpad }: LaunchpadProps) {
         item.id?.toLowerCase().includes(text)
       );
     });
-  };
+  }
 
   const close = show ? "" : "opacity-0 invisible transition-opacity duration-200";
-
+  
   return (
     <div
       className={`${close} z-30 transform scale-100 fixed overflow-hidden`}
@@ -81,8 +83,9 @@ export default function Launchpad({ show, toggleLaunchpad }: LaunchpadProps) {
                   <CircularProgress />
                 </Box>
               </div>
-            ) : Array.isArray(search()) ? (
-              search().map((app: ApplicationType) => (
+            ) : 
+              applications?.map((app: ApplicationType) => (
+                
                 <div
                   key={`launchpad-${app.id}`}
                   className="flex flex-col items-center h-28 xs:h-32"
@@ -109,9 +112,7 @@ export default function Launchpad({ show, toggleLaunchpad }: LaunchpadProps) {
                   </span>
                 </div>
               ))
-            ) : (
-              <p className="text-white text-center col-span-full">No data...</p>
-            )}
+            }
           </div>
         </div>
       </div>

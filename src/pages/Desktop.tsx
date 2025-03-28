@@ -41,11 +41,11 @@ export default function Desktop(props: any) {
 
   const { data, isLoading, isError } = useQueryApi({
     pathname: "application",
-    url: "/api/1/desktop/web-applications"
+    url: "/api/1/desktop/web-application"
   });
 
-  const applications: ApplicationType[] = data || [];
-
+  const applications: ApplicationType[] = data?.data || [];
+  
   useEffect(() => {
     getAppsData();
   }, []);
@@ -120,6 +120,7 @@ export default function Desktop(props: any) {
     showApps[id] = false;
     setState({ ...state, showApps, hideDockAndTopbar: false });
   };
+
 
   const openApp = (id: string): void => {
     const showApps = { ...state.showApps };
@@ -200,10 +201,6 @@ export default function Desktop(props: any) {
       style={{ background: "linear-gradient(to bottom, rgb(6, 70, 246), #ffffff)" }}
     >
       <TopBar
-        title={state.currentTitle}
-        toggleSpotlight={toggleSpotlight}
-        hide={state.hideDockAndTopbar}
-        setSpotlightBtnRef={setSpotlightBtnRef}
       />
       <div className="window-bound z-10 absolute" style={{ top: minMarginY }}>
         {renderAppWindows()}
@@ -224,6 +221,7 @@ export default function Desktop(props: any) {
         toggleLaunchpad={toggleLaunchpad}
         hide={state.hideDockAndTopbar}
       />
+
 
       {/* Integrated Launchpad-like Overlay */}
       <div
@@ -284,6 +282,7 @@ export default function Desktop(props: any) {
                   </div>
                 ))
               ) : (
+
                 <p className="text-white text-center col-span-full">No data</p>
               )}
             </div>
@@ -298,3 +297,4 @@ export default function Desktop(props: any) {
     </div>
   );
 }
+

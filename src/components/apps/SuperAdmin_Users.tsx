@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Admin_users, app_comp } from "~/configs";
 import TextField from "@mui/material/TextField";
 import AddIcon from "@mui/icons-material/Add";
+import { useAxios } from "~/hooks/useAxios";
 
 export const SuperAdmin_users = () => {
   const [value, setValue] = useState("");
@@ -11,6 +12,8 @@ export const SuperAdmin_users = () => {
   const [openDelete, setOpenModalDelete] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [page, setPage] = useState(0);
+  const [newUser, setNewUser] = useState({ fullname: '', email: '', password: '', username: '' });
+  const axios = useAxios();
 
   const searchFunctions = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value.toLowerCase();
@@ -51,9 +54,88 @@ export const SuperAdmin_users = () => {
     setOpenModal(false);
     setOpenModalAdd(false);
     setOpenModalDelete(false);
+    setNewUser({ fullname: '', email: '', password: '', username: '' }); //clear form
   };
   const DeleteModal = () => {
     setOpenModalDelete(true);
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNewUser({...newUser, [e.target.name]: e.target.value});
+  }
+
+  const handleCreateUser = async () => {
+    if (!newUser.fullname || !newUser.email || !newUser.password || !newUser.username) {
+      alert('Please fill in all fields.');
+      return;
+    }
+  
+    try {
+      const response = await axios({
+        url: '/api/1/auth/register',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: newUser,
+      });
+      if (response && response.data) {
+        setFilteredComputers([...filteredComputers, response.data]);
+        setOpenModalAdd(false);
+        setNewUser({ fullname: '', email: '', password: '', username: '' });
+      }
+    } catch (error: any) {
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        alert('Registration failed: ' + JSON.stringify(error.response.data));
+      } else if (error.request) {
+        // The request was made but no response was received
+        alert('No response from server');
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        alert('Error: ' + error.message);
+      }
+    }
+  };
+
+  console.log('New User Data:', newUser);
+
+  const handleDeleteUser = async (userId: string) => {
+    try {
+      const response = await axios({
+        url: `/api/admin/users/${userId}`,
+        method: 'DELETE'
+      });
+      if (response && response.data) {
+        // Foydalanuvchini ro'yxatdan o'chirish
+        const updatedUsers = filteredComputers.filter(user => user.id !== userId);
+        setFilteredComputers(updatedUsers);
+        setOpenModalDelete(false);
+      }
+    } catch (error) {
+      console.error('Error deleting user:', error);
+    }
+  };
+
+  const handleUpdateUser = async (userId: string, updatedData: any) => {
+    try {
+      const response = await axios({
+        url: `/api/admin/users/${userId}`,
+        method: 'PUT',
+        body: updatedData
+      });
+      if (response && response.data) {
+        // Foydalanuvchini yangilash
+        const updatedUsers = filteredComputers.map(user => 
+          user.id === userId ? { ...user, ...response.data } : user
+        );
+        setFilteredComputers(updatedUsers);
+        setOpenModal(false);
+      }
+    } catch (error) {
+      console.error('Error updating user:', error);
+    }
   };
 
   return (
@@ -93,6 +175,70 @@ export const SuperAdmin_users = () => {
                 <th className="p-3"></th>
               </tr>
             </thead>
+            {openUser && (
+              <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+                <div className="bg-[#e7ecf8] rounded-2xl shadow-lg p-6 w-[550px] h-[320px]">
+                  <h2 className="text-xl font-semibold mb-4">Add new user</h2>
+
+                  <div className="grid grid-cols-2 gap-4 mb-4">
+                    <div>
+                      <label className="block text-sm text-gray-700">Full name</label>
+                      <input
+                        type="text"
+                        name="fullname"
+                        onChange={handleInputChange}
+                        className="w-full border rounded-lg p-2 mt-1"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm text-gray-700">Email</label>
+                      <input
+                        type="email"
+                        name="email"
+                        onChange={handleInputChange}
+                        className="w-full border rounded-lg p-2 mt-1"
+                      />
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4 mb-4">
+                    <div className="mb-4">
+                      <label className="block text-sm text-gray-700">Password</label>
+                      <input
+                        type="password"
+                        name="password"
+                        onChange={handleInputChange}
+                        className="w-full border rounded-lg p-2 mt-1"
+                      />
+                    </div>
+                    <div className="mb-4">
+                      <label className="block text-sm text-gray-700">Username</label>
+                      <input
+                        type="text"
+                        name="username"
+                        onChange={handleInputChange}
+                        className="w-full border rounded-lg p-2 mt-1"
+                      />
+                    </div>
+                  </div>
+                  <div className="flex justify-end items-center mt-4">
+                    <div className="flex gap-2">
+                      <button
+                        onClick={CloseModal}
+                        className="border px-4 py-2 rounded-lg"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        onClick={handleCreateUser}
+                        className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                      >
+                        Add User
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
             <tbody>
               {paginatedComputers.map((item, index) => (
                 <tr
@@ -159,63 +305,6 @@ export const SuperAdmin_users = () => {
           </div>
         </div>
       </div>
-      {openUser && (
-        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center">
-          <div className="bg-[#e7ecf8] rounded-2xl shadow-lg p-6 w-[550px] h-[320px]">
-            <h2 className="text-xl font-semibold mb-4">Add new user</h2>
-
-            <div className="grid grid-cols-2 gap-4 mb-4">
-              <div>
-                <label className="block text-sm text-gray-700">Full name</label>
-                <input
-                  type="text"
-                  defaultValue="Morgan Master"
-                  className="w-full border rounded-lg p-2 mt-1"
-                />
-              </div>
-              <div>
-                <label className="block text-sm text-gray-700">Email</label>
-                <input
-                  type="email"
-                  defaultValue="david.wilson@data.com"
-                  className="w-full border rounded-lg p-2 mt-1"
-                />
-              </div>
-            </div>
-            <div className="grid grid-cols-2 gap-4 mb-4">
-              <div className="mb-4">
-                <label className="block text-sm text-gray-700">Password</label>
-                <input
-                  type="password"
-                  placeholder="password"
-                  className="w-full border rounded-lg p-2 mt-1"
-                />
-              </div>
-              <div className="mb-4">
-                <label className="block text-sm text-gray-700">Username</label>
-                <input
-                  type="text"
-                  placeholder="Username"
-                  className="w-full border rounded-lg p-2 mt-1"
-                />
-              </div>
-            </div>
-            <div className="flex justify-end items-center mt-4">
-              <div className="flex gap-2">
-                <button
-                  onClick={CloseModal}
-                  className="border px-4 py-2 rounded-lg"
-                >
-                  Cancel
-                </button>
-                <button className="bg-blue-500 text-white px-4 py-2 rounded-lg">
-                  Next
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
       {open && (
         <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center">
           <div className="bg-[#e7ecf8] rounded-2xl shadow-lg p-6 w-[550px] h-[320px]">
@@ -290,7 +379,10 @@ export const SuperAdmin_users = () => {
               >
                 Cancel
               </button>
-              <button className="text-red-500 font-medium text-[14px] px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
+              <button
+                onClick={() => handleDeleteUser('userId')}
+                className="text-red-500 font-medium text-[14px] px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+              >
                 Yes
               </button>
             </div>
