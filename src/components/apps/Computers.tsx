@@ -36,6 +36,7 @@ const Computers = () => {
     setOpenModal(false);
     setSelected(null);
   };
+  
   useEffect(() => {
     if (data && Array.isArray(data)) {
       setAllComputers(data);
@@ -189,7 +190,11 @@ const Computers = () => {
             </thead>
             <tbody>
               {isLoading || isError ? (
-                <CircularProgress />
+                <tr>
+                  <td>
+                    <CircularProgress />
+                  </td>
+                </tr>
               ) : (
                 paginatedComputers.map((item, index) => (
                   <tr
