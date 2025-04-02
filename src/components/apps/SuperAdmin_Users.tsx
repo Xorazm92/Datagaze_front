@@ -99,7 +99,7 @@ export const SuperAdmin_users = () => {
     }
   };
 
-  console.log('New User Data:', newUser);
+  // console.log('New User Data:', newUser);
 
   const handleDeleteUser = async (userId: string) => {
     try {

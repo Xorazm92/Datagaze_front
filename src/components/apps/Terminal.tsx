@@ -67,7 +67,7 @@ const TerminalApp = () => {
     });
 
     socketRef.current.on("command_response", ({ data }: any) => {
-      if (data.result.startsWith("CLIENT_ID:")) {
+      if (data?.result.startsWith("CLIENT_ID:")) {
         const clientId = data.result.split(":")[1];
         rawInputMode = true;
         termRef.current.write("\r\nRaw input rejimi yoqildi");
