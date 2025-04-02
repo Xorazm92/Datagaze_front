@@ -36,11 +36,11 @@ const Computers = () => {
     setOpenModal(false);
     setSelected(null);
   };
-  
+
   useEffect(() => {
-    if (data && Array.isArray(data)) {
-      setAllComputers(data);
+    if (!isLoading) {
       filterComputers(data, Status, value);
+      setAllComputers(data);
     }
   }, [data]);
 
@@ -49,7 +49,7 @@ const Computers = () => {
     status: string,
     search: string
   ) => {
-    let filtered = [...computers];
+    let filtered = computers;
 
     if (status !== "all") {
       filtered = filtered.filter((comp) => comp.status === status);
@@ -57,11 +57,11 @@ const Computers = () => {
 
     if (search) {
       filtered = filtered.filter((comp) =>
-        comp?.computer_name?.toLowerCase().includes(search.toLowerCase())
+        comp?.name?.toLowerCase().includes(search.toLowerCase())
       );
     }
 
-    setFilteredComputers(filtered);
+    setFilteredComputers([filtered]);
   };
 
   const searchFunctions = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -87,6 +87,7 @@ const Computers = () => {
     page * rowsPerPage,
     page * rowsPerPage + rowsPerPage
   );
+  console.log({ paginatedComputers: paginatedComputers });
 
   const totalPages = Math.ceil(filteredComputers.length / rowsPerPage);
 
@@ -198,7 +199,7 @@ const Computers = () => {
               ) : (
                 paginatedComputers.map((item, index) => (
                   <tr
-                    key={item.id}
+                    key={index}
                     className={`border-b border-gray-200 p-4 text-sm ${
                       index % 2 === 0 ? "bg-[grey-50]" : "bg-[#ccdaf8]"
                     }`}
@@ -208,9 +209,9 @@ const Computers = () => {
                     </td>
                     <td className="p-3">{index + 1}</td>
                     <td className="p-3 cursor-pointer" onClick={() => apptable(item.id)}>
-                      {item.computer_name}
+                      {item.name}
                     </td>
-                    <td className="p-3">{item.os}</td>
+                    <td className="p-3">{item.os_type}</td>
                     <td className="p-3">{item.ip_address}</td>
                     <td>
                       <p

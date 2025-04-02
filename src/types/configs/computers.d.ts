@@ -16,12 +16,14 @@ export interface ComputerType {
   Disk_C?: number;
 }
 export interface ComputersType {
-  computer_name: string;
-  hostname: string;
+  name: string;
+  hostname?: string;
   id: string;
-  os: string;
+  os_type: string;
+  os_version: string;
   status: string;
   ip_address: string;
+  mac_address: string;
 }
 export interface computersbyIdType {
   os_details?: {
