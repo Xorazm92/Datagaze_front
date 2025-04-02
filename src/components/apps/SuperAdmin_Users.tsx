@@ -136,11 +136,6 @@ export const SuperAdmin_users = () => {
     }
   };
 
-<<<<<<< HEAD
-  // console.log('New User Data:', newUser);
-
-=======
->>>>>>> 4329c7b (updated)
   const handleDeleteUser = async (userId: string) => {
     try {
       const response = await axios({
