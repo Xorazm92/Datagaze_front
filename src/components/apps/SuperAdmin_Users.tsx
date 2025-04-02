@@ -3,6 +3,7 @@ import { Admin_users, app_comp } from "~/configs";
 import TextField from "@mui/material/TextField";
 import AddIcon from "@mui/icons-material/Add";
 import { useAxios } from "~/hooks/useAxios";
+import { superadmin_users } from "~/types/configs/superadmin_users";
 
 export const SuperAdmin_users = () => {
   const [value, setValue] = useState("");
@@ -12,8 +13,17 @@ export const SuperAdmin_users = () => {
   const [openDelete, setOpenModalDelete] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [page, setPage] = useState(0);
-  const [newUser, setNewUser] = useState({ fullname: '', email: '', password: '', username: '' });
+  const [newUser, setNewUser] = useState({
+    fullname: "",
+    email: "",
+    password: "",
+    username: ""
+  });
+  const [selectedUser, setSelectedUser] = useState<any>(null);
   const axios = useAxios();
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const searchFunctions = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value.toLowerCase();
@@ -44,7 +54,8 @@ export const SuperAdmin_users = () => {
     setPage(0);
   };
 
-  const EditOpenModal = () => {
+  const EditOpenModal = (item: superadmin_users) => {
+    setSelectedUser(item);
     setOpenModal(true);
   };
   const AddModalOpen = () => {
@@ -54,87 +65,147 @@ export const SuperAdmin_users = () => {
     setOpenModal(false);
     setOpenModalAdd(false);
     setOpenModalDelete(false);
-    setNewUser({ fullname: '', email: '', password: '', username: '' }); //clear form
+    setNewUser({ fullname: "", email: "", password: "", username: "" }); //clear form
   };
   const DeleteModal = () => {
     setOpenModalDelete(true);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNewUser({...newUser, [e.target.name]: e.target.value});
-  }
+    setNewUser({ ...newUser, [e.target.name]: e.target.value });
+  };
+
+  // get uchun
+
+  const fetchAdmins = async () => {
+    try {
+      setLoading(true);
+      const response = await axios({
+        url: "/api/1/auth/admins",
+        method: "GET"
+      });
+      if (response && response.data) {
+        setFilteredComputers(response.data);
+        // Admin_users is an array, not a function, so we shouldn't call it
+      }
+    } catch (error) {
+      setError("Adminlar ro'yxatini yuklashda xatolik yuz berdi");
+      console.error("Error fetching admins:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Komponent yaratilganda API so'rovini yuborish
+  useEffect(() => {
+    fetchAdmins();
+  }, []);
 
   const handleCreateUser = async () => {
     if (!newUser.fullname || !newUser.email || !newUser.password || !newUser.username) {
-      alert('Please fill in all fields.');
+      alert("Please fill in all fields.");
       return;
     }
-  
+
     try {
       const response = await axios({
-        url: '/api/1/auth/register',
-        method: 'POST',
+        url: "/api/1/auth/register",
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json"
         },
-        body: newUser,
+        body: newUser
       });
       if (response && response.data) {
         setFilteredComputers([...filteredComputers, response.data]);
         setOpenModalAdd(false);
-        setNewUser({ fullname: '', email: '', password: '', username: '' });
+        setNewUser({ fullname: "", email: "", password: "", username: "" });
       }
     } catch (error: any) {
       if (error.response) {
         // The request was made and the server responded with a status code
         // that falls out of the range of 2xx
-        alert('Registration failed: ' + JSON.stringify(error.response.data));
+        alert("Registration failed: " + JSON.stringify(error.response.data));
       } else if (error.request) {
         // The request was made but no response was received
-        alert('No response from server');
+        alert("No response from server");
       } else {
         // Something happened in setting up the request that triggered an Error
-        alert('Error: ' + error.message);
+        alert("Error: " + error.message);
       }
     }
   };
 
+<<<<<<< HEAD
   // console.log('New User Data:', newUser);
 
+=======
+>>>>>>> 4329c7b (updated)
   const handleDeleteUser = async (userId: string) => {
     try {
       const response = await axios({
-        url: `/api/admin/users/${userId}`,
-        method: 'DELETE'
+        url: `/api/1/auth/admins/${userId}`,
+        method: "DELETE"
       });
       if (response && response.data) {
-        // Foydalanuvchini ro'yxatdan o'chirish
-        const updatedUsers = filteredComputers.filter(user => user.id !== userId);
+        const updatedUsers = filteredComputers.filter((user) => user.id !== userId);
         setFilteredComputers(updatedUsers);
         setOpenModalDelete(false);
       }
     } catch (error) {
-      console.error('Error deleting user:', error);
+      setError("Adminni o'chirishda xatolik yuz berdi");
+      console.error("Error deleting admin:", error);
     }
   };
 
-  const handleUpdateUser = async (userId: string, updatedData: any) => {
+  // const handleUpdateUser = async (userId: string, updatedData: any) => {
+
+  //   try {
+  //     const response = await axios({
+  //       url: `/api/1/auth/admins/${userId}`,
+  //       method: 'PUT',
+  //       body: updatedData
+  //     });
+  //     if (response && response.data) {
+  //       // Foydalanuvchini yangilash
+  //       const updatedUsers = filteredComputers.map(user =>
+  //         user.id === userId ? { ...user, ...response.data } : user
+  //       );
+  //       setFilteredComputers(updatedUsers);
+  //       setOpenModal(false);
+  //     }
+  //   } catch (error) {
+  //     console.error('Error updating user:', error);
+  //   }
+  // };
+  const handleUpdateUser = async (userId: string) => {
+    if (!selectedUser) return;
+
     try {
+      setLoading(true);
       const response = await axios({
-        url: `/api/admin/users/${userId}`,
-        method: 'PUT',
-        body: updatedData
+        url: `/api/1/auth/admins/${userId}`,
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: selectedUser
       });
+
       if (response && response.data) {
-        // Foydalanuvchini yangilash
-        const updatedUsers = filteredComputers.map(user => 
+        // Yangilangan ma'lumotni jadvalda yangilash
+        const updatedUsers = filteredComputers.map((user) =>
           user.id === userId ? { ...user, ...response.data } : user
         );
         setFilteredComputers(updatedUsers);
         setOpenModal(false);
+        setSelectedUser(null);
       }
     } catch (error) {
-      console.error('Error updating user:', error);
+      setError("Admin malumotlarini yangilashda xatolik yuz berdi");
+      console.error("Error updating admin:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -247,10 +318,10 @@ export const SuperAdmin_users = () => {
                 >
                   <td className="p-3">{item.fullname}</td>
                   <td className="p-3">{item.email}</td>
-                  <td className="p-3">{item.degistered_date}</td>
+                  <td className="p-3">{item.created_at}</td>
                   <td
                     className="p-3 text-[#1A79D8] cursor-pointer"
-                    onClick={EditOpenModal}
+                    onClick={() => EditOpenModal(item)}
                   >
                     edit
                   </td>
@@ -315,7 +386,10 @@ export const SuperAdmin_users = () => {
                 <label className="block text-sm text-gray-700">Full name</label>
                 <input
                   type="text"
-                  defaultValue="Morgan Master"
+                  value={selectedUser?.fullname || ""}
+                  onChange={(e) =>
+                    setSelectedUser({ ...selectedUser, fullname: e.target.value })
+                  }
                   className="w-full border rounded-lg p-2 mt-1"
                 />
               </div>
@@ -323,7 +397,10 @@ export const SuperAdmin_users = () => {
                 <label className="block text-sm text-gray-700">Email</label>
                 <input
                   type="email"
-                  defaultValue="david.wilson@data.com"
+                  value={selectedUser?.email || ""}
+                  onChange={(e) =>
+                    setSelectedUser({ ...selectedUser, email: e.target.value })
+                  }
                   className="w-full border rounded-lg p-2 mt-1"
                 />
               </div>
@@ -333,7 +410,10 @@ export const SuperAdmin_users = () => {
                 <label className="block text-sm text-gray-700">Password</label>
                 <input
                   type="password"
-                  placeholder="password"
+                  value={selectedUser?.password || ""}
+                  onChange={(e) =>
+                    setSelectedUser({ ...selectedUser, password: e.target.value })
+                  }
                   className="w-full border rounded-lg p-2 mt-1"
                 />
               </div>
@@ -341,7 +421,10 @@ export const SuperAdmin_users = () => {
                 <label className="block text-sm text-gray-700">Username</label>
                 <input
                   type="text"
-                  placeholder="Username"
+                  value={selectedUser?.username || ""}
+                  onChange={(e) =>
+                    setSelectedUser({ ...selectedUser, username: e.target.value })
+                  }
                   className="w-full border rounded-lg p-2 mt-1"
                 />
               </div>
@@ -355,7 +438,10 @@ export const SuperAdmin_users = () => {
                 <button onClick={CloseModal} className="border px-4 py-2 rounded-lg">
                   Cancel
                 </button>
-                <button className="bg-blue-500 text-white px-4 py-2 rounded-lg">
+                <button
+                  onClick={() => handleUpdateUser(selectedUser?.id || "")}
+                  className="bg-blue-500 text-white px-4 py-2 rounded-lg"
+                >
                   Save
                 </button>
               </div>
@@ -363,6 +449,7 @@ export const SuperAdmin_users = () => {
           </div>
         </div>
       )}
+
       {openDelete && (
         <div className="fixed inset-0 bg-black bg-opacity-40 flex flex-col items-center justify-center">
           <div className="bg-[#e7ecf8] rounded-2xl shadow-lg text-center p-6 w-[340px] h-[204px]">
@@ -380,7 +467,7 @@ export const SuperAdmin_users = () => {
                 Cancel
               </button>
               <button
-                onClick={() => handleDeleteUser('userId')}
+                onClick={() => handleDeleteUser(selectedUser?.id || "")}
                 className="text-red-500 font-medium text-[14px] px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
               >
                 Yes
