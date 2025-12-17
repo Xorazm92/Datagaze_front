@@ -61,3 +61,4 @@ pnpm build
 ## License
 
 [MIT](MIT)
+# UzTrain.uz
