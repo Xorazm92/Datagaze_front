@@ -62,3 +62,4 @@ pnpm build
 
 [MIT](MIT)
 # UzTrain.uz
+# UzTrain.uz
